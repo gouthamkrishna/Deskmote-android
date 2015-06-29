@@ -1,0 +1,279 @@
+package com.beaconapp.user.beaconapp1;
+
+import android.annotation.TargetApi;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.Service;
+import android.bluetooth.BluetoothAdapter;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.os.SystemClock;
+import android.preference.PreferenceManager;
+
+import com.estimote.sdk.Beacon;
+import com.estimote.sdk.BeaconManager;
+import com.estimote.sdk.Region;
+
+import java.io.FileOutputStream;
+import java.util.Calendar;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Created by user on 22/6/15.
+ */
+public class NotificationService extends Service {
+
+    private BeaconManager beaconManager1, beaconManager2, beaconManager3;
+    private NotificationManager notificationManager;
+    public Handler cHandler = new Handler();
+    private Region region_door_entry, region_desk, region_door_exit;
+    private int notification_id = 0;
+    public String str = "";
+    public int enter_1 = 0, enter_2 = 0, obj = 0;
+    FileOutputStream fOut;
+    BluetoothAdapter bt=null;
+    TimerClass obj1 = new TimerClass();
+    TimerClass obj2 = new TimerClass();
+    TimerClass obj3 = new TimerClass();
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
+
+    public IBinder onBind(Intent arg0) {
+        return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+
+        bt= BluetoothAdapter.getDefaultAdapter();
+
+        if(!bt.isEnabled())
+            bt.enable();
+
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = sharedPref.edit();
+
+        region_door_entry = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 29666, 63757);
+        region_desk = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 36798, 29499);
+        region_door_exit = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 64157, 33188);
+        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        beaconManager1 = new BeaconManager(this);
+        beaconManager2 = new BeaconManager(this);
+        beaconManager3 = new BeaconManager(this);
+
+        beaconManager1.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
+        beaconManager2.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
+        beaconManager3.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
+
+        cHandler.postDelayed(breakAlert, 0);
+
+        beaconManager1.setMonitoringListener(new BeaconManager.MonitoringListener() {
+            @Override
+            public void onEnteredRegion(Region region, List<Beacon> beacons) {
+
+                if (enter_2 == 1) {
+                    enter_1 = enter_2 = 0;
+
+                    editor.putInt(getString(R.string.shared_position), 2);
+                    editor.commit();
+
+                    pause(obj3);
+                    obj = 2;
+                    obj2.startTime = SystemClock.uptimeMillis();
+                    obj2.customHandler.postDelayed(updateTimerThread, 0);
+                } else
+                    enter_1 = 1;
+                postNotification("Entered region_door_entry", "Region Notification");
+            }
+
+            @Override
+            public void onExitedRegion(Region region) {
+                postNotification("Exited region_door_entry", "Region Notification");
+            }
+        });
+
+        beaconManager2.setMonitoringListener(new BeaconManager.MonitoringListener() {
+            @Override
+            public void onEnteredRegion(Region region, List<Beacon> beacons) {
+                if(enter_1 == 1) {
+                    enter_1 = enter_2 = 0;
+
+                    editor.putInt(getString(R.string.shared_position), 3);
+                    editor.commit();
+
+                    pause(obj2);
+                    obj = 3;
+                    obj3.startTime = SystemClock.uptimeMillis();
+                    obj3.customHandler.postDelayed(updateTimerThread, 0);
+                }
+                else
+                    enter_2 = 1;
+                postNotification("Entered region_door_exit","Region Notification");
+            }
+
+            @Override
+            public void onExitedRegion(Region region) {
+                postNotification("Exited region_door_exit", "Region Notification");
+            }
+        });
+
+        beaconManager3.setMonitoringListener(new BeaconManager.MonitoringListener() {
+            @Override
+            public void onEnteredRegion(Region region, List<Beacon> beacons) {
+
+                editor.putInt(getString(R.string.shared_position), 1);
+                editor.commit();
+
+                pause(obj2);
+                obj = 1;
+                obj1.startTime = SystemClock.uptimeMillis();
+                obj1.customHandler.postDelayed(updateTimerThread, 0);
+                postNotification("Entered region_desk", "Region Notification");
+            }
+
+            @Override
+            public void onExitedRegion(Region region) {
+
+                editor.putInt(getString(R.string.shared_position), 2);
+                editor.commit();
+
+                pause(obj1);
+                obj = 2;
+                obj2.startTime = SystemClock.uptimeMillis();
+                obj2.customHandler.postDelayed(updateTimerThread, 0);
+                postNotification("Exited region_desk", "Region Notification");
+            }
+        });
+
+        beaconManager1.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                try {
+                    beaconManager1.startMonitoring(region_door_entry);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        beaconManager2.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                try {
+                    beaconManager2.startMonitoring(region_door_exit);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        beaconManager3.connect(new BeaconManager.ServiceReadyCallback() {
+            @Override
+            public void onServiceReady() {
+                try {
+                    beaconManager3.startMonitoring(region_desk);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        return START_STICKY;
+    }
+
+    private Runnable updateTimerThread = new Runnable() {
+        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+        public void run() {
+            if(obj ==1) {
+                findTime(obj1);
+                obj1.timeInMilliseconds = SystemClock.uptimeMillis() - obj1.startTime;
+                obj1.updatedTime = obj1.timeSwapBuff + obj1.timeInMilliseconds;
+                obj1.customHandler.postDelayed(this, 1000);
+            }
+            else if(obj == 2) {
+                findTime(obj2);
+                obj2.timeInMilliseconds = SystemClock.uptimeMillis() - obj2.startTime;
+                obj2.updatedTime = obj2.timeSwapBuff + obj2.timeInMilliseconds;
+                obj2.customHandler.postDelayed(this, 1000);
+            }
+            else if(obj == 3) {
+                findTime(obj3);
+                obj3.timeInMilliseconds = SystemClock.uptimeMillis() - obj3.startTime;
+                obj3.updatedTime = obj3.timeSwapBuff + obj3.timeInMilliseconds;
+                obj3.customHandler.postDelayed(this, 1000);
+            }
+        }
+    };
+
+    public void findTime(TimerClass ob) {
+
+        int secs = (int) (ob.updatedTime / 1000);
+        int mins = secs / 60;
+        secs = secs % 60;
+        int hours = mins / 60;
+        mins = mins % 60;
+        String shared_variable = "";
+
+        if(ob == obj1) {
+            shared_variable = getString(R.string.shared_timer_desk);
+            if ( (ob.timeInMilliseconds/1000) == 10 ) {
+                String msg2 = "Go Take a Break";
+                postNotification(msg2, "Health Warning");
+            }
+        }
+        else if(ob == obj2) {
+            shared_variable = getString(R.string.shared_timer_office);}
+
+        else if(ob == obj3) {
+            shared_variable = getString(R.string.shared_timer_outdoor);
+            if ( (ob.timeInMilliseconds/1000) == 10 ) {
+                String msg2 = "Get inside Office";
+                postNotification(msg2, "Office Hours");
+            }
+        }
+
+        str = ""+hours+" : "+mins+" : "+secs;
+        editor.putString(shared_variable, str);
+        editor.commit();
+
+    }
+
+    public void pause(TimerClass ob) {
+        ob.timeSwapBuff += ob.timeInMilliseconds;
+        ob.customHandler.removeCallbacks(updateTimerThread);
+
+    }
+
+    public Runnable breakAlert = new Runnable() {
+        public void run() {
+            Calendar calendar = Calendar.getInstance();
+            int hr = calendar.get(Calendar.HOUR_OF_DAY);
+            int min = calendar.get(Calendar.MINUTE);
+            if((hr == 8 && min == 30) || (hr == 18 && min ==00)) {
+                new TimerClass();
+            }
+            if ((hr == 11 && min == 00) || (hr == 16 && min == 00)) {
+                postNotification("Tea Break", "Break Alert");
+            }
+            else if (hr == 13 && min == 00) {
+                postNotification("Lunch Break", "Break Alert");
+            }
+            cHandler.postDelayed(breakAlert, 60 * 1000);
+        }
+    };
+
+    private void postNotification(String msg, String title) {
+        Notification notification = new Notification.Builder(getBaseContext())
+                .setSmallIcon(R.drawable.beacon_gray)
+                .setContentTitle(title)
+                .setContentText(msg)
+                .setAutoCancel(true)
+                .build();
+        notification.defaults |= Notification.DEFAULT_SOUND;
+        notification.defaults |= Notification.DEFAULT_LIGHTS;
+        notificationManager.notify(notification_id, notification);
+    }
+}
