@@ -21,10 +21,13 @@ import android.widget.ViewSwitcher;
 public class MainActivity extends ActionBarActivity {
 
     TextView tv_main,tv_left,tv_right,header;
-    String empty = "",time_desk = "",time_office = "",time_outdoor = "";
+    String str_desk = "", str_outdoor = "", str_office = "";
+    Long time_desk = 0L,time_office = 0L,time_outdoor = 0L;
+    int secs, mins, hours;
     Handler chHandler = new Handler();
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
+    SharedPreferences.Editor editor;
     int defaultValue = 0;
 
     @Override
@@ -36,13 +39,13 @@ public class MainActivity extends ActionBarActivity {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         int start = sharedPref.getInt(getString(R.string.shared_start), defaultValue);
         if (start == 0) {
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putInt(getString(R.string.shared_start), 1);
+            editor.commit();
+
             Intent intent = new Intent(MainActivity.this, NotificationService.class);
             startService(intent);
         }
-
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.shared_start), 1);
-        editor.commit();
 
         sw_main = (ImageSwitcher) findViewById(R.id.sw_main);
         sw_left = (ImageSwitcher) findViewById(R.id.sw_left);
@@ -117,39 +120,61 @@ public class MainActivity extends ActionBarActivity {
             try {
                 pos = sharedPref.getInt(getString(R.string.shared_position), 3);
 
-                time_desk = sharedPref.getString(getString(R.string.shared_timer_desk), "0 : 0 : 0");
+                time_desk = sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
 
-                time_office = sharedPref.getString(getString(R.string.shared_timer_office), "0 : 0 : 0");
+                time_office = sharedPref.getLong(getString(R.string.shared_timer_office), 0);
 
-                time_outdoor = sharedPref.getString(getString(R.string.shared_timer_outdoor), "0 : 0 : 0");
+                time_outdoor = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
 
             } catch (Exception e) {
             }
 
+            secs = (int) (time_desk / 1000);
+            mins = secs / 60;
+            secs = secs % 60;
+            hours = mins / 60;
+            mins = mins % 60;
+            str_desk = ""+hours+" : "+mins+" : "+secs;
+
+            secs = (int) (time_office / 1000);
+            mins = secs / 60;
+            secs = secs % 60;
+            hours = mins / 60;
+            mins = mins % 60;
+            str_office = ""+hours+" : "+mins+" : "+secs;
+
+            secs = (int) (time_outdoor / 1000);
+            mins = secs / 60;
+            secs = secs % 60;
+            hours = mins / 60;
+            mins = mins % 60;
+            str_outdoor = ""+hours+" : "+mins+" : "+secs;
+
             if (pos == 1) {
+
                 sw_main.setImageResource(R.drawable.work_large);
                 sw_left.setImageResource(R.drawable.outdoor);
                 sw_right.setImageResource(R.drawable.office);
                 header.setText("HOURS AT YOUR DESK");
-                tv_main.setText(time_desk);
-                tv_left.setText(time_outdoor);
-                tv_right.setText(time_office);
+                tv_main.setText(str_desk);
+                tv_left.setText(str_outdoor);
+                tv_right.setText(str_office);
             } else if (pos == 2) {
                 sw_main.setImageResource(R.drawable.office_large);
                 sw_left.setImageResource(R.drawable.work);
                 sw_right.setImageResource(R.drawable.outdoor);
                 header.setText("HOURS INSIDE OFFICE");
-                tv_main.setText(time_office);
-                tv_left.setText(time_desk);
-                tv_right.setText(time_outdoor);
+                tv_main.setText(str_office);
+                tv_left.setText(str_desk);
+                tv_right.setText(str_outdoor);
             } else if (pos == 3) {
                 sw_main.setImageResource(R.drawable.outdoor_large);
                 sw_left.setImageResource(R.drawable.office);
                 sw_right.setImageResource(R.drawable.work);
                 header.setText("HOURS OUTSIDE OFFICE");
-                tv_main.setText(time_outdoor);
-                tv_left.setText(time_office);
-                tv_right.setText(time_desk);
+                tv_main.setText(str_outdoor);
+                tv_left.setText(str_office);
+                tv_right.setText(str_desk);
             }
 
             chHandler.postDelayed(timer, 1000);

@@ -1,11 +1,14 @@
 package com.beaconapp.user.beaconapp1;
 
+import android.app.Service;
+import android.content.Intent;
 import android.os.Handler;
+import android.os.IBinder;
 
 /**
  * Created by user on 25/6/15.
  */
-public class TimerClass {
+public class TimerClass extends Service {
 
     public long startTime = 0L;
     public Handler customHandler = new Handler();
@@ -21,6 +24,11 @@ public class TimerClass {
         mins = 0;
         secs = 0;
         day_start = 0;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
 

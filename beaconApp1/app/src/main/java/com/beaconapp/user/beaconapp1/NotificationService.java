@@ -34,7 +34,7 @@ public class NotificationService extends Service {
     public Handler cHandler = new Handler();
     private Region region_door_entry, region_desk, region_door_exit;
     private int notification_id = 0;
-    public String str = "";
+    private String shared_variable1 = "";
     public int enter_1 = 0, enter_2 = 0, obj = 0;
     FileOutputStream fOut;
     BluetoothAdapter bt=null;
@@ -83,6 +83,7 @@ public class NotificationService extends Service {
                     editor.putInt(getString(R.string.shared_position), 2);
                     editor.commit();
 
+                    shared_variable1 = getString(R.string.shared_timer_outdoor);
                     pause(obj3);
                     obj = 2;
                     obj2.startTime = SystemClock.uptimeMillis();
@@ -106,7 +107,7 @@ public class NotificationService extends Service {
 
                     editor.putInt(getString(R.string.shared_position), 3);
                     editor.commit();
-
+                    shared_variable1 = getString(R.string.shared_timer_office);
                     pause(obj2);
                     obj = 3;
                     obj3.startTime = SystemClock.uptimeMillis();
@@ -130,6 +131,7 @@ public class NotificationService extends Service {
                 editor.putInt(getString(R.string.shared_position), 1);
                 editor.commit();
 
+                shared_variable1 = getString(R.string.shared_timer_office);
                 pause(obj2);
                 obj = 1;
                 obj1.startTime = SystemClock.uptimeMillis();
@@ -143,6 +145,7 @@ public class NotificationService extends Service {
                 editor.putInt(getString(R.string.shared_position), 2);
                 editor.commit();
 
+                shared_variable1 = getString(R.string.shared_timer_desk);
                 pause(obj1);
                 obj = 2;
                 obj2.startTime = SystemClock.uptimeMillis();
@@ -181,6 +184,7 @@ public class NotificationService extends Service {
                 }
             }
         });
+
         return START_STICKY;
     }
 
@@ -188,21 +192,21 @@ public class NotificationService extends Service {
         @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         public void run() {
             if(obj ==1) {
-                findTime(obj1);
                 obj1.timeInMilliseconds = SystemClock.uptimeMillis() - obj1.startTime;
                 obj1.updatedTime = obj1.timeSwapBuff + obj1.timeInMilliseconds;
+                findTime(obj1);
                 obj1.customHandler.postDelayed(this, 1000);
             }
             else if(obj == 2) {
-                findTime(obj2);
                 obj2.timeInMilliseconds = SystemClock.uptimeMillis() - obj2.startTime;
                 obj2.updatedTime = obj2.timeSwapBuff + obj2.timeInMilliseconds;
+                findTime(obj2);
                 obj2.customHandler.postDelayed(this, 1000);
             }
             else if(obj == 3) {
-                findTime(obj3);
                 obj3.timeInMilliseconds = SystemClock.uptimeMillis() - obj3.startTime;
                 obj3.updatedTime = obj3.timeSwapBuff + obj3.timeInMilliseconds;
+                findTime(obj3);
                 obj3.customHandler.postDelayed(this, 1000);
             }
         }
@@ -210,11 +214,6 @@ public class NotificationService extends Service {
 
     public void findTime(TimerClass ob) {
 
-        int secs = (int) (ob.updatedTime / 1000);
-        int mins = secs / 60;
-        secs = secs % 60;
-        int hours = mins / 60;
-        mins = mins % 60;
         String shared_variable = "";
 
         if(ob == obj1) {
@@ -235,14 +234,13 @@ public class NotificationService extends Service {
             }
         }
 
-        str = ""+hours+" : "+mins+" : "+secs;
-        editor.putString(shared_variable, str);
+        editor.putLong(shared_variable, ob.updatedTime);
         editor.commit();
 
     }
 
     public void pause(TimerClass ob) {
-        ob.timeSwapBuff += ob.timeInMilliseconds;
+        ob.timeSwapBuff = sharedPref.getLong(shared_variable1, 0);
         ob.customHandler.removeCallbacks(updateTimerThread);
 
     }
