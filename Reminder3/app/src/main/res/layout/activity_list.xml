@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+    android:descendantFocusability="blocksDescendants"
+
+    >
+    <TextView
+        android:layout_width="175dp"
+        android:layout_height="75dp"
+        android:id="@+id/title"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="50dp"
+        android:layout_height="fill_parent"
+        android:id="@+id/time"/>
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="75dp"
+        android:id="@+id/reminder"
+        android:src="@drawable/reminder"/>
+    <ImageButton
+        android:layout_width="50dp"
+        android:layout_height="75dp"
+        android:id="@+id/close"
+        android:src="@drawable/close"/>
+
+
+</LinearLayout>
+
+
