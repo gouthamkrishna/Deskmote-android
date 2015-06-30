@@ -211,7 +211,7 @@ public class NotificationService extends Service {
 
         if(ob == obj1) {
             shared_variable = getString(R.string.shared_timer_desk);
-            if ( (ob.timeInMilliseconds/1000) == 10 ) {
+            if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 10 ) {
                 String msg2 = "Go Take a Break";
                 postNotification(msg2, "Health Warning");
             }
@@ -221,7 +221,7 @@ public class NotificationService extends Service {
 
         else if(ob == obj3) {
             shared_variable = getString(R.string.shared_timer_outdoor);
-            if ( (ob.timeInMilliseconds/1000) == 10 ) {
+            if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 10 ) {
                 String msg2 = "Get inside Office";
                 postNotification(msg2, "Office Hours");
             }
@@ -233,8 +233,8 @@ public class NotificationService extends Service {
     }
 
     public void pause(TimerClass ob) {
+        ob.lastPauseTime = ob.timeInMilliseconds;
         ob.customHandler.removeCallbacks(updateTimerThread);
-
     }
 
     public Runnable breakAlert = new Runnable() {
@@ -242,8 +242,13 @@ public class NotificationService extends Service {
             Calendar calendar = Calendar.getInstance();
             int hr = calendar.get(Calendar.HOUR_OF_DAY);
             int min = calendar.get(Calendar.MINUTE);
-            if((hr == 8 && min == 30) || (hr == 18 && min ==00)) {
-                new TimerClass();
+            if((hr == 18 && min == 50) || (hr == 18 && min == 00)) {
+
+                editor.putLong(getString(R.string.shared_timer_desk), 0);
+                editor.putLong(getString(R.string.shared_timer_office), 0);
+                editor.putLong(getString(R.string.shared_timer_outdoor), 0);
+                editor.commit();
+                stopSelf();
             }
             if ((hr == 11 && min == 00) || (hr == 16 && min == 00)) {
                 postNotification("Tea Break", "Break Alert");

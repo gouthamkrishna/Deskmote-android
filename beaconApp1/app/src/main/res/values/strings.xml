@@ -12,4 +12,7 @@
     <string name="shared_timer_outdoor">Shared Timer Outdoor</string>
     <string name="shared_door_entry">Entered door entry</string>
     <string name="shared_door_exit">entered door exit</string>
+
+    <string name="logger_init">Logger.Initial.value</string>
+
 </resources>

@@ -27,7 +27,6 @@ public class MainActivity extends ActionBarActivity {
     Handler chHandler = new Handler();
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
-    SharedPreferences.Editor editor;
     int defaultValue = 0;
 
     @Override
@@ -37,7 +36,7 @@ public class MainActivity extends ActionBarActivity {
         chHandler.postDelayed(timer, 0);
         setContentView(R.layout.activity_main);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        int start = sharedPref.getInt(getString(R.string.shared_start), defaultValue);
+        int start = sharedPref.getInt(getString(R.string.shared_start), 0);
         if (start == 0) {
             SharedPreferences.Editor editor = sharedPref.edit();
             editor.putInt(getString(R.string.shared_start), 1);
@@ -45,6 +44,9 @@ public class MainActivity extends ActionBarActivity {
 
             Intent intent = new Intent(MainActivity.this, NotificationService.class);
             startService(intent);
+
+            Intent intent1 = new Intent(MainActivity.this, LoggerService.class);
+            startService(intent1);
         }
 
         sw_main = (ImageSwitcher) findViewById(R.id.sw_main);
