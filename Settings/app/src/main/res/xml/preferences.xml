@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_alert_title"
+        android:key="pref_key_alert">
+
+        <CheckBoxPreference
+            android:key="pref_key_notifications"
+            android:summary="@string/pref_notifications_summary"
+            android:title="@string/pref_notifications_title"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:dependency="pref_key_notifications"
+            android:key="pref_key_reminders"
+            android:summary="@string/pref_reminders_summary"
+            android:title="@string/pref_reminders_title"
+            android:defaultValue="false"/>
+
+        <CheckBoxPreference
+            android:dependency="pref_key_notifications"
+            android:key="pref_key_break"
+            android:summary="@string/pref_break_summary"
+            android:title="@string/pref_break_title"
+            android:defaultValue="true"/>
+
+        <CheckBoxPreference
+            android:dependency="pref_key_notifications"
+            android:key="pref_key_health"
+            android:summary="@string/pref_health_summary"
+            android:title="@string/pref_health_title"
+            android:defaultValue="false"/>
+
+        <CheckBoxPreference
+            android:dependency="pref_key_notifications"
+            android:key="pref_key_office_timings"
+            android:summary="@string/pref_office_timings_summary"
+            android:title="@string/pref_office_timings_title"
+            android:defaultValue="true"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_office_timings"
+        android:title="@string/pref_office_time_title">
+
+            <Preference
+                android:key="pref_key_office_time_from"
+                android:title="FROM          00:00" />
+
+            <Preference
+                android:key="pref_key_office_time_to"
+                android:title="TO               00:00" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_key_lunch_timings"
+        android:title="@string/pref_lunch_timing_title">
+
+            <Preference
+                android:key="pref_key_lunch_time_from"
+                android:title="FROM          00:00" />
+
+            <Preference
+                android:key="pref_key_lunch_time_to"
+                android:title="TO               00:00" />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>
