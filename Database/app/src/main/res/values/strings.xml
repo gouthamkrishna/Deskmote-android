@@ -3,4 +3,8 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string name="logger_init">Logger.Initial.value</string>
+    <string name="shared_timer_desk">Shared Timer Desk</string>
+    <string name="shared_timer_office">Shared Timer Office</string>
+    <string name="shared_timer_outdoor">Shared Timer Outdoor</string>
 </resources>

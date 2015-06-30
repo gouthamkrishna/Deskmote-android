@@ -9,6 +9,15 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by user on 23/6/15.
  */
@@ -19,16 +28,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "remindersManager";
+    private static final String DATABASE_NAME = "DailyStatistics";
 
     // Contacts table name
-    private static final String TABLE_REMINDERS = "reminders";
+    private static final String TABLE_STATISTICS = "statistics";
 
     // Contacts Table Columns names
     private static final String KEY_ID = "id";
-    private static final String KEY_DATE = "date";
-    private static final String KEY_TIME = "time";
-    private static final String KEY_TAG = "tag";
+    private static final String KEY_DESK = "desk";
+    private static final String KEY_OFFICE = "office";
+    private static final String KEY_OUTDOOR = "outdoor";
+    private static final String KEY_STAMP = "tstamp";
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -37,109 +47,77 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
-        String CREATE_REMINDERS_TABLE = "CREATE TABLE " + TABLE_REMINDERS + "("
-                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_DATE + " TEXT," + KEY_TIME + " TEXT,"
-                + KEY_TAG + " TEXT" + ")";
-        db.execSQL(CREATE_REMINDERS_TABLE);
+        String CREATE_STATISTICS_TABLE = "CREATE TABLE " + TABLE_STATISTICS + "("
+                + KEY_ID + " INTEGER PRIMARY KEY," + KEY_STAMP + " LONG," + KEY_DESK + " LONG," + KEY_OFFICE + " LONG,"
+                + KEY_OUTDOOR + " LONG" + ")";
+        db.execSQL(CREATE_STATISTICS_TABLE);
     }
 
     // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REMINDERS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATISTICS);
 
         // Create tables again
         onCreate(db);
     }
 
 
-    // Adding new Reminder
-    void addReminder(Reminder reminder) {
+    // Adding new Statistics
+    void addDailyStat(DailyStat dailyStat) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-        values.put(KEY_DATE, reminder.getDate()); // Date
-        values.put(KEY_TIME, reminder.getTime()); // Time
-        values.put(KEY_TAG, reminder.getTag()); // Tag
+        values.put(KEY_STAMP, dailyStat.getTstamp()); //Tstamp
+        values.put(KEY_DESK, dailyStat.getDesk_time()); // Date
+        values.put(KEY_OFFICE, dailyStat.getOffice_time()); // Time
+        values.put(KEY_OUTDOOR, dailyStat.getOutdoor_time()); // Tag
 
         // Inserting Row
-        db.insert(TABLE_REMINDERS, null, values);
+        db.insert(TABLE_STATISTICS, null, values);
         db.close(); // Closing database connection
     }
 
-    // Getting single reminder
-    Reminder getReminder(int id) {
+    // Getting single statistics
+    DailyStat getDailyStat(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        Cursor cursor = db.query(TABLE_REMINDERS, new String[] { KEY_ID,
-                        KEY_DATE, KEY_TIME, KEY_TAG }, KEY_ID + "=?",
+        Cursor cursor = db.query(TABLE_STATISTICS, new String[] { KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR }, KEY_STAMP + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
+
         if (cursor != null)
             cursor.moveToFirst();
 
-        Reminder reminder = new Reminder(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(3));
-        // return reminder
-        return reminder;
+        DailyStat dailyStat = new DailyStat(Integer.parseInt(cursor.getString(0)),Long.parseLong(cursor.getString(1)),
+                Long.parseLong(cursor.getString(2)),Long.parseLong(cursor.getString(3)),Long.parseLong(cursor.getString(4)));
+        // return statistics
+        return dailyStat;
     }
 
-    // Getting All Reminders
-    public List<Reminder> getAllReminders() {
-        List<Reminder> reminderList = new ArrayList<Reminder>();
+    // Getting All statistics
+    public List<DailyStat> getAllDailyStat() {
+        List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
         // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_REMINDERS;
+        String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
         // looping through all rows and adding to list
-        if (cursor.moveToFirst()) {
+        if (cursor.moveToLast()) {
             do {
-                Reminder reminder = new Reminder();
-                reminder.setID(Integer.parseInt(cursor.getString(0)));
-                reminder.setDate(cursor.getString(1));
-                reminder.setTime(cursor.getString(2));
-            	reminder.setTag(cursor.getString(3));
-                // Adding contact to list
-                reminderList.add(reminder);
-            } while (cursor.moveToNext());
+                DailyStat dailyStat = new DailyStat();
+                dailyStat.setID(Integer.parseInt(cursor.getString(0)));
+                dailyStat.setTstamp(Long.parseLong(cursor.getString(1)));
+                dailyStat.setDesk_time(Long.parseLong(cursor.getString(2)));
+                dailyStat.setOffice_time(Long.parseLong(cursor.getString(3)));
+                dailyStat.setOutdoor_time(Long.parseLong(cursor.getString(4)));
+                dailyStatList.add(dailyStat);
+            } while (cursor.moveToPrevious());
         }
 
-        // return contact list
-        return reminderList;
+        return dailyStatList;
     }
 
-    // Getting reminders Count
-    public int getReminderCount() {
-        String countQuery = "SELECT  * FROM " + TABLE_REMINDERS;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
-
-        // return count
-        return cursor.getCount();
-    }
-
-    // Updating single reminder
-    public int updateReminder(Reminder reminder) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(KEY_DATE, reminder.getDate());
-        values.put(KEY_TIME, reminder.getTime());
-        values.put(KEY_TAG, reminder.getTag());
-
-        // updating row
-        return db.update(TABLE_REMINDERS, values, KEY_ID + " = ?",
-                new String[]{String.valueOf(reminder.getID())});
-    }
-
-    // Deleting single reminder
-    public void deleteReminder(Reminder reminder) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_REMINDERS, KEY_ID + " = ?",
-                new String[] { String.valueOf(reminder.getID()) });
-        db.close();
-    }
 }
