@@ -1,6 +1,5 @@
 package com.beaconapp.user.beaconapp1;
 
-import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -8,7 +7,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -19,7 +17,6 @@ import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 
-import java.io.FileOutputStream;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -34,9 +31,7 @@ public class NotificationService extends Service {
     public Handler cHandler = new Handler();
     private Region region_door_entry, region_desk, region_door_exit;
     private int notification_id = 0;
-    private String shared_variable1 = "";
     public int obj = 0;
-    FileOutputStream fOut;
     BluetoothAdapter bt=null;
     TimerClass obj1 = new TimerClass();
     TimerClass obj2 = new TimerClass();
@@ -84,7 +79,6 @@ public class NotificationService extends Service {
                     editor.putInt(getString(R.string.shared_position), 2);
                     editor.commit();
 
-                    shared_variable1 = getString(R.string.shared_timer_outdoor);
                     pause(obj3);
                     obj = 2;
                     obj2.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_office), 0);
@@ -112,7 +106,6 @@ public class NotificationService extends Service {
 
                     editor.putInt(getString(R.string.shared_position), 3);
                     editor.commit();
-                    shared_variable1 = getString(R.string.shared_timer_office);
                     pause(obj2);
                     obj = 3;
                     obj3.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
@@ -137,7 +130,6 @@ public class NotificationService extends Service {
                 editor.putInt(getString(R.string.shared_position), 1);
                 editor.commit();
 
-                shared_variable1 = getString(R.string.shared_timer_office);
                 pause(obj2);
                 obj = 1;
                 obj1.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
@@ -151,7 +143,6 @@ public class NotificationService extends Service {
                 editor.putInt(getString(R.string.shared_position), 2);
                 editor.commit();
 
-                shared_variable1 = getString(R.string.shared_timer_desk);
                 pause(obj1);
                 obj = 2;
                 obj2.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_office), 0);
@@ -195,23 +186,19 @@ public class NotificationService extends Service {
     }
 
     private Runnable updateTimerThread = new Runnable() {
-        @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
         public void run() {
             if(obj ==1) {
                 obj1.timeInMilliseconds = SystemClock.uptimeMillis() - obj1.startTime;
-                //obj1.updatedTime = obj1.timeSwapBuff + obj1.timeInMilliseconds;
                 findTime(obj1);
                 obj1.customHandler.postDelayed(this, 1000);
             }
             else if(obj == 2) {
                 obj2.timeInMilliseconds = SystemClock.uptimeMillis() - obj2.startTime;
-                //obj2.updatedTime = obj2.timeSwapBuff + obj2.timeInMilliseconds;
                 findTime(obj2);
                 obj2.customHandler.postDelayed(this, 1000);
             }
             else if(obj == 3) {
                 obj3.timeInMilliseconds = SystemClock.uptimeMillis() - obj3.startTime;
-                //obj3.updatedTime = obj3.timeSwapBuff + obj3.timeInMilliseconds;
                 findTime(obj3);
                 obj3.customHandler.postDelayed(this, 1000);
             }
@@ -246,7 +233,6 @@ public class NotificationService extends Service {
     }
 
     public void pause(TimerClass ob) {
-        //ob.timeSwapBuff = sharedPref.getLong(shared_variable1, 0);
         ob.customHandler.removeCallbacks(updateTimerThread);
 
     }
