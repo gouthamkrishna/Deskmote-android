@@ -10,6 +10,6 @@
     <string name="shared_timer_desk">Shared Timer Desk</string>
     <string name="shared_timer_office">Shared Timer Office</string>
     <string name="shared_timer_outdoor">Shared Timer Outdoor</string>
-    <string name="shared_killed">App is killed</string>
-
+    <string name="shared_door_entry">Entered door entry</string>
+    <string name="shared_door_exit">entered door exit</string>
 </resources>
