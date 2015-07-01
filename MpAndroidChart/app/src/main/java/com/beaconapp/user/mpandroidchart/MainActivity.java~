@@ -82,7 +82,7 @@ public class MainActivity extends ActionBarActivity {
         labels.add("");
         labels.add("");
         labels.add("");
-        BarChart chart = (BarChart)findViewById(R.id.bchart);
+        HorizontalBarChart chart = (HorizontalBarChart)findViewById(R.id.bchart);
         chart.animateXY(3000, 3000);
 
         //setContentView(chart);
