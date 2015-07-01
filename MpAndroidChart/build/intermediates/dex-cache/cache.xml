@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-2e0d7b8a08a816314cbcfa449998927352c101a0.jar" />
+    </item>
+    <item
+        jar="/home/user/AndroidStudioProjects/MpAndroidChart/app/libs/mpandroidchartlibrary-2-1-0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="e8e579486323fc12433aca39b93329498a3bbc2d">
+        <dex dex="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/pre-dexed/debug/mpandroidchartlibrary-2-1-0-2004d7c2cc1d76fd3f5a11473ee9b535aa555c83.jar" />
+    </item>
+    <item
+        jar="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="1ee588ff2c4daf7b97c1cbf922a6c7f027285c2f">
+        <dex dex="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/pre-dexed/debug/classes-35ca53b7f1bb66fb28dd232a6eaa154f0aed0391.jar" />
+    </item>
+    <item
+        jar="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/pre-dexed/debug/classes-4a3a864920e548f1bbd5113c7afb368fd5b663e1.jar" />
+    </item>
+    <item
+        jar="/home/user/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="/home/user/AndroidStudioProjects/MpAndroidChart/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-93e79cf663bea5dd9e43d7beeaa37df7fb977cea.jar" />
+    </item>
+
+</items>
