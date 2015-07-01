@@ -1,5 +1,6 @@
 package com.beaconapp.user.mpandroidchart;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
@@ -15,81 +16,73 @@ import java.util.ArrayList;
 
 public class MainActivity extends ActionBarActivity {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+
         setContentView(R.layout.activity_main);
 
-        ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(4f, 0));
-        entries.add(new BarEntry(8f, 1));
-        entries.add(new BarEntry(6f, 2));
+        ArrayList<BarEntry> Yvalue1 = new ArrayList<>();
+        Yvalue1.add(new BarEntry(4f, 0));
+        Yvalue1.add(new BarEntry(8f, 1));
+        Yvalue1.add(new BarEntry(6f, 2));
+        Yvalue1.add(new BarEntry(4f, 3));
+        Yvalue1.add(new BarEntry(8f, 4));
+        Yvalue1.add(new BarEntry(6f, 5));
+        Yvalue1.add(new BarEntry(6f, 6));
 
-        entries.add(new BarEntry(12f, 4));
-        entries.add(new BarEntry(18f, 5));
-        entries.add(new BarEntry(9f, 6));
+        ArrayList<BarEntry> Yvalue2 = new ArrayList<>();
+        Yvalue2.add(new BarEntry(12f, 0));
+        Yvalue2.add(new BarEntry(18f, 1));
+        Yvalue2.add(new BarEntry(9f, 2));
+        Yvalue2.add(new BarEntry(4f, 3));
+        Yvalue2.add(new BarEntry(8f, 4));
+        Yvalue2.add(new BarEntry(6f, 5));
+        Yvalue2.add(new BarEntry(6f, 6));
 
-        entries.add(new BarEntry(4f, 8));
-        entries.add(new BarEntry(8f, 9));
-        entries.add(new BarEntry(6f, 10));
+        ArrayList<BarEntry> Yvalue3 = new ArrayList<>();
+        Yvalue3.add(new BarEntry(4f, 0));
+        Yvalue3.add(new BarEntry(8f, 1));
+        Yvalue3.add(new BarEntry(6f, 2));
+        Yvalue3.add(new BarEntry(4f, 3));
+        Yvalue3.add(new BarEntry(8f, 4));
+        Yvalue3.add(new BarEntry(6f, 5));
+        Yvalue3.add(new BarEntry(6f, 6));
 
-        entries.add(new BarEntry(12f, 12));
-        entries.add(new BarEntry(18f, 13));
-        entries.add(new BarEntry(9f, 14));
 
-        entries.add(new BarEntry(4f, 16));
-        entries.add(new BarEntry(8f, 17));
-        entries.add(new BarEntry(6f, 18));
+        BarDataSet dataset1 = new BarDataSet(Yvalue1, "At Desk");
+        dataset1.setColor(Color.YELLOW);
 
-        entries.add(new BarEntry(12f, 20));
-        entries.add(new BarEntry(18f, 21));
-        entries.add(new BarEntry(9f, 22));
+        BarDataSet dataset2 = new BarDataSet(Yvalue2, "At Office");
+        dataset2.setColor(Color.GREEN);
 
-        entries.add(new BarEntry(4f, 24));
-        entries.add(new BarEntry(8f, 25));
-        entries.add(new BarEntry(6f, 26));
+        BarDataSet dataset3 = new BarDataSet(Yvalue3, "Outside Office");
+        dataset3.setColor(Color.CYAN);
 
-        BarDataSet dataset = new BarDataSet(entries, "");
-      //  dataset.setColors(ColorTemplate.JOYFUL_COLORS);
+        ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+        dataSets.add(dataset1);
+        dataSets.add(dataset2);
+        dataSets.add(dataset3);
 
         ArrayList<String> labels = new ArrayList<String>();
-        labels.add("01");
-        labels.add("");
-        labels.add("");
-        labels.add("");
-        labels.add("02");
-        labels.add("");
-        labels.add("");
-        labels.add("");
-        labels.add("03");
-        labels.add("");
-        labels.add("");
-        labels.add("");
-        labels.add("04");
-        labels.add("");
-        labels.add("");
-        labels.add("");
-        labels.add("05");
-        labels.add("");
-        labels.add("");
-        labels.add("");
-        labels.add("06");
-        labels.add("");
-        labels.add("");
-        labels.add("");
-        labels.add("07");
-        labels.add("");
-        labels.add("");
-        labels.add("");
-        BarChart chart = (BarChart)findViewById(R.id.bchart);
+        labels.add("Mon");
+        labels.add("Tue");
+        labels.add("Wed");
+        labels.add("Thu");
+        labels.add("Fri");
+        labels.add("Sat");
+        labels.add("Sun");
+
+
+        HorizontalBarChart chart = (HorizontalBarChart)findViewById(R.id.bchart);
         chart.animateXY(3000, 3000);
 
-        //setContentView(chart);
 
-        BarData data = new BarData(labels, dataset);
+        BarData data = new BarData(labels,dataSets);
         chart.setData(data);
-
+        data.setGroupSpace(200);
         chart.setDescription("");
     }
 
@@ -102,12 +95,9 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
