@@ -23,6 +23,8 @@ public class RebootHandler extends BroadcastReceiver {
             editor.commit();
             Intent resetter = new Intent(context, LoggerService.class);
             context.startService(resetter);
+            Intent start_service = new Intent(context, ResetReminderService.class);
+            context.startService(start_service);
         }
     }
 }

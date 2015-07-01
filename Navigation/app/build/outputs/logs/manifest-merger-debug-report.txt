@@ -34,6 +34,10 @@ uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
 ADDED from AndroidManifest.xml:10:5
 	android:name
 		ADDED from AndroidManifest.xml:10:22
+uses-permission#android.permission.VIBRATE
+ADDED from AndroidManifest.xml:11:5
+	android:name
+		ADDED from AndroidManifest.xml:11:22
 application
 ADDED from AndroidManifest.xml:13:5
 MERGED from com.android.support:appcompat-v7:22.2.0:22:5
@@ -61,6 +65,10 @@ ADDED from AndroidManifest.xml:21:9
 		ADDED from AndroidManifest.xml:23:13
 	android:name
 		ADDED from AndroidManifest.xml:22:13
+service#com.beaconapp.user.navigation.ResetReminderService
+ADDED from AndroidManifest.xml:25:9
+	android:name
+		ADDED from AndroidManifest.xml:25:18
 receiver#com.beaconapp.user.navigation.StatisticsLogger
 ADDED from AndroidManifest.xml:26:9
 	android:name
@@ -75,6 +83,10 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from AndroidManifest.xml:30:17
 	android:name
 		ADDED from AndroidManifest.xml:30:25
+receiver#com.beaconapp.user.navigation.AlarmReceiver
+ADDED from AndroidManifest.xml:33:9
+	android:name
+		ADDED from AndroidManifest.xml:33:19
 activity#com.beaconapp.user.navigation.MainActivity
 ADDED from AndroidManifest.xml:34:9
 	android:label
