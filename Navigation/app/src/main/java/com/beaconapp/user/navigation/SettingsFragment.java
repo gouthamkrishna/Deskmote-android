@@ -90,7 +90,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        String hour="", min="";
+        String hour=""+hourOfDay, min=""+minute;
         if(hourOfDay<10){hour = "0"+hourOfDay;}
         if(minute<10){min = "0"+minute;}
 

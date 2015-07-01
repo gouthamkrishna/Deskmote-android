@@ -26,8 +26,8 @@ public class ProfileFragment extends Fragment {
     View rootView;
     private SharedPreferences savednotes;
     SharedPreferences.Editor preferencesEditor;
-    TextView text,text1;
-    EditText view,view1;
+    TextView text_name,text_cname;
+    EditText name_field,cname_field;
     ImageView image,image1,imageView;
 
     public static Fragment newInstance(Context context) {
@@ -37,19 +37,19 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
-        rootView =  inflater.inflate(R.layout.fragment_profile, null);
 
+        rootView =  inflater.inflate(R.layout.fragment_profile, null);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
         image = (ImageView)rootView.findViewById(R.id.imageView);
         image1 = (ImageView)rootView.findViewById(R.id.imageView2);
-        text = (TextView)rootView.findViewById(R.id.textView);
-        text1 = (TextView)rootView.findViewById(R.id.textView2);
-        view = (EditText)rootView.findViewById(R.id.editText);
-        view1 = (EditText)rootView.findViewById(R.id.editText2);
-        text.setText(savednotes.getString("NAME_KEY", "NAME"));
-        text1.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
-        view.setText(savednotes.getString("NAME_KEY", "NAME"));
-        view1.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
+        text_name = (TextView)rootView.findViewById(R.id.textView);
+        text_cname = (TextView)rootView.findViewById(R.id.textView2);
+        name_field = (EditText)rootView.findViewById(R.id.editText);
+        cname_field = (EditText)rootView.findViewById(R.id.editText2);
+        text_name.setText(savednotes.getString("NAME_KEY", "NAME"));
+        text_cname.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
+        name_field.setHint(savednotes.getString("NAME_KEY", "NAME"));
+        cname_field.setHint(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
 
         imageView = (ImageView)rootView.findViewById(R.id.imgView);
         Resources res = getActivity().getResources();
@@ -75,10 +75,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
 
-                view.setVisibility(View.VISIBLE);
-                view1.setVisibility(View.VISIBLE);
-                text.setVisibility(View.INVISIBLE);
-                text1.setVisibility(View.INVISIBLE);
+                name_field.setVisibility(View.VISIBLE);
+                cname_field.setVisibility(View.VISIBLE);
+                text_name.setVisibility(View.INVISIBLE);
+                text_cname.setVisibility(View.INVISIBLE);
                 image.setVisibility(View.INVISIBLE);
                 image1.setVisibility(View.VISIBLE);
 
@@ -89,60 +89,29 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
 
-                String name = view.getText().toString();
+                String name = name_field.getText().toString();
                 preferencesEditor = savednotes.edit();
                 preferencesEditor.putString("NAME_KEY", name);
 
-                String cname = view1.getText().toString();
+                String cname = cname_field.getText().toString();
 
                 preferencesEditor.putString("COMPANY_NAME_KEY", cname);
                 preferencesEditor.commit();
 
-                view.setVisibility(View.INVISIBLE);
-                view1.setVisibility(View.INVISIBLE);
+                name_field.setVisibility(View.INVISIBLE);
+                cname_field.setVisibility(View.INVISIBLE);
                 image.setVisibility(View.VISIBLE);
-                text.setVisibility(View.VISIBLE);
-                text1.setVisibility(View.VISIBLE);
+                text_name.setVisibility(View.VISIBLE);
+                text_cname.setVisibility(View.VISIBLE);
                 image1.setVisibility(View.INVISIBLE);
-                text.setText(savednotes.getString("NAME_KEY", "NAME"));
-                text1.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
+                text_name.setText(savednotes.getString("NAME_KEY", "NAME"));
+                text_cname.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
             }
 
             });
             return  rootView;
 
     }
-
-
- /*   @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        ImageView imageView = (ImageView)getView().findViewById(R.id.imgView);
-        Resources res = getActivity().getResources();
-        int id = R.drawable.picture;
-        imageView.setImageBitmap(BitmapFactory.decodeResource(res, id));
-        ImageView buttonLoadImage = (ImageView)getView().findViewById(R.id.imageButton);
-        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View arg0) {
-
-                Intent i = new Intent(
-                        Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                startActivityForResult(i, RESULT_LOAD_IMAGE);
-            }
-        });
-
-    }
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
-    }*/
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
