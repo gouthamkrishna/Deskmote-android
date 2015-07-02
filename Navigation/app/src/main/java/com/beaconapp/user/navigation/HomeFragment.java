@@ -4,6 +4,7 @@ package com.beaconapp.user.navigation;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -22,7 +23,7 @@ import android.widget.ViewSwitcher;
 public class HomeFragment extends Fragment {
 
 
-    TextView tv_main,tv_left,tv_right,header;
+    TextView tv_main,tv_left,tv_right,header1,header2;
     String str_desk = "", str_outdoor = "", str_office = "";
     Long time_desk = 0L,time_office = 0L,time_outdoor = 0L;
     int secs, mins, hours;
@@ -34,8 +35,19 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, null);
 
+
+        tv_main = (TextView) root.findViewById(R.id.timer_main);
+        tv_left = (TextView) root.findViewById(R.id.timer_left);
+        tv_right = (TextView) root.findViewById(R.id.timer_right);
+        header1 = (TextView) root.findViewById(R.id.header1);
+        header2 = (TextView) root.findViewById(R.id.header2);
+
+        Typeface face = Typeface.createFromAsset(getActivity().getAssets(),"digital-7.ttf");
+        tv_main.setTypeface(face);
+        tv_left.setTypeface(face);
+        tv_right.setTypeface(face);
+
         chHandler.postDelayed(timer, 0);
-        // setContentView(R.layout.activity_main);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         boolean start = sharedPref.getBoolean(getString(R.string.shared_start), defaultValue);
         if (!start) {
@@ -91,7 +103,6 @@ public class HomeFragment extends Fragment {
         sw_right.setInAnimation(in);
         sw_right.setOutAnimation(out);
 
-
         return root;
     }
 
@@ -127,10 +138,6 @@ public class HomeFragment extends Fragment {
 
     public Runnable timer = new Runnable() {
         public void run() {
-            tv_main = (TextView) getView().findViewById(R.id.timer_main);
-            tv_left = (TextView) getView().findViewById(R.id.timer_left);
-            tv_right = (TextView) getView().findViewById(R.id.timer_right);
-            header = (TextView) getView().findViewById(R.id.header);
 
             int c;
             int pos = 3;
@@ -168,11 +175,11 @@ public class HomeFragment extends Fragment {
             str_outdoor = ""+hours+" : "+mins+" : "+secs;
 
             if (pos == 1) {
-
                 sw_main.setImageResource(R.drawable.work_large);
                 sw_left.setImageResource(R.drawable.outdoor);
                 sw_right.setImageResource(R.drawable.office);
-                header.setText("HOURS AT YOUR DESK");
+                header1.setText("HOURS");
+                header2.setText("AT YOUR DESK");
                 tv_main.setText(str_desk);
                 tv_left.setText(str_outdoor);
                 tv_right.setText(str_office);
@@ -180,7 +187,8 @@ public class HomeFragment extends Fragment {
                 sw_main.setImageResource(R.drawable.office_large);
                 sw_left.setImageResource(R.drawable.work);
                 sw_right.setImageResource(R.drawable.outdoor);
-                header.setText("HOURS INSIDE OFFICE");
+                header1.setText("HOURS");
+                header2.setText("INSIDE OFFICE");
                 tv_main.setText(str_office);
                 tv_left.setText(str_desk);
                 tv_right.setText(str_outdoor);
@@ -188,7 +196,8 @@ public class HomeFragment extends Fragment {
                 sw_main.setImageResource(R.drawable.outdoor_large);
                 sw_left.setImageResource(R.drawable.office);
                 sw_right.setImageResource(R.drawable.work);
-                header.setText("HOURS OUTSIDE OFFICE");
+                header1.setText("HOURS");
+                header2.setText("OUTSIDE OFFICE");
                 tv_main.setText(str_outdoor);
                 tv_left.setText(str_office);
                 tv_right.setText(str_desk);

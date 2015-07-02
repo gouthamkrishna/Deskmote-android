@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity{
@@ -61,6 +60,7 @@ public class MainActivity extends ActionBarActivity{
         mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
         mRecyclerView.setAdapter(mAdapter);// Setting the adapter to RecyclerView
         containerlayout = (FrameLayout)findViewById(R.id.container);
+
         getFragmentManager().beginTransaction()
                 .replace(R.id.container, new HomeFragment())
                 .commit();
@@ -83,9 +83,8 @@ public class MainActivity extends ActionBarActivity{
 
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                     mDrawer.closeDrawers();
-                    Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
                     position = recyclerView.getChildPosition(child);
-
+                    loadCorrespondingFragment();
                     return true;
                 }
                 return false;
@@ -112,56 +111,7 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                switch (position){
-                    case 0:break;
-                    case 1:resetAdapter();
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new HomeFragment())
-                                .commit();
-                        ICONS[0] = R.drawable.home_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
-                        mRecyclerView.setAdapter(mAdapter);
-                        break;
-                    case 2:resetAdapter();
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new StatisticsFragment())
-                                .commit();
-                        ICONS[1] = R.drawable.graph_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
-                        mRecyclerView.setAdapter(mAdapter);
-                        break;
-                    case 3:resetAdapter();
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new NotificationFragment())
-                                .commit();
-                        ICONS[2] = R.drawable.reminder_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
-                        mRecyclerView.setAdapter(mAdapter);
-                        break;
-                    case 4:resetAdapter();
-                        containerlayout.removeAllViews();
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new ProfileFragment())
-                                .commit();
-                        ICONS[3] = R.drawable.profile_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
-                        mRecyclerView.setAdapter(mAdapter);
-                        break;
-                    case 5:resetAdapter();
-                        getFragmentManager().beginTransaction()
-                                .replace(R.id.container, new SettingsFragment())
-                                .commit();
-                        ICONS[4] = R.drawable.settings_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
-                        mRecyclerView.setAdapter(mAdapter);
-                        break;
-                    default:resetAdapter();
-                        getFragmentManager().beginTransaction()
-                            .replace(R.id.container, new HomeFragment())
-                            .commit();
-                        break;
-                }
-
+                //Do nothing
             }
 
         }; // Drawer Toggle Object Made
@@ -181,6 +131,64 @@ public class MainActivity extends ActionBarActivity{
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadCorrespondingFragment();
+
+    }
+
+    private void loadCorrespondingFragment() {
+        switch (position){
+            case 0:break;
+            case 1:resetAdapter();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new HomeFragment())
+                        .commit();
+                ICONS[0] = R.drawable.home_active;
+                mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+                mRecyclerView.setAdapter(mAdapter);
+                break;
+            case 2:resetAdapter();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new StatisticsFragment())
+                        .commit();
+                ICONS[1] = R.drawable.graph_active;
+                mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+                mRecyclerView.setAdapter(mAdapter);
+                break;
+            case 3:resetAdapter();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new NotificationFragment())
+                        .commit();
+                ICONS[2] = R.drawable.reminder_active;
+                mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+                mRecyclerView.setAdapter(mAdapter);
+                break;
+            case 4:resetAdapter();
+                containerlayout.removeAllViews();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new ProfileFragment())
+                        .commit();
+                ICONS[3] = R.drawable.profile_active;
+                mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+                mRecyclerView.setAdapter(mAdapter);
+                break;
+            case 5:resetAdapter();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new SettingsFragment())
+                        .commit();
+                ICONS[4] = R.drawable.settings_active;
+                mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+                mRecyclerView.setAdapter(mAdapter);
+                break;
+            default:resetAdapter();
+                getFragmentManager().beginTransaction()
+                        .replace(R.id.container, new HomeFragment())
+                        .commit();
+                break;
+        }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -223,7 +231,5 @@ public class MainActivity extends ActionBarActivity{
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
 
 }
