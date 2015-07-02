@@ -203,7 +203,7 @@
     <string name="app_name">Navigation</string>
     <string name="closeDrawer">Close Drawer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="logger_init">Logger.Initial.value</string>
     <string name="lunch_time_from">FROM    00:00</string>
     <string name="lunch_time_to">TO      00:00</string>
     <string name="office_time_from">FROM    00:00</string>
@@ -224,6 +224,13 @@
     <string name="pref_reminders_summary">Reminders Summary</string>
     <string name="pref_reminders_title">Reminders</string>
     <string name="pref_timepref_title">Pick Time</string>
+    <string name="shared_door_entry">Entered door entry</string>
+    <string name="shared_door_exit">entered door exit</string>
+    <string name="shared_position">Shared position</string>
+    <string name="shared_start">Shared Start</string>
+    <string name="shared_timer_desk">Shared Timer Desk</string>
+    <string name="shared_timer_office">Shared Timer Office</string>
+    <string name="shared_timer_outdoor">Shared Timer Outdoor</string>
     <!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
     <eat-comment/>
     <string name="status_bar_notification_info_overflow">999+</string>

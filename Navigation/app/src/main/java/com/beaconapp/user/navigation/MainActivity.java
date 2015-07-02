@@ -6,29 +6,23 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity{
 
-    //First We Declare Titles And Icons For Our Navigation Drawer List View
-    //This Icons And Titles Are holded in an Array as you can see
     public String TITLES[];
     public int ICONS[];
-    //Similarly we Create a String Resource for the name and email in the header view
-    //And we also create a int resource for profile picture in the header view
 
     private SharedPreferences savednotes;
 
@@ -36,34 +30,28 @@ public class MainActivity extends ActionBarActivity {
     String EMAIL = "";
     int PROFILE = R.drawable.profile;
 
-    private Toolbar toolbar ;                         // Declaring the Toolbar Object
+    RecyclerView mRecyclerView;
+    RecyclerView.Adapter mAdapter;
+    RecyclerView.LayoutManager mLayoutManager;
+    DrawerLayout mDrawer;
 
-    RecyclerView mRecyclerView;                           // Declaring RecyclerView
-    RecyclerView.Adapter mAdapter;                        // Declaring Adapter For Recycler View
-    RecyclerView.LayoutManager mLayoutManager;            // Declaring Layout Manager as a linear layout manager
-    DrawerLayout Drawer;                                  // Declaring DrawerLayout
-
-    ActionBarDrawerToggle mDrawerToggle;// Declaring Action Bar Drawer Toggle
+    ActionBarDrawerToggle mDrawerToggle;
     public static  int position = 0;
-
-
-    /**
-     * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
-     */
-
+    private FrameLayout containerlayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TITLES = new String[]{"Home", "Statistics", "Reminders", "Profile", "Settings"};
         ICONS = new int[]{R.drawable.home, R.drawable.graph, R.drawable.reminder, R.drawable.profile, R.drawable.settings};
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView); // Assigning the RecyclerView Object to the xml View
-
         mRecyclerView.setHasFixedSize(true);// Letting the system know that the list objects are of fixed size
 
         savednotes = PreferenceManager.getDefaultSharedPreferences(this);
@@ -71,20 +59,20 @@ public class MainActivity extends ActionBarActivity {
         EMAIL = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
 
         mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
-        // And passing the titles,icons,header view name, header view email,
-        // and header view profile picture
-
         mRecyclerView.setAdapter(mAdapter);// Setting the adapter to RecyclerView
-
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        containerlayout = (FrameLayout)findViewById(R.id.container);
+        getFragmentManager().beginTransaction()
+                .replace(R.id.container, new HomeFragment())
+                .commit();
+        ICONS[0] = R.drawable.home_active;
+        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+        mRecyclerView.setAdapter(mAdapter);
 
         final GestureDetector mGestureDetector = new GestureDetector(MainActivity.this, new GestureDetector.SimpleOnGestureListener() {
 
             @Override public boolean onSingleTapUp(MotionEvent e) {
                 return true;
             }
-
         });
 
 
@@ -93,17 +81,13 @@ public class MainActivity extends ActionBarActivity {
             public boolean onInterceptTouchEvent(RecyclerView recyclerView, MotionEvent motionEvent) {
                 View child = recyclerView.findChildViewUnder(motionEvent.getX(), motionEvent.getY());
 
-
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
-                    Drawer.closeDrawers();
+                    mDrawer.closeDrawers();
                     Toast.makeText(MainActivity.this, "The Item Clicked is: " + recyclerView.getChildPosition(child), Toast.LENGTH_SHORT).show();
-                   // onTouchDrawer(recyclerView.getChildPosition(child));
                     position = recyclerView.getChildPosition(child);
 
                     return true;
-
                 }
-
                 return false;
             }
 
@@ -113,24 +97,16 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-
-
-
         mLayoutManager = new LinearLayoutManager(this);                 // Creating a layout Manager
-
         mRecyclerView.setLayoutManager(mLayoutManager);                 // Setting the layout Manager
 
-
-        Drawer = (DrawerLayout) findViewById(R.id.DrawerLayout);        // Drawer object Assigned to the view
-     //  toolbar.setNavigationIcon(R.drawable.ic_menu);
-        mDrawerToggle = new ActionBarDrawerToggle(this,Drawer,R.drawable.ic_menu,R.string.openDrawer,R.string.closeDrawer){
+        mDrawer = (DrawerLayout) findViewById(R.id.DrawerLayout);        // Drawer object Assigned to the view
+        mDrawerToggle = new ActionBarDrawerToggle(this,mDrawer,R.drawable.ic_menu,R.string.openDrawer,R.string.closeDrawer){
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                // code here will execute once the drawer is opened( As I dont want anything happened whe drawer is
-                // open I am not going to put anything here)
-
+                    //Do Nothing
             }
 
             @Override
@@ -139,19 +115,19 @@ public class MainActivity extends ActionBarActivity {
                 switch (position){
                     case 0:break;
                     case 1:resetAdapter();
-                        FragmentTransaction tx = getSupportFragmentManager().beginTransaction();
-                        tx.replace(R.id.container, Fragment.instantiate(MainActivity.this,"com.beaconapp.user.navigation.HomeFragment"));
-                        tx.commit();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new HomeFragment())
+                                .commit();
                         ICONS[0] = R.drawable.home_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
                         mRecyclerView.setAdapter(mAdapter);
                         break;
                     case 2:resetAdapter();
-                        FragmentTransaction dx = getSupportFragmentManager().beginTransaction();
-                        dx.replace(R.id.container, Fragment.instantiate(MainActivity.this, "com.beaconapp.user.navigation.StatisticsFragment"));
-                        dx.commit();
+                        getFragmentManager().beginTransaction()
+                                .replace(R.id.container, new StatisticsFragment())
+                                .commit();
                         ICONS[1] = R.drawable.graph_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
                         mRecyclerView.setAdapter(mAdapter);
                         break;
                     case 3:resetAdapter();
@@ -159,15 +135,16 @@ public class MainActivity extends ActionBarActivity {
                                 .replace(R.id.container, new NotificationFragment())
                                 .commit();
                         ICONS[2] = R.drawable.reminder_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
                         mRecyclerView.setAdapter(mAdapter);
                         break;
                     case 4:resetAdapter();
+                        containerlayout.removeAllViews();
                         getFragmentManager().beginTransaction()
                                 .replace(R.id.container, new ProfileFragment())
                                 .commit();
                         ICONS[3] = R.drawable.profile_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
+                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
                         mRecyclerView.setAdapter(mAdapter);
                         break;
                     case 5:resetAdapter();
@@ -175,35 +152,34 @@ public class MainActivity extends ActionBarActivity {
                                 .replace(R.id.container, new SettingsFragment())
                                 .commit();
                         ICONS[4] = R.drawable.settings_active;
-                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
-                        mRecyclerView.setAdapter(mAdapter);break;
-                    default:FragmentTransaction fx = getSupportFragmentManager().beginTransaction();
-                        fx.replace(R.id.container, Fragment.instantiate(MainActivity.this,"com.beaconapp.user.navigation.HomeFragment"));
-                        fx.commit();break;
+                        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+                        mRecyclerView.setAdapter(mAdapter);
+                        break;
+                    default:resetAdapter();
+                        getFragmentManager().beginTransaction()
+                            .replace(R.id.container, new HomeFragment())
+                            .commit();
+                        break;
                 }
-
 
             }
 
-
-
         }; // Drawer Toggle Object Made
-        Drawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
+        mDrawer.setDrawerListener(mDrawerToggle); // Drawer Listener set to the Drawer toggle
         mDrawerToggle.syncState();               // Finally we set the drawer toggle sync State
 
     }
 
-
     public void resetAdapter(){
+
         ICONS = new int[]{R.drawable.home, R.drawable.graph, R.drawable.reminder, R.drawable.profile, R.drawable.settings};
         savednotes = PreferenceManager.getDefaultSharedPreferences(this);
         NAME = savednotes.getString("NAME_KEY", "NAME");
         EMAIL = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
-        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);       // Creating the Adapter of MyAdapter class(which we are going to see in a bit)
-        mRecyclerView.setAdapter(mAdapter);// Setting the adapter to RecyclerView
+        mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+        mRecyclerView.setAdapter(mAdapter);
 
     }
-
 
 
     @Override
@@ -231,6 +207,23 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
+
 }
