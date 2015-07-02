@@ -9,9 +9,8 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:id="@+id/sw_main"
-        android:layout_below="@+id/header"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="38dp" />
+        android:layout_below="@+id/header2"
+        android:layout_centerHorizontal="true" />
 
     <ImageSwitcher
         android:layout_width="140dp"
@@ -24,16 +23,15 @@
         android:layout_width="140dp"
         android:layout_height="140dp"
         android:id="@+id/sw_left"
-        android:layout_marginBottom="38dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/sw_main"
+        android:layout_marginTop="45dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="HEADER"
-        android:id="@+id/header"
+        android:text="HEADER1"
+        android:id="@+id/header1"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
@@ -44,7 +42,10 @@
         android:id="@+id/timer_main"
         android:layout_marginBottom="30dp"
         android:layout_alignBottom="@+id/sw_main"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:textSize="27sp"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -52,17 +53,30 @@
         android:text="0 : 0 : 0"
         android:id="@+id/timer_left"
         android:layout_alignBottom="@+id/sw_left"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginRight="0dp"
-        android:layout_marginLeft="55dp" />
+        android:layout_marginLeft="48dp"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="0 : 0 : 0"
         android:id="@+id/timer_right"
-        android:layout_marginRight="55dp"
+        android:layout_marginRight="43dp"
         android:layout_alignTop="@+id/timer_left"
-        android:layout_alignEnd="@+id/sw_right" />
+        android:layout_alignEnd="@+id/sw_right"
+        android:textColor="#FFFFFF"
+        android:textSize="17sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="HEADER2"
+        android:id="@+id/header2"
+        android:layout_below="@+id/header1"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
