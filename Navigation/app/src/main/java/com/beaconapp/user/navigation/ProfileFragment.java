@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -36,7 +37,7 @@ public class ProfileFragment extends Fragment {
     TextView text_name,text_cname;
     EditText name_field,cname_field;
     ImageView image,image1,imageView;
-
+    InputMethodManager imm;
     String path = null;
     Boolean defaultval = false, test;
 
@@ -60,6 +61,8 @@ public class ProfileFragment extends Fragment {
         text_cname.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
         name_field.setHint(savednotes.getString("NAME_KEY", "NAME"));
         cname_field.setHint(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
+
+        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         imageView = (ImageView)rootView.findViewById(R.id.imgView);
         Resources res = getActivity().getResources();
@@ -93,6 +96,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View arg0) {
 
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
                 name_field.setVisibility(View.VISIBLE);
                 cname_field.setVisibility(View.VISIBLE);
                 text_name.setVisibility(View.INVISIBLE);
@@ -106,6 +110,7 @@ public class ProfileFragment extends Fragment {
         image1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
                 String name = name_field.getText().toString();
                 preferencesEditor = savednotes.edit();
