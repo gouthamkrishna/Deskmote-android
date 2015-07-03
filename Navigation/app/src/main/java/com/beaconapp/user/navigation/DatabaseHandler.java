@@ -109,4 +109,52 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return dailyStatList;
     }
 
+    public List<DailyStat> getWeeklyStat(long tstamp) {
+        List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToLast()) {
+            do {
+                DailyStat dailyStat = new DailyStat();
+                dailyStat.setID(Integer.parseInt(cursor.getString(0)));
+                dailyStat.setTstamp(Long.parseLong(cursor.getString(1)));
+                dailyStat.setDesk_time(Long.parseLong(cursor.getString(2)));
+                dailyStat.setOffice_time(Long.parseLong(cursor.getString(3)));
+                dailyStat.setOutdoor_time(Long.parseLong(cursor.getString(4)));
+                dailyStatList.add(dailyStat);
+            } while (cursor.moveToPrevious());
+        }
+
+        return dailyStatList;
+    }
+
+    public List<DailyStat> getMonthlyStat(long tstamp) {
+        List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
+        // Select All Query
+        String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(selectQuery, null);
+
+        // looping through all rows and adding to list
+        if (cursor.moveToLast()) {
+            do {
+                DailyStat dailyStat = new DailyStat();
+                dailyStat.setID(Integer.parseInt(cursor.getString(0)));
+                dailyStat.setTstamp(Long.parseLong(cursor.getString(1)));
+                dailyStat.setDesk_time(Long.parseLong(cursor.getString(2)));
+                dailyStat.setOffice_time(Long.parseLong(cursor.getString(3)));
+                dailyStat.setOutdoor_time(Long.parseLong(cursor.getString(4)));
+                dailyStatList.add(dailyStat);
+            } while (cursor.moveToPrevious());
+        }
+
+        return dailyStatList;
+    }
+
 }

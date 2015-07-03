@@ -65,12 +65,15 @@ public class DailyChartFragment extends Fragment {
         mchart.setDrawHoleEnabled(true);
         mchart.setHoleColorTransparent(true);
         mchart.setCenterTextSize(25f);
-        mchart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(),"digital-7.ttf"));
+        mchart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         if(total!=0) {
             mchart.setCenterText("  TOTAL \n\n " + htotal + ":" + mtotal);
+            Legend i = mchart.getLegend();
+            i.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
+            i.setTextSize(15f);
         }
         else{
-            mchart.setCenterText("NO DATA TO \n DISPLAY");
+            mchart.setCenterText("NO DATA TO DISPLAY");
         }
         mchart.setHoleRadius(50);
         mchart.setTransparentCircleRadius(10);
@@ -93,11 +96,6 @@ public class DailyChartFragment extends Fragment {
         });
 
         addData();
-
-        Legend i = mchart.getLegend();
-        i.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
-        i.setTextSize(15f);
-
         return view;
     }
 

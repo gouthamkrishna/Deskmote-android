@@ -463,7 +463,7 @@ public final class R {
 		public static final int dropdown = 0x7f0d001c;
 		public static final int edit_query = 0x7f0d0042;
 		public static final int end = 0x7f0d0014;
-		public static final int end_padder = 0x7f0d007d;
+		public static final int end_padder = 0x7f0d007e;
 		public static final int expand_activities_button = 0x7f0d0027;
 		public static final int expanded_menu = 0x7f0d0037;
 		public static final int home = 0x7f0d0004;
@@ -471,7 +471,7 @@ public final class R {
 		public static final int icon = 0x7f0d002b;
 		public static final int ifRoom = 0x7f0d0018;
 		public static final int image = 0x7f0d0028;
-		public static final int info = 0x7f0d007c;
+		public static final int info = 0x7f0d007d;
 		public static final int line1 = 0x7f0d0078;
 		public static final int line3 = 0x7f0d007b;
 		public static final int listMode = 0x7f0d0009;
@@ -510,7 +510,7 @@ public final class R {
 		public static final int status_bar_latest_event_content = 0x7f0d0075;
 		public static final int submit_area = 0x7f0d004b;
 		public static final int tabMode = 0x7f0d000b;
-		public static final int text = 0x7f0d005e;
+		public static final int text = 0x7f0d007c;
 		public static final int text2 = 0x7f0d007a;
 		public static final int textSpacerNoButtons = 0x7f0d0033;
 		public static final int time = 0x7f0d004f;
