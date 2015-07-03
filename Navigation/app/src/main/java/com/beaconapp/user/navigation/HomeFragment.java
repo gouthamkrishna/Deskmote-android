@@ -1,13 +1,16 @@
 package com.beaconapp.user.navigation;
 
 
-import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,10 +34,10 @@ public class HomeFragment extends Fragment {
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
     boolean defaultValue = false;
+    Drawable d;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, null);
-
 
         tv_main = (TextView) root.findViewById(R.id.timer_main);
         tv_left = (TextView) root.findViewById(R.id.timer_left);
@@ -175,6 +178,8 @@ public class HomeFragment extends Fragment {
             str_outdoor = ""+hours+" : "+mins+" : "+secs;
 
             if (pos == 1) {
+                d = new ColorDrawable(Color.rgb(77,208,225));
+                ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
                 sw_main.setImageResource(R.drawable.work_large);
                 sw_left.setImageResource(R.drawable.outdoor);
                 sw_right.setImageResource(R.drawable.office);
@@ -184,6 +189,8 @@ public class HomeFragment extends Fragment {
                 tv_left.setText(str_outdoor);
                 tv_right.setText(str_office);
             } else if (pos == 2) {
+                d = new ColorDrawable(Color.rgb(129,199,132));
+                ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
                 sw_main.setImageResource(R.drawable.office_large);
                 sw_left.setImageResource(R.drawable.work);
                 sw_right.setImageResource(R.drawable.outdoor);
@@ -193,6 +200,8 @@ public class HomeFragment extends Fragment {
                 tv_left.setText(str_desk);
                 tv_right.setText(str_outdoor);
             } else if (pos == 3) {
+                d = new ColorDrawable(Color.rgb(255,213,79));
+                ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
                 sw_main.setImageResource(R.drawable.outdoor_large);
                 sw_left.setImageResource(R.drawable.office);
                 sw_right.setImageResource(R.drawable.work);

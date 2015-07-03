@@ -39,7 +39,6 @@ public class MainActivity extends ActionBarActivity{
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     DrawerLayout mDrawer;
-
     ActionBarDrawerToggle mDrawerToggle;
     public static  int position = 0;
     private FrameLayout containerlayout;

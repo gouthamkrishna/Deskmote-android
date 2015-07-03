@@ -2,20 +2,6 @@
 <items version="2" >
 
     <item
-        jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/1.3.0/jars/classes.jar"
-        jumboMode="false"
-        revision="23.0.0 rc2"
-        sha1="ac6948cce36f694f3eb3d73a135e298dc4b3527a">
-        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/classes-caa061643922a694bbd9d448cbee724dbb373c58.jar" />
-    </item>
-    <item
-        jar="/home/user/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
-        jumboMode="false"
-        revision="23.0.0 rc2"
-        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
-        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-93e79cf663bea5dd9e43d7beeaa37df7fb977cea.jar" />
-    </item>
-    <item
         jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.0 rc2"
@@ -30,11 +16,18 @@
         <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/classes-f86fc5253ec02c09c9df716d0227ccf1ccdb617f.jar" />
     </item>
     <item
-        jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jar="/home/user/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/22.2.0/support-annotations-22.2.0.jar"
         jumboMode="false"
         revision="23.0.0 rc2"
-        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
-        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/classes-f4632eb6d7ec57ef86fab6b27cd53d3c2508f25f.jar" />
+        sha1="66b42a1f3eb7676070b7ef7f14b603483aecbee1">
+        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/support-annotations-22.2.0-93e79cf663bea5dd9e43d7beeaa37df7fb977cea.jar" />
+    </item>
+    <item
+        jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
+        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-f795ab420591af30cfd037cec580415a83a0b74c.jar" />
     </item>
     <item
         jar="/home/user/AndroidStudioProjects/Navigation/app/libs/mpandroidchartlibrary-2-1-0.jar"
@@ -44,11 +37,18 @@
         <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/mpandroidchartlibrary-2-1-0-a04a36c1548d55c4ce28d0dec5aacc694c7376dd.jar" />
     </item>
     <item
-        jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/support-v4/22.2.0/jars/libs/internal_impl-22.2.0.jar"
+        jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/1.3.0/jars/classes.jar"
         jumboMode="false"
         revision="23.0.0 rc2"
-        sha1="57f2ab85c164ff1676ec64dee787981c046fab79">
-        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/internal_impl-22.2.0-f795ab420591af30cfd037cec580415a83a0b74c.jar" />
+        sha1="ac6948cce36f694f3eb3d73a135e298dc4b3527a">
+        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/classes-caa061643922a694bbd9d448cbee724dbb373c58.jar" />
+    </item>
+    <item
+        jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.0 rc2"
+        sha1="73753982da6bde518f3a4c6b372749981d14d1a0">
+        <dex dex="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/pre-dexed/debug/classes-f4632eb6d7ec57ef86fab6b27cd53d3c2508f25f.jar" />
     </item>
     <item
         jar="/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/estimote-sdk-preview/jars/classes.jar"
