@@ -10,9 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by user on 23/6/15.
- */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
     // All Static variables

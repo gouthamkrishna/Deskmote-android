@@ -39,5 +39,6 @@
     <string name="shared_door_exit">entered door exit</string>
 
     <string name="logger_init">Logger.Initial.value</string>
+    <string name="hello_world">Hi There</string>
 
 </resources>

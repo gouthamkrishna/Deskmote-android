@@ -1,11 +1,13 @@
 package com.beaconapp.user.navigation;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,6 +20,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+
 
 public class ProfileFragment extends Fragment {
 
@@ -29,6 +36,9 @@ public class ProfileFragment extends Fragment {
     TextView text_name,text_cname;
     EditText name_field,cname_field;
     ImageView image,image1,imageView;
+
+    String path = null;
+    Boolean defaultval = false, test;
 
     public static Fragment newInstance(Context context) {
         ProfileFragment f = new ProfileFragment();
@@ -56,8 +66,16 @@ public class ProfileFragment extends Fragment {
         int id = R.drawable.picture;
         imageView.setImageBitmap(BitmapFactory.decodeResource(res, id));
         ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.imageButton);
-        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
 
+        test = savednotes.getBoolean("IMAGE_KEY", defaultval);
+        if(test){
+            path = savednotes.getString("PATH_KEY",path);
+            Bitmap bitmap = loadImageFromStorage(path);
+
+            imageView.setImageBitmap(bitmap);
+        }
+
+        buttonLoadImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
 
@@ -94,7 +112,6 @@ public class ProfileFragment extends Fragment {
                 preferencesEditor.putString("NAME_KEY", name);
 
                 String cname = cname_field.getText().toString();
-
                 preferencesEditor.putString("COMPANY_NAME_KEY", cname);
                 preferencesEditor.commit();
 
@@ -128,10 +145,57 @@ public class ProfileFragment extends Fragment {
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
 
-            ImageView imageView = (ImageView)getView().findViewById(R.id.imgView);
-            imageView.setImageBitmap(BitmapFactory.decodeFile(picturePath));
+            path = saveToInternalSorage(BitmapFactory.decodeFile(picturePath));
 
+            preferencesEditor = savednotes.edit();
+            preferencesEditor.putString("PATH_KEY", path);
+
+            if(!test){
+                preferencesEditor.putBoolean("IMAGE_KEY", true);
+            }
+
+            preferencesEditor.commit();
+            Bitmap bitmap = loadImageFromStorage(path);
+            imageView.setImageBitmap(bitmap);
         }
+
+    }
+
+    private String saveToInternalSorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getActivity());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        File mypath = new File(directory, "profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+
+            fos = new FileOutputStream(mypath);
+
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            fos.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return directory.getAbsolutePath();
+    }
+
+    private Bitmap loadImageFromStorage(String path)
+    {
+
+        Bitmap bitmap = null;
+        try {
+            File f=new File(path, "profile.jpg");
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+        }
+        catch (FileNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+
+        return  bitmap;
 
     }
 

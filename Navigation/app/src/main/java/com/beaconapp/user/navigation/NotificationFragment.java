@@ -1,28 +1,21 @@
 package com.beaconapp.user.navigation;
 
 import android.app.AlarmManager;
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.app.PendingIntent;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Fragment;
-import android.text.format.DateFormat;
-import android.text.method.DateKeyListener;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -125,9 +118,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         time = new SimpleDateFormat("HH:mm").format(cDate);
         tstamp = cDate.getTime();
 
-        // set current date into textview
         tvDisplayDate.setText(date);
-        // set current date into textview
         tvDisplayTime.setText(time);
     }
 
@@ -138,7 +129,9 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
 
-                newTimeFragment.show(getFragmentManager(), "timePicker");
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                newTimeFragment.show(fragmentTransaction, "Time picker");
             }
         });
     }
@@ -149,8 +142,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         Date cDate = new Date(year-1900,month,day,hour,min);
         time = new SimpleDateFormat("HH:mm").format(cDate);
         tstamp = cDate.getTime();
-        // set selected date into textview
-        // set current time into textview
+
         tvDisplayTime.setText(time);
     }
 
@@ -161,7 +153,9 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
             @Override
             public void onClick(View v) {
 
-                newDateFragment.show(getFragmentManager(), "datePicker");
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                newDateFragment.show(fragmentTransaction, "Date picker");
             }
         });
     }

@@ -1,7 +1,7 @@
 package com.beaconapp.user.navigation;
 
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;

@@ -1,9 +1,7 @@
 package com.beaconapp.user.navigation;
 
 
-/**
- * Created by user on 30/6/15.
- */
+
 public class DailyStat {
     int id;
     long tstamp;
@@ -85,3 +83,4 @@ public class DailyStat {
     }
 
 }
+
