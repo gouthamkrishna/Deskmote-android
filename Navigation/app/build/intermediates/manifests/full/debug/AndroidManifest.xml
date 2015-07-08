@@ -28,23 +28,23 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <service android:name="com.beaconapp.user.navigation.NotificationService" />
+        <service android:name="com.beaconapp.user.navigation.services.NotificationService" />
         <service
-            android:name="com.beaconapp.user.navigation.LoggerService"
+            android:name="com.beaconapp.user.navigation.services.LoggerService"
             android:exported="false" >
         </service>
-        <service android:name="com.beaconapp.user.navigation.ResetReminderService" />
+        <service android:name="com.beaconapp.user.navigation.services.ResetReminderService" />
 
-        <receiver android:name="com.beaconapp.user.navigation.StatisticsLogger" />
-        <receiver android:name="com.beaconapp.user.navigation.RebootHandler" >
+        <receiver android:name="com.beaconapp.user.navigation.receivers.StatisticsLogger" />
+        <receiver android:name="com.beaconapp.user.navigation.receivers.RebootHandler" >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.beaconapp.user.navigation.AlarmReceiver" />
+        <receiver android:name="com.beaconapp.user.navigation.receivers.AlarmReceiver" />
 
         <activity
-            android:name="com.beaconapp.user.navigation.MainActivity"
+            android:name="com.beaconapp.user.navigation.activities.MainActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >

@@ -63,25 +63,25 @@ MERGED from :estimote-sdk-preview::20:5
 		ADDED from AndroidManifest.xml:18:9
 	android:theme
 		ADDED from AndroidManifest.xml:20:9
-service#com.beaconapp.user.navigation.NotificationService
+service#com.beaconapp.user.navigation.services.NotificationService
 ADDED from AndroidManifest.xml:21:9
 	android:name
 		ADDED from AndroidManifest.xml:21:18
-service#com.beaconapp.user.navigation.LoggerService
+service#com.beaconapp.user.navigation.services.LoggerService
 ADDED from AndroidManifest.xml:23:9
 	android:exported
 		ADDED from AndroidManifest.xml:25:13
 	android:name
 		ADDED from AndroidManifest.xml:24:13
-service#com.beaconapp.user.navigation.ResetReminderService
+service#com.beaconapp.user.navigation.services.ResetReminderService
 ADDED from AndroidManifest.xml:27:9
 	android:name
 		ADDED from AndroidManifest.xml:27:18
-receiver#com.beaconapp.user.navigation.StatisticsLogger
+receiver#com.beaconapp.user.navigation.receivers.StatisticsLogger
 ADDED from AndroidManifest.xml:28:9
 	android:name
 		ADDED from AndroidManifest.xml:28:19
-receiver#com.beaconapp.user.navigation.RebootHandler
+receiver#com.beaconapp.user.navigation.receivers.RebootHandler
 ADDED from AndroidManifest.xml:30:9
 	android:name
 		ADDED from AndroidManifest.xml:30:19
@@ -91,11 +91,11 @@ action#android.intent.action.BOOT_COMPLETED
 ADDED from AndroidManifest.xml:32:17
 	android:name
 		ADDED from AndroidManifest.xml:32:25
-receiver#com.beaconapp.user.navigation.AlarmReceiver
+receiver#com.beaconapp.user.navigation.receivers.AlarmReceiver
 ADDED from AndroidManifest.xml:35:9
 	android:name
 		ADDED from AndroidManifest.xml:35:19
-activity#com.beaconapp.user.navigation.MainActivity
+activity#com.beaconapp.user.navigation.activities.MainActivity
 ADDED from AndroidManifest.xml:36:9
 	android:screenOrientation
 		ADDED from AndroidManifest.xml:39:13

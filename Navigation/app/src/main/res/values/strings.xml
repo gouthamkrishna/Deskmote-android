@@ -40,5 +40,6 @@
 
     <string name="logger_init">Logger.Initial.value</string>
     <string name="hello_world">Hi There</string>
+    <string name="add_reminder">Reminder</string>
 
 </resources>
