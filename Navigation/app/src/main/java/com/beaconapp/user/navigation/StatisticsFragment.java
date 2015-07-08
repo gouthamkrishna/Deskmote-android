@@ -18,7 +18,9 @@ public class StatisticsFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
+	
+	((MainActivity) getActivity())
+                .setActionBarTitle("Statistics");
         rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
         mTabHost = (FragmentTabHost) rootView.findViewById(android.R.id.tabhost);

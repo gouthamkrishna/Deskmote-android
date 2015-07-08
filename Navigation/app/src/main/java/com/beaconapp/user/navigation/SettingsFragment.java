@@ -32,6 +32,9 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+	((MainActivity) getActivity())
+                .setActionBarTitle("Settings");
         addPreferencesFromResource(R.xml.preferences);
 
         pref_key_office_time_from = (Preference) findPreference("pref_key_office_time_from");

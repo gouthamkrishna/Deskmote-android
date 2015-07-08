@@ -226,9 +226,16 @@ public class MainActivity extends ActionBarActivity{
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+
+	if (id == R.id.reminder) {
+            resetAdapter();
+            fragmentManager = getSupportFragmentManager();
+            fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.replace(R.id.container, new NotificationFragment());
+            fragmentTransaction.commit();
+            ICONS[2] = R.drawable.reminder_active;
+            mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+            mRecyclerView.setAdapter(mAdapter);
         }
 
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);

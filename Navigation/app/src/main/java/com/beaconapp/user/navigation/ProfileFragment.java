@@ -49,6 +49,9 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
+	((MainActivity) getActivity())
+                .setActionBarTitle("Profile");
+
         rootView =  inflater.inflate(R.layout.fragment_profile, null);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
         image = (ImageView)rootView.findViewById(R.id.imageView);

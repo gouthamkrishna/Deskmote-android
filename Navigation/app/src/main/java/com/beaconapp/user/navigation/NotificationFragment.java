@@ -50,6 +50,9 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+	
+	((MainActivity) getActivity())
+                .setActionBarTitle("Reminders");
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_notification, null);
 
         db_reminder = new ReminderDatabaseHandler(getActivity());

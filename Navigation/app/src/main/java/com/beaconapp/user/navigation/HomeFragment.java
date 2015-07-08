@@ -37,6 +37,10 @@ public class HomeFragment extends Fragment {
     Drawable d;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+
+	((MainActivity) getActivity())
+                .setActionBarTitle("Home");
+
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, null);
 
         tv_main = (TextView) root.findViewById(R.id.timer_main);
