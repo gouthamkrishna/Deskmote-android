@@ -11,15 +11,27 @@ import java.util.Calendar;
 public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
+    int flag = 0;
     NotificationFragment notificationFragment;
+    DailyChartFragment dailyChartFragment;
 
     public interface NotificationFragment {
         public void onDateSelected(int year, int month, int day);
-//        public String onSelectionCancelled();
+    }
+
+    public interface DailyChartFragment {
+        public void onDateSelected(int year, int month, int day);
     }
 
     public DatePickerFragment(com.beaconapp.user.navigation.fragments.NotificationFragment notFragment) {
         notificationFragment = notFragment;
+        flag = 1;
+    }
+
+
+    public DatePickerFragment(com.beaconapp.user.navigation.fragments.DailyChartFragment dailyFragment) {
+        dailyChartFragment = dailyFragment;
+        flag = 2;
     }
 
     @Override
@@ -36,6 +48,11 @@ public class DatePickerFragment extends DialogFragment
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
-        notificationFragment.onDateSelected(year, month, day);
+        if(flag==1) {
+            notificationFragment.onDateSelected(year, month, day);
+        }
+        if(flag==2) {
+            dailyChartFragment.onDateSelected(year, month, day);
+        }
     }
 }

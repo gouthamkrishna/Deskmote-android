@@ -42,5 +42,6 @@
     <string name="hello_world">Hi There</string>
     <string name="add_reminder">Reminder</string>
     <string name="notification_init">initializing_notification</string>
+    <string name="title_activity_main_activity2">MainActivity2Activity</string>
 
 </resources>

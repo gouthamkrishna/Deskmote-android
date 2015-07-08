@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import com.beaconapp.user.navigation.classes.DailyStat;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
@@ -71,11 +72,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting single statistics
-    public DailyStat getDailyStat(long id) {
+    public DailyStat getDailyStat(long tstamp) {
         SQLiteDatabase db = this.getReadableDatabase();
 
         Cursor cursor = db.query(TABLE_STATISTICS, new String[] { KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR }, KEY_STAMP + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                new String[] { String.valueOf(tstamp) }, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();
@@ -84,6 +85,28 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Long.parseLong(cursor.getString(2)),Long.parseLong(cursor.getString(3)),Long.parseLong(cursor.getString(4)));
         // return statistics
         return dailyStat;
+    }
+
+    // Getting single statistics
+    public DailyStat getSelectedDayStat(long tstamp) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        long start_of_day = tstamp;
+        long end_of_day = tstamp+86400000;
+
+        Cursor cursor = db.query(TABLE_STATISTICS, new String[]{KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR}, KEY_STAMP + " >? AND " + KEY_STAMP + " <?",
+                new String[]{String.valueOf(start_of_day), String.valueOf(end_of_day)}, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+
+            DailyStat dailyStat = new DailyStat(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(1)),
+                    Long.parseLong(cursor.getString(2)), Long.parseLong(cursor.getString(3)), Long.parseLong(cursor.getString(4)));
+            // return statistics
+            return dailyStat;
+        }
+        else {
+            return null;
+        }
     }
 
     // Getting All statistics
@@ -113,11 +136,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<DailyStat> getWeeklyStat(long tstamp) {
         List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
+
+        long start_of_week = (tstamp/604800000)*604800000;
+        long end_of_week = start_of_week+604800000;
+
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.query(TABLE_STATISTICS, new String[]{KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR}, KEY_STAMP + " >? AND " + KEY_STAMP + " <?",
+                new String[]{String.valueOf(start_of_week), String.valueOf(end_of_week)}, null, null, null, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToLast()) {
@@ -137,11 +165,24 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public List<DailyStat> getMonthlyStat(long tstamp) {
         List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(tstamp);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);  // 1st day of month.
+
+        long start_of_month = calendar.getTimeInMillis();
+
+        calendar.add(Calendar.MONTH, 1);
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.add(Calendar.DATE,-1);
+
+        long end_of_month = calendar.getTimeInMillis();
+
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
 
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(selectQuery, null);
+        Cursor cursor = db.query(TABLE_STATISTICS, new String[]{KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR}, KEY_STAMP + " >? AND " + KEY_STAMP + " <?",
+                new String[]{String.valueOf(start_of_month), String.valueOf(end_of_month)}, null, null, null, null);
 
         // looping through all rows and adding to list
         if (cursor.moveToLast()) {

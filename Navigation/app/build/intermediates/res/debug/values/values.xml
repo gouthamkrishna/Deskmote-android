@@ -239,6 +239,7 @@
     <string name="status_bar_notification_info_overflow">999+</string>
     <!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="title_activity_main_activity2">MainActivity2Activity</string>
     <string name="title_activity_navigation_drawer">NavigationDrawerActivity</string>
     <string name="title_activity_navigation_drawer_fragment">NavigationDrawerFragment</string>
     <!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->

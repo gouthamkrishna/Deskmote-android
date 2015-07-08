@@ -118,10 +118,16 @@ public class ProfileFragment extends Fragment {
                 imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
                 String name = name_field.getText().toString();
+                if (name.equals(""))
+                    name = savednotes.getString("NAME_KEY", "NAME");
+
                 preferencesEditor = savednotes.edit();
                 preferencesEditor.putString("NAME_KEY", name);
 
                 String cname = cname_field.getText().toString();
+                if (cname.equals(""))
+                    cname = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
+
                 preferencesEditor.putString("COMPANY_NAME_KEY", cname);
                 preferencesEditor.commit();
 
