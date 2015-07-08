@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -28,6 +29,7 @@ public class MonthlyChartFragment extends Fragment {
 
     List<DailyStat> monthly;
     TextView nodata;
+    long timestamp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -39,13 +41,16 @@ public class MonthlyChartFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_monthly_chart_layout, container, false);
 
+        Calendar calendar = Calendar.getInstance();
+        timestamp = calendar.getTimeInMillis();
+
         db = new DatabaseHandler(getActivity());
         nodata = (TextView)view.findViewById(R.id.textView);
         nodata.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         nodata.setTextSize(25f);
         chart = (HorizontalBarChart)view.findViewById(R.id.bchart);
         monthly = new ArrayList<>();
-        monthly = db.getAllDailyStat();
+        monthly = db.getMonthlyStat(timestamp);
 
         ArrayList<BarEntry> Yvalue1 = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<String>();
