@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
 import com.github.mikephil.charting.charts.PieChart;
@@ -87,7 +86,7 @@ public class DailyChartFragment extends Fragment {
             public void onValueSelected(Entry entry, int i, Highlight highlight) {
                 if (entry == null)
                     return;
-                Toast.makeText(getActivity(), Xdata[entry.getXIndex()] + "'" + entry.getVal() + "%", Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(), Xdata[entry.getXIndex()] + "'" + entry.getVal() + "%", Toast.LENGTH_LONG).show();
             }
 
             @Override

@@ -15,6 +15,8 @@ import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageSwitcher;
@@ -22,10 +24,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.beaconapp.user.navigation.services.LoggerService;
-import com.beaconapp.user.navigation.activities.MainActivity;
-import com.beaconapp.user.navigation.services.NotificationService;
 import com.beaconapp.user.navigation.R;
+import com.beaconapp.user.navigation.activities.MainActivity;
+import com.beaconapp.user.navigation.services.LoggerService;
+import com.beaconapp.user.navigation.services.NotificationService;
 
 
 public class HomeFragment extends Fragment {
@@ -40,10 +42,15 @@ public class HomeFragment extends Fragment {
     SharedPreferences sharedPref;
     boolean defaultValue = false;
     Drawable d;
+    Window window;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Home");
+
+        window = getActivity().getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, null);
 
@@ -186,7 +193,8 @@ public class HomeFragment extends Fragment {
             str_outdoor = ""+hours+" : "+mins+" : "+secs;
 
             if (pos == 1) {
-                d = new ColorDrawable(Color.rgb(77,208,225));
+                window.setStatusBarColor(Color.rgb(0, 151, 167));
+                d = new ColorDrawable(Color.rgb(0,188,212));
                 ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
                 sw_main.setImageResource(R.drawable.work_large);
                 sw_left.setImageResource(R.drawable.outdoor);
@@ -197,7 +205,8 @@ public class HomeFragment extends Fragment {
                 tv_left.setText(str_outdoor);
                 tv_right.setText(str_office);
             } else if (pos == 2) {
-                d = new ColorDrawable(Color.rgb(129,199,132));
+                window.setStatusBarColor(Color.rgb(56,142,60));
+                d = new ColorDrawable(Color.rgb(76,175,80));
                 ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
                 sw_main.setImageResource(R.drawable.office_large);
                 sw_left.setImageResource(R.drawable.work);
@@ -208,6 +217,7 @@ public class HomeFragment extends Fragment {
                 tv_left.setText(str_desk);
                 tv_right.setText(str_outdoor);
             } else if (pos == 3) {
+                window.setStatusBarColor(Color.rgb(251,192,45));
                 d = new ColorDrawable(Color.rgb(255,213,79));
                 ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
                 sw_main.setImageResource(R.drawable.outdoor_large);

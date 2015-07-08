@@ -104,7 +104,7 @@ public class NotificationService extends Service {
         beaconManager2.setMonitoringListener(new BeaconManager.MonitoringListener() {
             @Override
             public void onEnteredRegion(Region region, List<Beacon> beacons) {
-                if(sharedPref.getInt(getString(R.string.shared_door_entry), 0) == 1) {
+                if (sharedPref.getInt(getString(R.string.shared_door_entry), 0) == 1) {
 
                     editor.putInt(getString(R.string.shared_door_exit), 1);
                     editor.commit();
@@ -115,11 +115,11 @@ public class NotificationService extends Service {
                     obj = 3;
                     obj3.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
                     obj3.customHandler.postDelayed(updateTimerThread, 0);
-                }
-                else {
+                } else {
                     editor.putInt(getString(R.string.shared_door_exit), 1);
-                    editor.commit();}
-                postNotification("Entered region_door_exit","Region Notification");
+                    editor.commit();
+                }
+                postNotification("Entered region_door_exit", "Region Notification");
             }
 
             @Override
@@ -186,6 +186,10 @@ public class NotificationService extends Service {
                 }
             }
         });
+
+        obj = 3;
+        obj3.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
+        obj3.customHandler.postDelayed(updateTimerThread, 0);
 
         return START_STICKY;
     }

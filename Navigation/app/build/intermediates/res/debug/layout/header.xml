@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="178dp"
-    android:background="@drawable/bg2"
+    android:background="@drawable/bg1"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -18,7 +18,7 @@
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="18dp"
             android:textColor="#ffffff"
             android:text="Elizabeth George"
             android:textSize="14sp"
@@ -31,7 +31,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="#ffffff"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="18dp"
             android:layout_marginTop="5dp"
             android:text="elizabethgeorge94@gmail.com"
             android:textSize="14sp"
@@ -44,8 +44,7 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
 
-        android:layout_marginLeft="16dp"
         android:layout_marginTop="38dp"
         android:id="@+id/circleView"
-        />
+        android:layout_marginLeft="13dp" />
 </RelativeLayout><!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/src/main/res/layout/header.xml -->

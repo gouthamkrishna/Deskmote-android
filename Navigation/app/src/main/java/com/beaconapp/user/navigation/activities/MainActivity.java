@@ -138,6 +138,11 @@ public class MainActivity extends ActionBarActivity{
 
     }
 
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
+
     public void resetAdapter(){
 
         ICONS = new int[]{R.drawable.home, R.drawable.graph, R.drawable.reminder, R.drawable.profile, R.drawable.settings};

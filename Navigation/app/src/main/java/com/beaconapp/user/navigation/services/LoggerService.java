@@ -39,7 +39,7 @@ public class  LoggerService extends IntentService {
 
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, 1);
-        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
         calendar.set(Calendar.MINUTE, 0);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         test_val = sharedPref.getBoolean(getString(R.string.logger_init), defaultValue);

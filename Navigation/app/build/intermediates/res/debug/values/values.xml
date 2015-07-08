@@ -208,6 +208,7 @@
     <string name="logger_init">Logger.Initial.value</string>
     <string name="lunch_time_from">FROM    00:00</string>
     <string name="lunch_time_to">TO      00:00</string>
+    <string name="notification_init">initializing_notification</string>
     <string name="office_time_from">FROM    00:00</string>
     <string name="office_time_to">TO      00:00</string>
     <string name="openDrawer">Open Drawer</string>

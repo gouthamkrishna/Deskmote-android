@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:background="#FFFFFF">
 
 
     <de.hdodenhof.circleimageview.CircleImageView
@@ -12,7 +13,8 @@
         android:layout_width="200dp"
         android:layout_height="200dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="25dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -21,9 +23,9 @@
         android:src="@drawable/edit_profile"
         android:onClick="click"
         android:layout_alignBottom="@+id/imgView"
-        android:layout_toRightOf="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
-        android:layout_marginBottom="37dp" />
+        android:layout_marginBottom="25dp"
+        android:layout_alignRight="@+id/imgView"
+        android:layout_marginRight="10dp" />
 
     <TextView
         android:layout_width="wrap_content"

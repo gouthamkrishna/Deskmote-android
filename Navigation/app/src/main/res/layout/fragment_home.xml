@@ -10,8 +10,8 @@
     android:background="#FFFFFF">
 
     <ImageSwitcher
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
         android:id="@+id/sw_main"
         android:layout_below="@+id/header2"
         android:layout_centerHorizontal="true" />
