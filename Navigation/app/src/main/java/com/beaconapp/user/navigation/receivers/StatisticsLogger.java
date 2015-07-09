@@ -18,26 +18,33 @@ import com.beaconapp.user.navigation.services.NotificationService;
 
 public class StatisticsLogger extends BroadcastReceiver {
 
-    public static final String ID = "com.beaconapp.user.database.ID";
+    public static final String TIMESTAMP_ID = "com.beaconapp.user.deskmote.TIMESTAMP_ID";
+    public static final long SINGLEDAY_TIMESTAMP = 86400000L;
+    public static final int ALARM_ID = 1729;
+
+    long timeStamp = 0L;
+    Intent alarmIntent, start_logger_service, start_notification_service;
+    PendingIntent pendingIntent;
+    AlarmManager manager;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        long tstamp = intent.getLongExtra(ID, 0);
+        timeStamp = intent.getLongExtra(TIMESTAMP_ID, timeStamp);
 
-        Intent alarmIntent = new Intent(context, StatisticsLogger.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 13572, alarmIntent, 0);
-        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        alarmIntent = new Intent(context, StatisticsLogger.class);
+        alarmIntent.putExtra(TIMESTAMP_ID, timeStamp + SINGLEDAY_TIMESTAMP);
+        pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, 0);
+        manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
-        Intent start_logger_service = new Intent(context, LoggerService.class);
-        Intent start_notification_service = new Intent(context, NotificationService.class);
-        start_logger_service.putExtra(ID, tstamp);
+        start_logger_service = new Intent(context, LoggerService.class);
+        start_notification_service = new Intent(context, NotificationService.class);
+        start_logger_service.putExtra(TIMESTAMP_ID, timeStamp);
         context.startService(start_logger_service);
         context.startService(start_notification_service);
 
-        alarmIntent.putExtra(ID, tstamp + 86400000);
-        manager.setExact(AlarmManager.RTC_WAKEUP, tstamp, pendingIntent);
+        manager.setExact(AlarmManager.RTC_WAKEUP, timeStamp, pendingIntent);
 
     }
 }

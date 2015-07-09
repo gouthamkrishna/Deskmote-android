@@ -16,19 +16,22 @@ import com.beaconapp.user.navigation.services.ResetReminderService;
  */
 public class RebootHandler extends BroadcastReceiver {
 
-    public void onReceive(Context context, Intent intent) {
+    SharedPreferences sharedPref;
+    SharedPreferences.Editor sharedPrefEditor;
+    Intent resetLoggerService, resetReminderService;
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+    public void onReceive(Context context, Intent intent) {
 
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(context.getString(R.string.logger_init), false);
-            editor.commit();
-            Intent resetter = new Intent(context, LoggerService.class);
-            context.startService(resetter);
-            Intent start_service = new Intent(context, ResetReminderService.class);
-            context.startService(start_service);
+            sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            sharedPrefEditor = sharedPref.edit();
+            sharedPrefEditor.putBoolean(context.getString(R.string.logger_init), false);
+            sharedPrefEditor.commit();
+            resetLoggerService = new Intent(context, LoggerService.class);
+            context.startService(resetLoggerService);
+            resetReminderService = new Intent(context, ResetReminderService.class);
+            context.startService(resetReminderService);
         }
     }
 }

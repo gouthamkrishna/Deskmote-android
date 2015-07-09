@@ -14,18 +14,21 @@ import com.beaconapp.user.navigation.R;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
-    public static final String TAG = "com.beaconapp.user.reminder3.TAG";
+    public static final String TAG = "com.beaconapp.user.deskmote.TAG";
+    public static final int NOTIFICATION_ID = 113;
     public NotificationManager notificationManager;
+    String reminderMessage;
+    Notification notification;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onReceive(Context context, Intent intent) {
-        String mssg = intent.getStringExtra(TAG);
+        reminderMessage = intent.getStringExtra(TAG);
         notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification.Builder(context)
+        notification = new Notification.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setContentTitle("Reminder")
-                .setContentText(mssg)
+                .setContentText(reminderMessage)
                 .setAutoCancel(true)
                 .build();
         notification.defaults |= Notification.DEFAULT_SOUND;
@@ -35,7 +38,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         notification.ledARGB = 0xff00ff00;
         notification.ledOnMS = 1000;
         notification.ledOffMS = 300;
-        //  v.vibrate(400);
-        notificationManager.notify(15, notification);
+
+        notificationManager.notify(NOTIFICATION_ID, notification);
     }
 }

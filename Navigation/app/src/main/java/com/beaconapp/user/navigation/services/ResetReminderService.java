@@ -20,34 +20,39 @@ import java.util.List;
 public class ResetReminderService extends IntentService {
 
     public PendingIntent pendingIntent;
-    public static final String TAG = "com.beaconapp.user.reminder3.TAG";
-    Intent alarmIntent;
-    AlarmManager manager;
+    public static final String TAG = "com.beaconapp.user.deskmote.TAG";
+    long currentTimestamp, reminderTimestamp;
+    int listcounter=0;
 
+    Intent alarmIntent;
+    AlarmManager alarmManager;
     ReminderDatabaseHandler db = new ReminderDatabaseHandler(this);
+    List<Reminder> reminderList;
+    Calendar calendar;
+    Reminder reminder;
 
     public ResetReminderService(){
         super("ResetReminderService");
     }
 
     public void onHandleIntent(Intent intent) {
-        List<Reminder> reminders = db.getAllReminders();
+        reminderList = db.getAllReminders();
 
-        Calendar calendar = Calendar.getInstance();
-        long ttstamp = calendar.getTimeInMillis();
-        int listcounter=0;
+        calendar = Calendar.getInstance();
+        currentTimestamp = calendar.getTimeInMillis();
+        listcounter=0;
 
-        while (listcounter<reminders.size()) {
-            Reminder rmndr = reminders.get(listcounter);
-            Toast.makeText(ResetReminderService.this, "Resetting!!", Toast.LENGTH_SHORT).show();
+        while (listcounter<reminderList.size()) {
+            reminder = reminderList.get(listcounter);
+            Toast.makeText(ResetReminderService.this, "Resetting Reminders!!", Toast.LENGTH_LONG).show();
 
-            long tttstamp = rmndr.getTstamp();
-            if(tttstamp>=ttstamp){
+            reminderTimestamp = reminder.getTstamp();
+            if(reminderTimestamp>=currentTimestamp){
                 alarmIntent = new Intent(ResetReminderService.this, AlarmReceiver.class);
-                alarmIntent.putExtra(TAG, rmndr.getTag());
-                pendingIntent = PendingIntent.getBroadcast(ResetReminderService.this, rmndr.getID(), alarmIntent, 0);
-                manager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-                manager.setExact(AlarmManager.RTC_WAKEUP, tttstamp, pendingIntent);
+                alarmIntent.putExtra(TAG, reminder.getTag());
+                pendingIntent = PendingIntent.getBroadcast(ResetReminderService.this, reminder.getID(), alarmIntent, 0);
+                alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTimestamp, pendingIntent);
             }
             listcounter++;
         }

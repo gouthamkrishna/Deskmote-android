@@ -35,7 +35,7 @@ import java.util.List;
 public class NotificationFragment extends Fragment implements AdapterView.OnItemClickListener, DatePickerFragment.NotificationFragment, TimePickerFragment.NotificationFragment {
 
     public PendingIntent pendingIntent;
-    public static final String TAG = "com.beaconapp.user.reminder3.TAG";
+    public static final String TAG = "com.beaconapp.user.deskmote.TAG";
     Intent alarmIntent;
     AlarmManager manager;
 

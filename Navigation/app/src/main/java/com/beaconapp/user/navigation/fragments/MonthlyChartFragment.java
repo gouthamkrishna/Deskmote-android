@@ -74,7 +74,7 @@ public class MonthlyChartFragment extends Fragment {
 
             BarDataSet set1 = new BarDataSet(Yvalue1, "");
 
-            set1.setColors(new int[]{Color.rgb(255, 191, 6), Color.rgb(76, 175, 81), Color.rgb(1, 187, 212)});
+            set1.setColors(new int[]{Color.rgb(1, 187, 212), Color.rgb(76, 175, 81), Color.rgb(255, 191, 6)});
             set1.setStackLabels(new String[]{
                     "At Desk", "At Office", "Outside Office"});
 
