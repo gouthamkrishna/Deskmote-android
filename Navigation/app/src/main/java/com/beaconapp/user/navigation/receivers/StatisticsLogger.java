@@ -23,7 +23,7 @@ public class StatisticsLogger extends BroadcastReceiver {
     public static final int ALARM_ID = 1729;
 
     long timeStamp = 0L;
-    Intent alarmIntent, start_logger_service, start_notification_service;
+    Intent alarmIntent, start_logger_service;
     PendingIntent pendingIntent;
     AlarmManager manager;
 
@@ -39,10 +39,8 @@ public class StatisticsLogger extends BroadcastReceiver {
         manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         start_logger_service = new Intent(context, LoggerService.class);
-        start_notification_service = new Intent(context, NotificationService.class);
         start_logger_service.putExtra(TIMESTAMP_ID, timeStamp);
         context.startService(start_logger_service);
-        context.startService(start_notification_service);
 
         manager.setExact(AlarmManager.RTC_WAKEUP, timeStamp, pendingIntent);
 

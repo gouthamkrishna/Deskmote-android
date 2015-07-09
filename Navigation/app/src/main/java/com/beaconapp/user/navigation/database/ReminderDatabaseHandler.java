@@ -74,11 +74,11 @@ public class ReminderDatabaseHandler extends SQLiteOpenHelper {
     }
 
     // Getting single reminder
-    public Reminder getReminder(long id) {
+    public Reminder getReminder(long timestamp) {
         SQLiteDatabase db_reminder = this.getReadableDatabase();
 
         Cursor cursor = db_reminder.query(TABLE_REMINDERS, new String[] { KEY_ID, KEY_STAMP, KEY_DATE, KEY_TIME, KEY_TAG }, KEY_STAMP + "=?",
-                new String[] { String.valueOf(id) }, null, null, null, null);
+                new String[] { String.valueOf(timestamp) }, null, null, null, null);
 
         if (cursor != null)
             cursor.moveToFirst();

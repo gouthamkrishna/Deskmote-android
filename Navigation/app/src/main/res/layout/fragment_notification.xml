@@ -1,34 +1,31 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.beaconapp.user.reminder3.SetReminder"
     android:orientation="vertical"
-    android:background="#FFFFFF"
-    >
+    android:background="#FFFFFF">
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
-        android:weightSum="1"
-        >
+        android:weightSum="1">
+
         <EditText
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:id="@+id/editText"
+            android:id="@+id/tagLine"
             android:hint="Description"
-            android:layout_weight="1"
-            />
+            android:layout_weight="1" />
+
         <ImageView
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:id="@+id/button3"
+            android:id="@+id/saveReminder"
             android:src="@drawable/add"/>
-
 
     </LinearLayout>
 
@@ -36,71 +33,59 @@
         android:layout_width="fill_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
+        android:layout_marginTop="10dp">
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:text="Set Date"
-            android:id="@+id/button2"
+            android:id="@+id/timePicker"
             android:src="@drawable/clock"/>
 
         <TextView
             android:layout_width="140dp"
             android:layout_height="fill_parent"
-            android:text="New Text"
-            android:id="@+id/textView2"
+            android:id="@+id/reminderTimeView"
             android:textSize="20sp"
             android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/button2"
-            android:paddingLeft="20dp"
-            />
+            android:layout_toEndOf="@id/timePicker"
+            android:paddingStart="20dp" />
 
         <ImageView
             android:layout_width="30dp"
             android:layout_height="30dp"
-            android:text="Set Time"
-            android:id="@+id/button1"
+            android:id="@+id/datePicker"
             android:src="@drawable/date1"
             android:layout_alignParentTop="true"
-            android:layout_toStartOf="@+id/textView3" />
+            android:layout_toStartOf="@+id/reminderDateView" />
 
         <TextView
             android:layout_width="140dp"
             android:layout_height="fill_parent"
-            android:text="New Text"
-            android:id="@+id/textView3"
+            android:id="@+id/reminderDateView"
             android:textSize="20sp"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true"
-            android:paddingLeft="20dp"/>
-
+            android:paddingStart="20dp"/>
 
     </RelativeLayout>
-
 
     <LinearLayout
 
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/button"
         android:layout_marginTop="10dp">
 
         <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/list"
+            android:id="@+id/reminderList"
             android:dividerHeight="3dip"
             android:listSelector="@android:color/transparent"
             android:cacheColorHint="#0FBC00"
             android:drawSelectorOnTop="false"
             android:clickable="true"
-            android:focusableInTouchMode="true"
-            android:layout_below="@+id/button"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            android:focusableInTouchMode="true" />
 
     </LinearLayout>
 

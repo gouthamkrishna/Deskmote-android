@@ -4,6 +4,7 @@ package com.beaconapp.user.navigation.fragments;
 import android.annotation.TargetApi;
 import android.app.Fragment;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;

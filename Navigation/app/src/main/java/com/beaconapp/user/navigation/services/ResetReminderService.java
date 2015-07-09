@@ -44,7 +44,6 @@ public class ResetReminderService extends IntentService {
 
         while (listcounter<reminderList.size()) {
             reminder = reminderList.get(listcounter);
-            Toast.makeText(ResetReminderService.this, "Resetting Reminders!!", Toast.LENGTH_LONG).show();
 
             reminderTimestamp = reminder.getTstamp();
             if(reminderTimestamp>=currentTimestamp){
