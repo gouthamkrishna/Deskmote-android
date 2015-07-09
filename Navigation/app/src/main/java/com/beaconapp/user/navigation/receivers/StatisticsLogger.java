@@ -31,10 +31,10 @@ public class StatisticsLogger extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        timeStamp = intent.getLongExtra(TIMESTAMP_ID, timeStamp);
+        timeStamp = intent.getLongExtra(TIMESTAMP_ID, timeStamp) + SINGLEDAY_TIMESTAMP;
 
         alarmIntent = new Intent(context, StatisticsLogger.class);
-        alarmIntent.putExtra(TIMESTAMP_ID, timeStamp + SINGLEDAY_TIMESTAMP);
+        alarmIntent.putExtra(TIMESTAMP_ID, timeStamp);
         pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, 0);
         manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 

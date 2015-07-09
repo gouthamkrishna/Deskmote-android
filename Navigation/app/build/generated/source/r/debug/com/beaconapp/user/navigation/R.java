@@ -1609,7 +1609,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0d003d;
         public static final int action_mode_bar_stub=0x7f0d003c;
         public static final int action_mode_close_button=0x7f0d0025;
-        public static final int action_settings=0x7f0d008f;
+        public static final int action_settings=0x7f0d0095;
         public static final int activity_chooser_view_content=0x7f0d0026;
         public static final int alertTitle=0x7f0d0030;
         public static final int always=0x7f0d0016;
@@ -1658,6 +1658,9 @@ containing a value of this type.
         public static final int line3=0x7f0d008a;
         public static final int listMode=0x7f0d0009;
         public static final int list_item=0x7f0d002a;
+        public static final int lunchTimeFrom=0x7f0d008f;
+        public static final int lunchTimeLabel=0x7f0d008e;
+        public static final int lunchTimeTo=0x7f0d0090;
         public static final int mainLayout=0x7f0d0059;
         public static final int media_actions=0x7f0d0085;
         public static final int middle=0x7f0d0015;
@@ -1674,6 +1677,9 @@ containing a value of this type.
         public static final int noDataWeek=0x7f0d007b;
         public static final int none=0x7f0d000e;
         public static final int normal=0x7f0d000a;
+        public static final int officeTimeFrom=0x7f0d0092;
+        public static final int officeTimeLabel=0x7f0d0091;
+        public static final int officeTimeTo=0x7f0d0093;
         public static final int parentPanel=0x7f0d002d;
         public static final int pickerLayout=0x7f0d0055;
         public static final int previousDate=0x7f0d0056;
@@ -1682,7 +1688,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0d0005;
         public static final int progress_horizontal=0x7f0d0006;
         public static final int radio=0x7f0d003a;
-        public static final int reminder=0x7f0d008e;
+        public static final int reminder=0x7f0d0094;
         public static final int reminderDateView=0x7f0d006d;
         public static final int reminderList=0x7f0d006e;
         public static final int reminderTimeView=0x7f0d006b;
@@ -1791,10 +1797,12 @@ containing a value of this type.
         public static final int notification_template_media=0x7f04002b;
         public static final int notification_template_part_chronometer=0x7f04002c;
         public static final int notification_template_part_time=0x7f04002d;
-        public static final int select_dialog_item_material=0x7f04002e;
-        public static final int select_dialog_multichoice_material=0x7f04002f;
-        public static final int select_dialog_singlechoice_material=0x7f040030;
-        public static final int support_simple_spinner_dropdown_item=0x7f040031;
+        public static final int preference_lunchbreak=0x7f04002e;
+        public static final int preference_officetime=0x7f04002f;
+        public static final int select_dialog_item_material=0x7f040030;
+        public static final int select_dialog_multichoice_material=0x7f040031;
+        public static final int select_dialog_singlechoice_material=0x7f040032;
+        public static final int support_simple_spinner_dropdown_item=0x7f040033;
     }
     public static final class menu {
         public static final int menu_main=0x7f0e0000;
@@ -1851,17 +1859,18 @@ containing a value of this type.
         public static final int pref_reminders_summary=0x7f07002a;
         public static final int pref_reminders_title=0x7f07002b;
         public static final int pref_timepref_title=0x7f07002c;
-        public static final int shared_door_entry=0x7f07002d;
-        public static final int shared_door_exit=0x7f07002e;
-        public static final int shared_position=0x7f07002f;
-        public static final int shared_start=0x7f070030;
-        public static final int shared_timer_desk=0x7f070031;
-        public static final int shared_timer_office=0x7f070032;
-        public static final int shared_timer_outdoor=0x7f070033;
-        public static final int status_bar_notification_info_overflow=0x7f070034;
-        public static final int title_activity_main_activity2=0x7f070035;
-        public static final int title_activity_navigation_drawer=0x7f070036;
-        public static final int title_activity_navigation_drawer_fragment=0x7f070037;
+        public static final int pref_timing_title=0x7f07002d;
+        public static final int shared_door_entry=0x7f07002e;
+        public static final int shared_door_exit=0x7f07002f;
+        public static final int shared_position=0x7f070030;
+        public static final int shared_start=0x7f070031;
+        public static final int shared_timer_desk=0x7f070032;
+        public static final int shared_timer_office=0x7f070033;
+        public static final int shared_timer_outdoor=0x7f070034;
+        public static final int status_bar_notification_info_overflow=0x7f070035;
+        public static final int title_activity_main_activity2=0x7f070036;
+        public static final int title_activity_navigation_drawer=0x7f070037;
+        public static final int title_activity_navigation_drawer_fragment=0x7f070038;
     }
     public static final class style {
         public static final int AlertDialog_AppCompat=0x7f090073;

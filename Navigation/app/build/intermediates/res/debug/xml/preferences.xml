@@ -43,29 +43,17 @@
 
     <PreferenceCategory
         android:key="pref_key_office_timings"
-        android:title="@string/pref_office_time_title">
+        android:title="@string/pref_timing_title">
 
         <Preference
-            android:key="pref_key_office_time_from"
-            android:title="FROM          00:00" />
+            android:title="@string/pref_office_time_title"
+            android:key="pref_key_office_time"
+            android:layout="@layout/preference_officetime" />
 
         <Preference
-            android:key="pref_key_office_time_to"
-            android:title="TO               00:00" />
-
-    </PreferenceCategory>
-
-    <PreferenceCategory
-        android:key="pref_key_lunch_timings"
-        android:title="@string/pref_lunch_timing_title">
-
-        <Preference
-            android:key="pref_key_lunch_time_from"
-            android:title="FROM          00:00" />
-
-        <Preference
-            android:key="pref_key_lunch_time_to"
-            android:title="TO               00:00" />
+            android:title="@string/pref_lunch_break_title"
+            android:key="pref_key_lunch_break"
+            android:layout="@layout/preference_lunchbreak" />
 
     </PreferenceCategory>
 

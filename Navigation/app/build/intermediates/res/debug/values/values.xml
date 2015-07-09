@@ -221,12 +221,13 @@
     <string name="pref_lunch_timing_title">Set Lunch Time</string>
     <string name="pref_notifications_summary">Notification Summary</string>
     <string name="pref_notifications_title">Notifications</string>
-    <string name="pref_office_time_title">Set Office Time</string>
+    <string name="pref_office_time_title">Office Time</string>
     <string name="pref_office_timings_summary">Office Timing Summary</string>
     <string name="pref_office_timings_title">Office Timings</string>
     <string name="pref_reminders_summary">Reminders Summary</string>
     <string name="pref_reminders_title">Reminders</string>
     <string name="pref_timepref_title">Pick Time</string>
+    <string name="pref_timing_title">SET TIMINGS</string>
     <string name="shared_door_entry">Entered door entry</string>
     <string name="shared_door_exit">entered door exit</string>
     <string name="shared_position">Shared position</string>
