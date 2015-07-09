@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
     TextView tv_main,tv_left,tv_right,header1,header2;
     String str_desk = "", str_outdoor = "", str_office = "";
     Long time_desk = 0L,time_office = 0L,time_outdoor = 0L;
-    int secs, mins, hours, pos = 3, prev_pos = 0;
+    int secs, mins, hours, prev_pos = 0;
     Handler chHandler = new Handler();
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
@@ -156,7 +156,7 @@ public class HomeFragment extends Fragment {
 
     public Runnable timer = new Runnable() {
         public void run() {
-            chHandler.postDelayed(timer, 1000);
+            int pos = 3;
             try {
                 pos = sharedPref.getInt(getString(R.string.shared_position), 3);
                 time_desk = sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
@@ -227,14 +227,30 @@ public class HomeFragment extends Fragment {
                 }
             }
             else {
-                if (pos == 1)
+                if (pos == 1) {
                     tv_main.setText(str_desk);
-                else if (pos == 2)
+                    if (time_office == 0 && time_outdoor == 0) {
+                        tv_left.setText(str_outdoor);
+                        tv_right.setText(str_office);
+                    }
+                }
+                else if (pos == 2) {
                     tv_main.setText(str_office);
-                else if (pos == 3)
+                    if (time_desk == 0 && time_outdoor == 0) {
+                        tv_left.setText(str_desk);
+                        tv_right.setText(str_outdoor);
+                    }
+                }
+                else if (pos == 3) {
                     tv_main.setText(str_outdoor);
+                    if (time_desk == 0&& time_office == 0) {
+                        tv_left.setText(str_office);
+                        tv_right.setText(str_desk);
+                    }
+                }
             }
             prev_pos = pos;
+            chHandler.postDelayed(this, 1000);
         }
     };
 

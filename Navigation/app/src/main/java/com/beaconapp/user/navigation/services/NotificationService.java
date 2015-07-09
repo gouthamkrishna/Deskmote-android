@@ -34,10 +34,10 @@ public class NotificationService extends Service {
 
     private BeaconManager beaconManager1, beaconManager2, beaconManager3;
     private NotificationManager notificationManager;
-    private Handler cHandler = new Handler();
+    public Handler cHandler = new Handler();
     private Region region_door_entry, region_desk, region_door_exit;
     private int notification_id = 0;
-    private int obj = 0;
+    public int obj = 0;
     BluetoothAdapter bt=null;
     TimerClass obj1 = new TimerClass();
     TimerClass obj2 = new TimerClass();
@@ -199,19 +199,19 @@ public class NotificationService extends Service {
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
             if(obj ==1) {
-                obj1.customHandler.postDelayed(this, 1000);
                 obj1.timeInMilliseconds = SystemClock.uptimeMillis() - obj1.startTime;
                 findTime(obj1);
+                obj1.customHandler.postDelayed(this, 1000);
             }
             else if(obj == 2) {
-                obj2.customHandler.postDelayed(this, 1000);
                 obj2.timeInMilliseconds = SystemClock.uptimeMillis() - obj2.startTime;
                 findTime(obj2);
+                obj2.customHandler.postDelayed(this, 1000);
             }
             else if(obj == 3) {
-                obj3.customHandler.postDelayed(this, 1000);
                 obj3.timeInMilliseconds = SystemClock.uptimeMillis() - obj3.startTime;
                 findTime(obj3);
+                obj3.customHandler.postDelayed(this, 1000);
             }
         }
     };
@@ -248,7 +248,6 @@ public class NotificationService extends Service {
 
     public Runnable breakAlert = new Runnable() {
         public void run() {
-            cHandler.postDelayed(breakAlert, 60 * 1000);
             Calendar calendar = Calendar.getInstance();
             int hr = calendar.get(Calendar.HOUR_OF_DAY);
             int min = calendar.get(Calendar.MINUTE);
@@ -263,8 +262,8 @@ public class NotificationService extends Service {
                 obj1.startTime = SystemClock.uptimeMillis();
                 obj2.startTime = SystemClock.uptimeMillis();
                 obj3.startTime = SystemClock.uptimeMillis();
-                sharedPrefEditor.putLong(getString(R.string.shared_timer_desk),0L);
-                sharedPrefEditor.putLong(getString(R.string.shared_timer_office),0L);
+                sharedPrefEditor.putLong(getString(R.string.shared_timer_desk), 0L);
+                sharedPrefEditor.putLong(getString(R.string.shared_timer_office), 0L);
                 sharedPrefEditor.putLong(getString(R.string.shared_timer_outdoor),0L);
                 sharedPrefEditor.commit();
             }
@@ -276,6 +275,7 @@ public class NotificationService extends Service {
             else if (hr == sharedPref.getInt("pref_key_lunch_time_from_hour", 13) && min == sharedPref.getInt("pref_key_lunch_time_from_minute", 0)) {
                 postNotification("Lunch Break", "Break Alert");
             }
+            cHandler.postDelayed(breakAlert, 60 * 1000);
         }
     };
 
