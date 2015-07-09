@@ -36,7 +36,7 @@ public class HomeFragment extends Fragment {
     TextView tv_main,tv_left,tv_right,header1,header2;
     String str_desk = "", str_outdoor = "", str_office = "";
     Long time_desk = 0L,time_office = 0L,time_outdoor = 0L;
-    int secs, mins, hours;
+    int secs, mins, hours, pos = 3, prev_pos = 0;
     Handler chHandler = new Handler();
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
@@ -156,16 +156,11 @@ public class HomeFragment extends Fragment {
 
     public Runnable timer = new Runnable() {
         public void run() {
-
-            int c;
-            int pos = 3;
+            chHandler.postDelayed(timer, 1000);
             try {
                 pos = sharedPref.getInt(getString(R.string.shared_position), 3);
-
                 time_desk = sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
-
                 time_office = sharedPref.getLong(getString(R.string.shared_timer_office), 0);
-
                 time_outdoor = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
 
             } catch (Exception e) {
@@ -192,45 +187,54 @@ public class HomeFragment extends Fragment {
             mins = mins % 60;
             str_outdoor = ""+hours+" : "+mins+" : "+secs;
 
-            if (pos == 1) {
-                window.setStatusBarColor(Color.rgb(0, 151, 167));
-                d = new ColorDrawable(Color.rgb(0,188,212));
-                ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
-                sw_main.setImageResource(R.drawable.work_large);
-                sw_left.setImageResource(R.drawable.outdoor);
-                sw_right.setImageResource(R.drawable.office);
-                header1.setText("HOURS");
-                header2.setText("AT YOUR DESK");
-                tv_main.setText(str_desk);
-                tv_left.setText(str_outdoor);
-                tv_right.setText(str_office);
-            } else if (pos == 2) {
-                window.setStatusBarColor(Color.rgb(56,142,60));
-                d = new ColorDrawable(Color.rgb(76,175,80));
-                ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
-                sw_main.setImageResource(R.drawable.office_large);
-                sw_left.setImageResource(R.drawable.work);
-                sw_right.setImageResource(R.drawable.outdoor);
-                header1.setText("HOURS");
-                header2.setText("INSIDE OFFICE");
-                tv_main.setText(str_office);
-                tv_left.setText(str_desk);
-                tv_right.setText(str_outdoor);
-            } else if (pos == 3) {
-                window.setStatusBarColor(Color.rgb(251,192,45));
-                d = new ColorDrawable(Color.rgb(255,213,79));
-                ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
-                sw_main.setImageResource(R.drawable.outdoor_large);
-                sw_left.setImageResource(R.drawable.office);
-                sw_right.setImageResource(R.drawable.work);
-                header1.setText("HOURS");
-                header2.setText("OUTSIDE OFFICE");
-                tv_main.setText(str_outdoor);
-                tv_left.setText(str_office);
-                tv_right.setText(str_desk);
+            if (pos != prev_pos) {
+                if (pos == 1) {
+                    window.setStatusBarColor(Color.rgb(0, 151, 167));
+                    d = new ColorDrawable(Color.rgb(0,188,212));
+                    ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
+                    sw_main.setImageResource(R.drawable.work_large);
+                    sw_left.setImageResource(R.drawable.outdoor);
+                    sw_right.setImageResource(R.drawable.office);
+                    header1.setText("HOURS");
+                    header2.setText("AT YOUR DESK");
+                    tv_main.setText(str_desk);
+                    tv_left.setText(str_outdoor);
+                    tv_right.setText(str_office);
+                } else if (pos == 2) {
+                    window.setStatusBarColor(Color.rgb(56,142,60));
+                    d = new ColorDrawable(Color.rgb(76,175,80));
+                    ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
+                    sw_main.setImageResource(R.drawable.office_large);
+                    sw_left.setImageResource(R.drawable.work);
+                    sw_right.setImageResource(R.drawable.outdoor);
+                    header1.setText("HOURS");
+                    header2.setText("INSIDE OFFICE");
+                    tv_main.setText(str_office);
+                    tv_left.setText(str_desk);
+                    tv_right.setText(str_outdoor);
+                } else if (pos == 3) {
+                    window.setStatusBarColor(Color.rgb(251,192,45));
+                    d = new ColorDrawable(Color.rgb(255,213,79));
+                    ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
+                    sw_main.setImageResource(R.drawable.outdoor_large);
+                    sw_left.setImageResource(R.drawable.office);
+                    sw_right.setImageResource(R.drawable.work);
+                    header1.setText("HOURS");
+                    header2.setText("OUTSIDE OFFICE");
+                    tv_main.setText(str_outdoor);
+                    tv_left.setText(str_office);
+                    tv_right.setText(str_desk);
+                }
             }
-
-            chHandler.postDelayed(timer, 1000);
+            else {
+                if (pos == 1)
+                    tv_main.setText(str_desk);
+                else if (pos == 2)
+                    tv_main.setText(str_office);
+                else if (pos == 3)
+                    tv_main.setText(str_outdoor);
+            }
+            prev_pos = pos;
         }
     };
 
