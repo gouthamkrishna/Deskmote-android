@@ -10,11 +10,38 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/previousMonth"
+        android:src="@drawable/prev"
+        android:layout_toStartOf="@+id/monthView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text=""
+        android:id="@id/monthView"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/nextMonth"
+        android:src="@drawable/next"
+        android:layout_toEndOf="@id/monthView" />
+
     <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/bchart"
+        android:id="@+id/monthlybchart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"
+        android:layout_below="@+id/previousMonth"
+        android:layout_alignParentBottom="true"
         />
 
     <TextView
@@ -22,7 +49,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="NO DATA TO DISPLAY"
-        android:id="@+id/textView"
+        android:id="@+id/noDataMonth"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

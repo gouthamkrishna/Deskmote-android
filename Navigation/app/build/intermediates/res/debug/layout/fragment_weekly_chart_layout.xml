@@ -11,11 +11,38 @@
     android:background="#FFFFFF"
     tools:context=".MainActivity">
 
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/previousWeek"
+        android:src="@drawable/prev"
+        android:layout_toStartOf="@+id/weekView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:text=""
+        android:id="@id/weekView"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:paddingRight="10dp"
+        android:paddingLeft="10dp"
+        android:textSize="18sp"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/nextWeek"
+        android:src="@drawable/next"
+        android:layout_toEndOf="@id/weekView" />
+
     <com.github.mikephil.charting.charts.HorizontalBarChart
-        android:id="@+id/bchart"
+        android:id="@+id/weeklybchart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="invisible"
+        android:layout_below="@+id/previousWeek"
+        android:layout_alignParentBottom="true"
         />
 
     <TextView
@@ -23,7 +50,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="NO DATA TO DISPLAY"
-        android:id="@+id/textView"
+        android:id="@+id/noDataWeek"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

@@ -14,15 +14,15 @@
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:id="@+id/imageView4"
+        android:id="@+id/previousDate"
         android:src="@drawable/prev"
-        android:layout_toStartOf="@+id/textView4" />
+        android:layout_toStartOf="@+id/dateView" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="20dp"
         android:text=""
-        android:id="@id/textView4"
+        android:id="@id/dateView"
         android:layout_centerHorizontal="true"
         android:gravity="center"
         android:paddingRight="10dp"
@@ -32,21 +32,17 @@
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:id="@+id/imageView5"
+        android:id="@+id/nextDate"
         android:src="@drawable/next"
-        android:layout_toEndOf="@id/textView4" />
+        android:layout_toEndOf="@id/dateView" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/activity_horizontal_margin"
-        android:paddingRight="@dimen/activity_horizontal_margin"
-        android:paddingTop="@dimen/activity_vertical_margin"
-        android:paddingBottom="@dimen/activity_vertical_margin"
         tools:context=".MainActivity"
         android:background="#FFFFFF"
         android:id="@+id/mainLayout"
-        android:layout_below="@+id/imageView4"
+        android:layout_below="@+id/previousDate"
         android:layout_alignParentBottom="true"
         android:visibility="invisible">
 
@@ -57,7 +53,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="NO DATA TO DISPLAY"
-        android:id="@+id/textView"
+        android:id="@+id/noDataDay"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 

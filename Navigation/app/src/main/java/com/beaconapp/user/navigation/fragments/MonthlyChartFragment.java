@@ -45,10 +45,10 @@ public class MonthlyChartFragment extends Fragment {
         timestamp = calendar.getTimeInMillis();
 
         db = new DatabaseHandler(getActivity());
-        nodata = (TextView)view.findViewById(R.id.textView);
+        nodata = (TextView)view.findViewById(R.id.noDataMonth);
         nodata.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         nodata.setTextSize(25f);
-        chart = (HorizontalBarChart)view.findViewById(R.id.bchart);
+        chart = (HorizontalBarChart)view.findViewById(R.id.monthlybchart);
         monthly = new ArrayList<>();
         monthly = db.getMonthlyStat(timestamp);
 

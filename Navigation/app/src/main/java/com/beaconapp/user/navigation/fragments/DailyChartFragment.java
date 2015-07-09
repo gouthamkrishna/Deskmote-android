@@ -58,8 +58,8 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_daily_chart_layout, container, false);
 
-        datePick = (TextView)view.findViewById(R.id.textView4);
-        noDataDisplay = (TextView)view.findViewById(R.id.textView);
+        datePick = (TextView)view.findViewById(R.id.dateView);
+        noDataDisplay = (TextView)view.findViewById(R.id.noDataDay);
         noDataDisplay.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         noDataDisplay.setTextSize(25f);
         Calendar calendar = Calendar.getInstance();
@@ -99,7 +99,6 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         mchart.setData(data);
         mchart.highlightValues(null);
         mchart.invalidate();
-
     }
 
     public void datePickerFunction() {
