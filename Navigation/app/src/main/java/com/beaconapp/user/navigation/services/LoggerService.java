@@ -26,7 +26,7 @@ public class  LoggerService extends IntentService {
     long timestamp, desktime, officetime, outdoortime;
 
     SharedPreferences sharedPref;
-    Boolean defaultValue = false, test_val;
+    boolean defaultValue = false, test_val;
     DatabaseHandler db = new DatabaseHandler(this);
     Calendar calendar;
     Intent alarmIntent;

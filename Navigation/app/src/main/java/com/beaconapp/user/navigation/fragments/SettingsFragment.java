@@ -2,22 +2,17 @@ package com.beaconapp.user.navigation.fragments;
 
 
 import android.annotation.TargetApi;
-import android.app.Fragment;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import com.beaconapp.user.navigation.activities.MainActivity;
 import com.beaconapp.user.navigation.R;
+import com.beaconapp.user.navigation.activities.MainActivity;
 
 import java.util.Calendar;
 
@@ -26,7 +21,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
 
     int timepickerID;
 
-    Preference pref_key_office_time, pref_key_lunch_break;
+    Preference pref_office_time_from, pref_lunch_break_to, pref_office_time_to, pref_lunch_break_from;
     TextView officeTimeFrom, officeTimeTo, lunchTimeFrom, lunchTimeTo;
     String picked_time, officeFrom, officeTo, lunchFrom, lunchTo;
     SharedPreferences sharedPref;
@@ -40,7 +35,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Settings");
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Settings");
 
         addPreferencesFromResource(R.xml.preferences);
 
@@ -51,65 +46,56 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
         lunchFrom = sharedPref.getString("lunch_start_time", "13 : 00");
         lunchTo = sharedPref.getString("lunch_end_time", "13 : 30");
 
-        pref_key_office_time = findPreference("pref_key_office_time");
-        pref_key_lunch_break = findPreference("pref_key_lunch_break");
+        pref_office_time_from = findPreference("pref_key_office_time_from");
+        pref_lunch_break_to = findPreference("pref_key_lunch_break_to");
+        pref_office_time_to = findPreference("pref_key_office_time_to");
+        pref_lunch_break_from = findPreference("pref_key_lunch_break_from");
 
-        pref_key_office_time.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        pref_office_time_from.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
-                officeTimeFrom = (TextView)getView().findViewById(R.id.officeTimeFrom);
-                officeTimeTo = (TextView)getView().findViewById(R.id.officeTimeTo);
-
-                officeTimeFrom.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        officeTimeFrom.setText(officeFrom);
-                        timepickerID=1;
-                        showTimeDialog();
-                    }
-                });
-
-                officeTimeTo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        officeTimeTo.setText(officeTo);
-                        timepickerID=2;
-                        showTimeDialog();
-                    }
-                });
-
-                return true;
+                officeTimeFrom = (TextView) getView().findViewById(R.id.officeFromTime);
+                timepickerID = 1;
+                showTimeDialog();
+                return false;
             }
         });
 
-        pref_key_lunch_break.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        pref_office_time_to.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @TargetApi(Build.VERSION_CODES.HONEYCOMB)
             @Override
             public boolean onPreferenceClick(Preference preference) {
 
-                lunchTimeFrom = (TextView)getView().findViewById(R.id.lunchTimeFrom);
-                lunchTimeTo = (TextView)getView().findViewById(R.id.lunchTimeTo);
+                officeTimeTo = (TextView)getView().findViewById(R.id.officeToTime);
+                timepickerID=2;
+                showTimeDialog();
+                return false;
+            }
+        });
 
-                lunchTimeFrom.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lunchTimeFrom.setText(lunchFrom);
-                        timepickerID=3;
-                        showTimeDialog();
-                    }
-                });
+        pref_lunch_break_from.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
 
-                lunchTimeTo.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lunchTimeTo.setText(lunchTo);
-                        timepickerID=4;
-                        showTimeDialog();
-                    }
-                });
-                return true;
+                lunchTimeFrom = (TextView)getView().findViewById(R.id.lunchFromTime);
+                timepickerID=3;
+                showTimeDialog();
+                return false;
+            }
+        });
+
+        pref_lunch_break_to.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+
+                lunchTimeTo = (TextView)getView().findViewById(R.id.lunchToTime);
+                timepickerID=4;
+                showTimeDialog();
+                return false;
             }
         });
 
@@ -139,6 +125,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
                 sharedPrefEditor.putInt("pref_key_office_time_from_hour", hourOfDay);
                 sharedPrefEditor.putInt("pref_key_office_time_from_minute", minute);
                 sharedPrefEditor.commit();
+                officeTimeFrom.setText(picked_time);
                 break;
             case 2:
                 picked_time = ""+hour+" : "+min;
@@ -147,6 +134,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
                 sharedPrefEditor.putInt("pref_key_office_time_to_hour", hourOfDay);
                 sharedPrefEditor.putInt("pref_key_office_time_to_minute", minute);
                 sharedPrefEditor.commit();
+                officeTimeTo.setText(picked_time);
                 break;
             case 3:
                 picked_time = ""+hour+" : "+min;
@@ -155,6 +143,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
                 sharedPrefEditor.putInt("pref_key_lunch_time_from_hour", hourOfDay);
                 sharedPrefEditor.putInt("pref_key_lunch_time_from_minute", minute);
                 sharedPrefEditor.commit();
+                lunchTimeFrom.setText(picked_time);
                 break;
             case 4:
                 picked_time = ""+hour+" : "+min;
@@ -163,6 +152,7 @@ public class SettingsFragment extends PreferenceFragment implements TimePickerDi
                 sharedPrefEditor.putInt("pref_key_lunch_time_to_hour", hourOfDay);
                 sharedPrefEditor.putInt("pref_key_lunch_time_to_minute", minute);
                 sharedPrefEditor.commit();
+                lunchTimeTo.setText(picked_time);
                 break;
         }
     }

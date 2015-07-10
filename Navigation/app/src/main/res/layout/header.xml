@@ -23,7 +23,6 @@
             android:text="Elizabeth George"
             android:textSize="14sp"
             android:textStyle="bold"
-
             />
 
         <TextView
