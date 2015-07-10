@@ -11,9 +11,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.DailyStat;
@@ -42,6 +42,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
     private String Xdata[] = {"At Desk", "Inside Office", "Outside Office"};
     long current_timestamp, picked_timestamp;
     TextView datePick, noDataDisplay;
+    ImageView preDay, nextDay;
     DatePickerFragment newDateFragment;
     Date cDate;
     String date;
@@ -60,6 +61,9 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
         datePick = (TextView)view.findViewById(R.id.dateView);
         noDataDisplay = (TextView)view.findViewById(R.id.noDataDay);
+        preDay = (ImageView)view.findViewById(R.id.previousDate);
+        nextDay = (ImageView)view.findViewById(R.id.nextDate);
+
         noDataDisplay.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         noDataDisplay.setTextSize(25f);
         Calendar calendar = Calendar.getInstance();
@@ -71,7 +75,8 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
         setView();
         datePickerFunction();
-
+        previousDayFunction();
+        nextDayFunction();
         return view;
     }
 
@@ -115,16 +120,41 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         });
     }
 
+    public void previousDayFunction(){
+        preDay.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                picked_timestamp = picked_timestamp - 86400000L;
+                setView();
+            }
+        });
+    }
+
+    public void nextDayFunction(){
+        nextDay.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                picked_timestamp = picked_timestamp + 86400000L;
+                setView();
+            }
+        });
+    }
+
     public void onDateSelected (int selected_year, int selected_month, int selected_day) {
 
         cDate = new Date(selected_year-1900,selected_month,selected_day);
-        date = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
         picked_timestamp = cDate.getTime();
-        datePick.setText(date);
         setView();
     }
 
     private void setView() {
+
+        cDate = new Date(picked_timestamp);
+        date = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+        datePick.setText(date);
+
         if(current_timestamp-picked_timestamp >= 86400000) {
             db = new DatabaseHandler(getActivity());
             DailyStat dailyStat = db.getSelectedDayStat(picked_timestamp);
@@ -160,9 +190,6 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
             mainLayout.setVisibility(View.VISIBLE);
             noDataDisplay.setVisibility(View.INVISIBLE);
 
-            cDate = new Date(picked_timestamp);
-            date = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
-            datePick.setText(date);
 
             mchart = new PieChart(getActivity());
 

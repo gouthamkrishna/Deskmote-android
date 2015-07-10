@@ -12,7 +12,7 @@ import com.beaconapp.user.navigation.R;
 
 public class SplashActivity extends ActionBarActivity {
 
-    public static final int DELAY = 3000;
+    public static final int DELAY = 1000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

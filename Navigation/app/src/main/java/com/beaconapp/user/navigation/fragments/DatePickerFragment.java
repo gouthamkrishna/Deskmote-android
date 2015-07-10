@@ -14,12 +14,17 @@ public class DatePickerFragment extends DialogFragment
     int flag = 0;
     NotificationFragment notificationFragment;
     DailyChartFragment dailyChartFragment;
+    WeeklyChartFragment weeklyChartFragment;
 
     public interface NotificationFragment {
         public void onDateSelected(int year, int month, int day);
     }
 
     public interface DailyChartFragment {
+        public void onDateSelected(int year, int month, int day);
+    }
+
+    public interface WeeklyChartFragment {
         public void onDateSelected(int year, int month, int day);
     }
 
@@ -33,6 +38,12 @@ public class DatePickerFragment extends DialogFragment
         dailyChartFragment = dailyFragment;
         flag = 2;
     }
+
+    public DatePickerFragment(com.beaconapp.user.navigation.fragments.WeeklyChartFragment weeklyFragment) {
+        weeklyChartFragment = weeklyFragment;
+        flag = 3;
+    }
+
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -53,6 +64,9 @@ public class DatePickerFragment extends DialogFragment
         }
         if(flag==2) {
             dailyChartFragment.onDateSelected(year, month, day);
+        }
+        if (flag==3) {
+            weeklyChartFragment.onDateSelected(year, month, day);
         }
     }
 }
