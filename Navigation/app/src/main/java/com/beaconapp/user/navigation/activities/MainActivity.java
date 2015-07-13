@@ -251,18 +251,11 @@ public class MainActivity extends ActionBarActivity{
 
 
         if (id == R.id.reminder) {
-//            resetAdapter();
-//            fragmentManager = getSupportFragmentManager();
-//            fragmentTransaction = fragmentManager.beginTransaction();
-//            fragmentTransaction.replace(R.id.container, new NotificationFragment());
-//            fragmentTransaction.commit();
-//            ICONS[2] = R.drawable.reminder_active;
-//            mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
-//            mRecyclerView.setAdapter(mAdapter);
+
             ReminderFragment dialogFragment = new ReminderFragment ();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            dialogFragment.show(fragmentTransaction, "Date picker");
+            dialogFragment.show(fragmentTransaction, "");
         }
 
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);

@@ -5,13 +5,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.v4.app.DialogFragment;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -60,7 +63,12 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.reminder_dialog, container, false);
-        getDialog().setTitle("Add Reminder");
+        getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        TextView title = (TextView)rootView.findViewById(R.id.title);
+        title.setText("Add Reminder");
+        title.setGravity(Gravity.CENTER);
+        title.setTextSize(20);
+        title.setTextColor(Color.BLACK);
 
         db_reminder = new ReminderDatabaseHandler(getActivity());
         tvDisplayDate = (TextView)rootView.findViewById(R.id.reminderDateView);
