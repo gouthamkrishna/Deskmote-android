@@ -21,14 +21,6 @@
     <string name="pref_health_title">Health Warnings</string>
     <string name="pref_office_timings_summary">Office Timing Summary</string>
     <string name="pref_office_timings_title">Office Timings</string>
-    <string name="pref_office_time_title">Office Time</string>
-    <string name="pref_lunch_break_title">Lunch Break</string>
-    <string name="pref_timepref_title">Pick Time</string>
-    <string name="pref_lunch_timing_title">Set Lunch Time</string>
-    <string name="office_time_from">FROM    00:00</string>
-    <string name="office_time_to">TO      00:00</string>
-    <string name="lunch_time_from">FROM    00:00</string>
-    <string name="lunch_time_to">TO      00:00</string>
 
     <string name="shared_start">Shared Start</string>
     <string name="shared_position">Shared position</string>
