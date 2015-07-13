@@ -15,6 +15,7 @@ public class DatePickerFragment extends DialogFragment
     NotificationFragment notificationFragment;
     DailyChartFragment dailyChartFragment;
     WeeklyChartFragment weeklyChartFragment;
+    MonthlyChartFragment monthlyChartFragment;
 
     public interface NotificationFragment {
         public void onDateSelected(int year, int month, int day);
@@ -25,6 +26,10 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public interface WeeklyChartFragment {
+        public void onDateSelected(int year, int month, int day);
+    }
+
+    public interface MonthlyChartFragment {
         public void onDateSelected(int year, int month, int day);
     }
 
@@ -42,6 +47,11 @@ public class DatePickerFragment extends DialogFragment
     public DatePickerFragment(com.beaconapp.user.navigation.fragments.WeeklyChartFragment weeklyFragment) {
         weeklyChartFragment = weeklyFragment;
         flag = 3;
+    }
+
+    public DatePickerFragment(com.beaconapp.user.navigation.fragments.MonthlyChartFragment monthlyFragment) {
+        monthlyChartFragment = monthlyFragment;
+        flag = 4;
     }
 
 
@@ -67,6 +77,9 @@ public class DatePickerFragment extends DialogFragment
         }
         if (flag==3) {
             weeklyChartFragment.onDateSelected(year, month, day);
+        }
+        if (flag==4) {
+            monthlyChartFragment.onDateSelected(year, month, day);
         }
     }
 }

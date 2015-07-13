@@ -1573,7 +1573,7 @@ containing a value of this type.
         public static final int icon_home=0x7f02004f;
         public static final int line=0x7f020050;
         public static final int next=0x7f020051;
-        public static final int notification_template_icon_bg=0x7f020063;
+        public static final int notification_template_icon_bg=0x7f020064;
         public static final int office=0x7f020052;
         public static final int office_large=0x7f020053;
         public static final int outdoor=0x7f020054;
@@ -1586,11 +1586,12 @@ containing a value of this type.
         public static final int profile_active=0x7f02005b;
         public static final int reminder=0x7f02005c;
         public static final int reminder_active=0x7f02005d;
-        public static final int settings=0x7f02005e;
-        public static final int settings_active=0x7f02005f;
-        public static final int tick=0x7f020060;
-        public static final int work=0x7f020061;
-        public static final int work_large=0x7f020062;
+        public static final int scaledbg=0x7f02005e;
+        public static final int settings=0x7f02005f;
+        public static final int settings_active=0x7f020060;
+        public static final int tick=0x7f020061;
+        public static final int work=0x7f020062;
+        public static final int work_large=0x7f020063;
     }
     public static final class id {
         public static final int DrawerLayout=0x7f0d0051;
@@ -1610,7 +1611,7 @@ containing a value of this type.
         public static final int action_mode_bar=0x7f0d003d;
         public static final int action_mode_bar_stub=0x7f0d003c;
         public static final int action_mode_close_button=0x7f0d0025;
-        public static final int action_settings=0x7f0d009f;
+        public static final int action_settings=0x7f0d0099;
         public static final int activity_chooser_view_content=0x7f0d0026;
         public static final int alertTitle=0x7f0d0030;
         public static final int always=0x7f0d0016;
@@ -1641,7 +1642,7 @@ containing a value of this type.
         public static final int end_padder=0x7f0d008d;
         public static final int expand_activities_button=0x7f0d0027;
         public static final int expanded_menu=0x7f0d0037;
-        public static final int fromTextView=0x7f0d0092;
+        public static final int fromTextView=0x7f0d008f;
         public static final int header1=0x7f0d005f;
         public static final int header2=0x7f0d005c;
         public static final int home=0x7f0d0004;
@@ -1660,13 +1661,10 @@ containing a value of this type.
         public static final int line3=0x7f0d008a;
         public static final int listMode=0x7f0d0009;
         public static final int list_item=0x7f0d002a;
-        public static final int lunchFrom=0x7f0d0091;
-        public static final int lunchFromTime=0x7f0d0093;
-        public static final int lunchTimeFrom=0x7f0d008f;
-        public static final int lunchTimeLabel=0x7f0d008e;
-        public static final int lunchTimeTo=0x7f0d0090;
-        public static final int lunchTo=0x7f0d0094;
-        public static final int lunchToTime=0x7f0d0096;
+        public static final int lunchFrom=0x7f0d008e;
+        public static final int lunchFromTime=0x7f0d0090;
+        public static final int lunchTo=0x7f0d0091;
+        public static final int lunchToTime=0x7f0d0093;
         public static final int mainLayout=0x7f0d0059;
         public static final int media_actions=0x7f0d0085;
         public static final int middle=0x7f0d0015;
@@ -1683,13 +1681,10 @@ containing a value of this type.
         public static final int noDataWeek=0x7f0d007b;
         public static final int none=0x7f0d000e;
         public static final int normal=0x7f0d000a;
-        public static final int officeFrom=0x7f0d009a;
-        public static final int officeFromTime=0x7f0d009b;
-        public static final int officeTimeFrom=0x7f0d0098;
-        public static final int officeTimeLabel=0x7f0d0097;
-        public static final int officeTimeTo=0x7f0d0099;
-        public static final int officeTo=0x7f0d009c;
-        public static final int officeToTime=0x7f0d009d;
+        public static final int officeFrom=0x7f0d0094;
+        public static final int officeFromTime=0x7f0d0095;
+        public static final int officeTo=0x7f0d0096;
+        public static final int officeToTime=0x7f0d0097;
         public static final int parentPanel=0x7f0d002d;
         public static final int pickerLayout=0x7f0d0055;
         public static final int previousDate=0x7f0d0056;
@@ -1698,7 +1693,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f0d0005;
         public static final int progress_horizontal=0x7f0d0006;
         public static final int radio=0x7f0d003a;
-        public static final int reminder=0x7f0d009e;
+        public static final int reminder=0x7f0d0098;
         public static final int reminderDateView=0x7f0d006d;
         public static final int reminderList=0x7f0d006e;
         public static final int reminderTimeView=0x7f0d006b;
@@ -1745,7 +1740,7 @@ containing a value of this type.
         public static final int timer_right=0x7f0d0062;
         public static final int title=0x7f0d002c;
         public static final int title_template=0x7f0d002f;
-        public static final int toTextView=0x7f0d0095;
+        public static final int toTextView=0x7f0d0092;
         public static final int topPanel=0x7f0d002e;
         public static final int up=0x7f0d0008;
         public static final int useLogo=0x7f0d0012;
@@ -1808,16 +1803,14 @@ containing a value of this type.
         public static final int notification_template_media=0x7f04002b;
         public static final int notification_template_part_chronometer=0x7f04002c;
         public static final int notification_template_part_time=0x7f04002d;
-        public static final int preference_lunchbreak=0x7f04002e;
-        public static final int preference_lunchtimefrom=0x7f04002f;
-        public static final int preference_lunchtimeto=0x7f040030;
-        public static final int preference_officetime=0x7f040031;
-        public static final int preference_officetimefrom=0x7f040032;
-        public static final int preference_officetimeto=0x7f040033;
-        public static final int select_dialog_item_material=0x7f040034;
-        public static final int select_dialog_multichoice_material=0x7f040035;
-        public static final int select_dialog_singlechoice_material=0x7f040036;
-        public static final int support_simple_spinner_dropdown_item=0x7f040037;
+        public static final int preference_lunchtimefrom=0x7f04002e;
+        public static final int preference_lunchtimeto=0x7f04002f;
+        public static final int preference_officetimefrom=0x7f040030;
+        public static final int preference_officetimeto=0x7f040031;
+        public static final int select_dialog_item_material=0x7f040032;
+        public static final int select_dialog_multichoice_material=0x7f040033;
+        public static final int select_dialog_singlechoice_material=0x7f040034;
+        public static final int support_simple_spinner_dropdown_item=0x7f040035;
     }
     public static final class menu {
         public static final int menu_main=0x7f0e0000;

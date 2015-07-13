@@ -11,15 +11,18 @@
     tools:context=".MainActivity">
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/previousMonth"
         android:src="@drawable/prev"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginRight="10dp"
         android:layout_toStartOf="@+id/monthView" />
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="30dp"
         android:text=""
         android:id="@id/monthView"
         android:layout_centerHorizontal="true"
@@ -29,10 +32,13 @@
         android:textSize="18sp"/>
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:id="@+id/nextMonth"
         android:src="@drawable/next"
+        android:layout_marginLeft="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:layout_toEndOf="@id/monthView" />
 
     <com.github.mikephil.charting.charts.HorizontalBarChart
