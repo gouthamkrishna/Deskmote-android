@@ -12,15 +12,14 @@ import java.util.Calendar;
 public class TimePickerFragment extends DialogFragment
         implements TimePickerDialog.OnTimeSetListener {
 
-    NotificationFragment notificationTimeFragment;
+    ReminderFragment reminderFragment;
 
-    public interface NotificationFragment {
+    public interface ReminderFragment {
         public void onTimeSelected(int hour, int minute);
-//        public String onSelectionCancelled();
     }
 
-    public TimePickerFragment(com.beaconapp.user.navigation.fragments.NotificationFragment notTimeFragment) {
-        notificationTimeFragment = notTimeFragment;
+    public TimePickerFragment(com.beaconapp.user.navigation.fragments.ReminderFragment remTimeFragment) {
+        reminderFragment = remTimeFragment;
     }
 
     @Override
@@ -37,6 +36,6 @@ public class TimePickerFragment extends DialogFragment
 
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         // Do something with the time chosen by the user
-        notificationTimeFragment.onTimeSelected(hourOfDay, minute);
+        reminderFragment.onTimeSelected(hourOfDay, minute);
     }
 }

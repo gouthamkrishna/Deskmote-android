@@ -26,6 +26,7 @@ import com.beaconapp.user.navigation.classes.MyAdapter;
 import com.beaconapp.user.navigation.fragments.HomeFragment;
 import com.beaconapp.user.navigation.fragments.NotificationFragment;
 import com.beaconapp.user.navigation.fragments.ProfileFragment;
+import com.beaconapp.user.navigation.fragments.ReminderFragment;
 import com.beaconapp.user.navigation.fragments.SettingsFragment;
 import com.beaconapp.user.navigation.fragments.StatisticsFragment;
 
@@ -250,14 +251,18 @@ public class MainActivity extends ActionBarActivity{
 
 
         if (id == R.id.reminder) {
-            resetAdapter();
-            fragmentManager = getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, new NotificationFragment());
-            fragmentTransaction.commit();
-            ICONS[2] = R.drawable.reminder_active;
-            mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
-            mRecyclerView.setAdapter(mAdapter);
+//            resetAdapter();
+//            fragmentManager = getSupportFragmentManager();
+//            fragmentTransaction = fragmentManager.beginTransaction();
+//            fragmentTransaction.replace(R.id.container, new NotificationFragment());
+//            fragmentTransaction.commit();
+//            ICONS[2] = R.drawable.reminder_active;
+//            mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+//            mRecyclerView.setAdapter(mAdapter);
+            ReminderFragment dialogFragment = new ReminderFragment ();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            dialogFragment.show(fragmentTransaction, "Date picker");
         }
 
         return mDrawerToggle.onOptionsItemSelected(item) || super.onOptionsItemSelected(item);

@@ -12,12 +12,12 @@ public class DatePickerFragment extends DialogFragment
         implements DatePickerDialog.OnDateSetListener {
 
     int flag = 0;
-    NotificationFragment notificationFragment;
+    ReminderFragment reminderFragment;
     DailyChartFragment dailyChartFragment;
     WeeklyChartFragment weeklyChartFragment;
     MonthlyChartFragment monthlyChartFragment;
 
-    public interface NotificationFragment {
+    public interface ReminderFragment {
         public void onDateSelected(int year, int month, int day);
     }
 
@@ -33,8 +33,8 @@ public class DatePickerFragment extends DialogFragment
         public void onDateSelected(int year, int month, int day);
     }
 
-    public DatePickerFragment(com.beaconapp.user.navigation.fragments.NotificationFragment notFragment) {
-        notificationFragment = notFragment;
+    public DatePickerFragment(com.beaconapp.user.navigation.fragments.ReminderFragment remFragment) {
+        reminderFragment = remFragment;
         flag = 1;
     }
 
@@ -70,7 +70,7 @@ public class DatePickerFragment extends DialogFragment
     public void onDateSet(DatePicker view, int year, int month, int day) {
         // Do something with the date chosen by the user
         if(flag==1) {
-            notificationFragment.onDateSelected(year, month, day);
+            reminderFragment.onDateSelected(year, month, day);
         }
         if(flag==2) {
             dailyChartFragment.onDateSelected(year, month, day);
