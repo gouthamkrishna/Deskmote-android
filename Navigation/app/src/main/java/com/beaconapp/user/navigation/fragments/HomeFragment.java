@@ -126,6 +126,8 @@ public class HomeFragment extends Fragment {
 
     @Override
     public void onResume() {
+        chHandler.removeCallbacks(timer);
+        chHandler.postDelayed(timer, 0);
         super.onResume();
     }
 
@@ -135,22 +137,12 @@ public class HomeFragment extends Fragment {
     }
     @Override
     public void onStop() {
-        try {
-            chHandler.removeCallbacks(timer);
-            chHandler = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        chHandler.removeCallbacks(timer);
         super.onStop();
     }
     @Override
     public void onDestroy() {
-        try {
-            chHandler.removeCallbacks(timer);
-            chHandler = null;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        chHandler.removeCallbacks(timer);
         super.onDestroy();
     }
 
@@ -255,4 +247,3 @@ public class HomeFragment extends Fragment {
     };
 
 }
-

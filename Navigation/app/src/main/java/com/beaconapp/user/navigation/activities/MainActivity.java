@@ -60,6 +60,7 @@ public class MainActivity extends ActionBarActivity{
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        savednotes = PreferenceManager.getDefaultSharedPreferences(this);
 
         TITLES = new String[]{"Home", "Statistics", "Reminders", "Profile", "Settings"};
         ICONS = new int[]{R.drawable.home, R.drawable.graph, R.drawable.reminder, R.drawable.profile, R.drawable.settings};
@@ -125,6 +126,13 @@ public class MainActivity extends ActionBarActivity{
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(drawerView.getWindowToken(), 0);
+
+                PROFILE = savednotes.getString("PATH_KEY", PROFILE);
+                NAME = savednotes.getString("NAME_KEY", "NAME");
+                EMAIL = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
+                mAdapter = new MyAdapter(TITLES,ICONS,NAME,EMAIL,PROFILE);
+                mRecyclerView.setAdapter(mAdapter);
+
             }
 
             @Override
@@ -147,7 +155,7 @@ public class MainActivity extends ActionBarActivity{
     public void resetAdapter(){
 
         ICONS = new int[]{R.drawable.home, R.drawable.graph, R.drawable.reminder, R.drawable.profile, R.drawable.settings};
-        savednotes = PreferenceManager.getDefaultSharedPreferences(this);
+//        savednotes = PreferenceManager.getDefaultSharedPreferences(this);
         PROFILE = savednotes.getString("PATH_KEY", PROFILE);
         NAME = savednotes.getString("NAME_KEY", "NAME");
         EMAIL = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
@@ -226,7 +234,7 @@ public class MainActivity extends ActionBarActivity{
 
 
     }
-        @Override
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
@@ -241,7 +249,7 @@ public class MainActivity extends ActionBarActivity{
         int id = item.getItemId();
 
 
-	if (id == R.id.reminder) {
+        if (id == R.id.reminder) {
             resetAdapter();
             fragmentManager = getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();

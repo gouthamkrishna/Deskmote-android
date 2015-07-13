@@ -36,7 +36,7 @@ public class NotificationService extends Service {
     private NotificationManager notificationManager;
     public Handler cHandler = new Handler();
     private Region region_door_entry, region_desk, region_door_exit;
-    private int notification_id = 0;
+    private static int NOTIFICATION_ID = 0;
     public int obj = 0;
     BluetoothAdapter bt=null;
     TimerClass obj1 = new TimerClass();
@@ -94,12 +94,12 @@ public class NotificationService extends Service {
                     sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 1);
                     sharedPrefEditor.commit();
                 }
-                postNotification("Entered region_door_entry", "Region Notification");
+//                postNotification("Entered region_door_entry", "Region Notification");
             }
 
             @Override
             public void onExitedRegion(Region region) {
-                postNotification("Exited region_door_entry", "Region Notification");
+//                postNotification("Exited region_door_entry", "Region Notification");
             }
         });
 
@@ -121,12 +121,12 @@ public class NotificationService extends Service {
                     sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 1);
                     sharedPrefEditor.commit();
                 }
-                postNotification("Entered region_door_exit", "Region Notification");
+//                postNotification("Entered region_door_exit", "Region Notification");
             }
 
             @Override
             public void onExitedRegion(Region region) {
-                postNotification("Exited region_door_exit", "Region Notification");
+//                postNotification("Exited region_door_exit", "Region Notification");
             }
         });
 
@@ -141,7 +141,7 @@ public class NotificationService extends Service {
                 obj = 1;
                 obj1.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
                 obj1.customHandler.postDelayed(updateTimerThread, 0);
-                postNotification("Entered region_desk", "Region Notification");
+//                postNotification("Entered region_desk", "Region Notification");
             }
 
             @Override
@@ -154,7 +154,7 @@ public class NotificationService extends Service {
                 obj = 2;
                 obj2.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_office), 0);
                 obj2.customHandler.postDelayed(updateTimerThread, 0);
-                postNotification("Exited region_desk", "Region Notification");
+//                postNotification("Exited region_desk", "Region Notification");
             }
         });
 
@@ -220,7 +220,7 @@ public class NotificationService extends Service {
 
         if(ob == obj1) {
             shared_variable = getString(R.string.shared_timer_desk);
-            if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 10 ) {
+            if ((sharedPref.getBoolean("pref_key_health",true) && ((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 40) ) {
                 String msg2 = "Go Take a Break";
                 postNotification(msg2, "Health Warning");
             }
@@ -230,10 +230,10 @@ public class NotificationService extends Service {
 
         else if(ob == obj3) {
             shared_variable = getString(R.string.shared_timer_outdoor);
-            /*if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 10 ) {
+            if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 10 ) {
                 String msg2 = "Get inside Office";
                 postNotification(msg2, "Office Hours");
-            }*/
+            }
         }
 
         sharedPrefEditor.putLong(shared_variable, ob.timeInMilliseconds);
@@ -268,11 +268,11 @@ public class NotificationService extends Service {
                 sharedPrefEditor.commit();
             }
 
-            else if ((hr == 11 && min == 00) || (hr == 16 && min == 00)) {
+            else if ((sharedPref.getBoolean("pref_key_break",true)) && ((hr == 11 && min == 00) || (hr == 16 && min == 00))) {
                 postNotification("Tea Break", "Break Alert");
             }
 
-            else if (hr == sharedPref.getInt("pref_key_lunch_time_from_hour", 13) && min == sharedPref.getInt("pref_key_lunch_time_from_minute", 0)) {
+            else if ((sharedPref.getBoolean("pref_key_break",true)) && hr == sharedPref.getInt("pref_key_lunch_time_from_hour", 13) && min == sharedPref.getInt("pref_key_lunch_time_from_minute", 0)) {
                 postNotification("Lunch Break", "Break Alert");
             }
             cHandler.postDelayed(breakAlert, 60 * 1000);
@@ -280,14 +280,16 @@ public class NotificationService extends Service {
     };
 
     private void postNotification(String msg, String title) {
-        Notification notification = new Notification.Builder(getBaseContext())
-                .setSmallIcon(R.drawable.beacon_gray)
-                .setContentTitle(title)
-                .setContentText(msg)
-                .setAutoCancel(true)
-                .build();
-        notification.defaults |= Notification.DEFAULT_SOUND;
-        notification.defaults |= Notification.DEFAULT_LIGHTS;
-        notificationManager.notify(notification_id, notification);
+        if (sharedPref.getBoolean("pref_key_notifications", true)) {
+            Notification notification = new Notification.Builder(getBaseContext())
+                    .setSmallIcon(R.drawable.beacon_gray)
+                    .setContentTitle(title)
+                    .setContentText(msg)
+                    .setAutoCancel(true)
+                    .build();
+            notification.defaults |= Notification.DEFAULT_SOUND;
+            notification.defaults |= Notification.DEFAULT_LIGHTS;
+            notificationManager.notify(NOTIFICATION_ID, notification);
+        }
     }
 }
