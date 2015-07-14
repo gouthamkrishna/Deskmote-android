@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.os.Build;
 
 import com.beaconapp.user.navigation.R;
+
+import java.util.Random;
 //import android.os.Vibrator;
 
 public class AlarmReceiver extends BroadcastReceiver {
@@ -23,6 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onReceive(Context context, Intent intent) {
+
         reminderMessage = intent.getStringExtra(TAG);
         notificationManager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         notification = new Notification.Builder(context)
@@ -39,6 +42,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         notification.ledOnMS = 1000;
         notification.ledOffMS = 300;
 
-        notificationManager.notify(NOTIFICATION_ID, notification);
+        notificationManager.notify(new Random().nextInt(100), notification);
     }
 }

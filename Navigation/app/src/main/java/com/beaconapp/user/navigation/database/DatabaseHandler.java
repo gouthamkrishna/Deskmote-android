@@ -137,8 +137,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<DailyStat> getWeeklyStat(long tstamp) {
         List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
 
-        long start_of_week = (((tstamp/604800000L)*604800000L)-19799000L);
-        long end_of_week = start_of_week+604798000L;
+        long start_of_week = (((tstamp/604800000L)*604800000L));
+        long end_of_week = start_of_week+604800000L;
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;

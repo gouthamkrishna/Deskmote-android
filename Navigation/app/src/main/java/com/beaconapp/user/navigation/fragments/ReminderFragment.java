@@ -176,7 +176,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
                 } else {
 
                     db_reminder.addReminder(new Reminder(timestamp, reminderDescription, displayDate, displayTime));
-                    temporaryReminder = db_reminder.getReminder(timestamp);
+                    temporaryReminder = db_reminder.getReminder(timestamp, reminderDescription);
                     Toast.makeText(getActivity(), "Alarm Set !!", Toast.LENGTH_SHORT).show();
 
                     alarmIntent = new Intent(getActivity(), AlarmReceiver.class);

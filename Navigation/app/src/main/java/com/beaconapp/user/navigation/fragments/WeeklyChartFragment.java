@@ -38,7 +38,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     TextView noDataDisplay, datePicker;
     long timestamp, picked_timestamp;
     DatePickerFragment newDateFragment;
-    Date sDate,eDate,cDate;
+    Date sDate,eDate;
     String startDate, endDate;
     ImageView preWeek, nextWeek;
 
@@ -80,8 +80,8 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         ArrayList<BarEntry> Yvalue2 = new ArrayList<>();
         ArrayList<BarEntry> Yvalue3 = new ArrayList<>();
 
-        sDate = new Date((((picked_timestamp+19800000L)/604800000L)*604800000L));
-        eDate = new Date(sDate.getTime()+604800000L);
+        sDate = new Date((((picked_timestamp)/604800000L)*604800000L));
+        eDate = new Date(sDate.getTime()+584999000);
         startDate = new SimpleDateFormat("MMM dd").format(sDate);
         endDate = new SimpleDateFormat("MMM dd, yyyy").format(eDate);
         datePicker.setText(startDate + " - " + endDate);
@@ -110,13 +110,13 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             dataSets.add(dataset3);
 
             ArrayList<String> labels = new ArrayList<String>();
+            labels.add("Fri");
+            labels.add("Sat");
+            labels.add("Sun");
             labels.add("Mon");
             labels.add("Tue");
             labels.add("Wed");
             labels.add("Thu");
-            labels.add("Fri");
-            labels.add("Sat");
-            labels.add("Sun");
 
             chart.animateXY(3000, 3000);
 
@@ -170,8 +170,10 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     @Override
     public void onDateSelected(int selected_year, int selected_month, int selected_day) {
 
-        cDate = new Date(selected_year-1900,selected_month,selected_day);
-        picked_timestamp = cDate.getTime();
+//        cDate = new Date(selected_year-1900,selected_month,selected_day);
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(selected_year, selected_month, selected_day);
+        picked_timestamp = calendar.getTimeInMillis();
         setView();
     }
 }
