@@ -1,6 +1,8 @@
 package com.beaconapp.user.navigation.fragments;
 
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageSwitcher;
@@ -28,21 +31,29 @@ import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.activities.MainActivity;
 import com.beaconapp.user.navigation.services.LoggerService;
 import com.beaconapp.user.navigation.services.NotificationService;
+import com.beaconapp.user.navigation.classes.CircularProgressDrawable;
 
 
 public class HomeFragment extends Fragment {
 
 
     TextView tv_main,tv_left,tv_right,header1,header2;
-    String str_desk = "", str_outdoor = "", str_office = "";
-    Long time_desk = 0L,time_office = 0L,time_outdoor = 0L;
-    int secs, mins, hours, prev_pos = 0;
+    String str_desk = "0 : 0 : 0", str_outdoor = "0 : 0 : 0", str_office = "0 : 0 : 0";
+    long time_desk = 0L,time_office = 0L,time_outdoor = 0L, duration = 0L;
+    int secs_desk, secs_office, secs_outdoor, mins, hours, prev_pos;
+    float progress_desk,progress_office,progress_outdoor;
     Handler chHandler = new Handler();
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
+    SharedPreferences.Editor sharedPrefEditor;
     boolean defaultValue = false;
     Drawable d;
     Window window;
+    CircularProgressDrawable drawable;
+    ImageView ivDrawable;
+    AnimatorSet animation = new AnimatorSet();
+    ObjectAnimator colorAnimator, progressAnimation;
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
@@ -64,14 +75,15 @@ public class HomeFragment extends Fragment {
         tv_main.setTypeface(face);
         tv_left.setTypeface(face);
         tv_right.setTypeface(face);
-
         chHandler.postDelayed(timer, 0);
+
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPrefEditor = sharedPref.edit();
+
         boolean start = sharedPref.getBoolean(getString(R.string.shared_start), defaultValue);
         if (!start) {
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean(getString(R.string.shared_start), true);
-            editor.commit();
+            sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
+            sharedPrefEditor.commit();
 
             Intent intent = new Intent(getActivity(), NotificationService.class);
             getActivity().startService(intent);
@@ -121,6 +133,13 @@ public class HomeFragment extends Fragment {
         sw_right.setInAnimation(in);
         sw_right.setOutAnimation(out);
 
+        ivDrawable = (ImageView) root.findViewById(R.id.iv_drawable);
+        drawable = new CircularProgressDrawable.Builder()
+                .setRingWidth(getResources().getDimensionPixelSize(R.dimen.drawable_ring_size))
+                .setOutlineColor(getResources().getColor(android.R.color.darker_gray))
+                .create();
+        ivDrawable.setImageDrawable(drawable);
+
         return root;
     }
 
@@ -154,33 +173,39 @@ public class HomeFragment extends Fragment {
                 time_desk = sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
                 time_office = sharedPref.getLong(getString(R.string.shared_timer_office), 0);
                 time_outdoor = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
-
-            } catch (Exception e) {
             }
-
-            secs = (int) (time_desk / 1000);
-            mins = secs / 60;
-            secs = secs % 60;
+            catch (Exception e ) {
+            }
+            secs_desk = (int) (time_desk / 1000);
+            mins = secs_desk / 60;
+            secs_desk = secs_desk % 60;
             hours = mins / 60;
             mins = mins % 60;
-            str_desk = ""+hours+" : "+mins+" : "+secs;
+            progress_desk = (float) ((float) secs_desk * 0.01666666666);
+            str_desk = "" + hours + " : " + mins + " : " + secs_desk;
 
-            secs = (int) (time_office / 1000);
-            mins = secs / 60;
-            secs = secs % 60;
+            secs_office = (int) (time_office / 1000);
+            mins = secs_office / 60;
+            secs_office = secs_office % 60;
             hours = mins / 60;
             mins = mins % 60;
-            str_office = ""+hours+" : "+mins+" : "+secs;
+            progress_office = (float) ((float) secs_office * 0.01666666666);
+            str_office = "" + hours + " : " + mins + " : " + secs_office;
 
-            secs = (int) (time_outdoor / 1000);
-            mins = secs / 60;
-            secs = secs % 60;
+            secs_outdoor = (int) (time_outdoor / 1000);
+            mins = secs_outdoor / 60;
+            secs_outdoor = secs_outdoor % 60;
             hours = mins / 60;
             mins = mins % 60;
-            str_outdoor = ""+hours+" : "+mins+" : "+secs;
+            progress_outdoor = (float) ((float) secs_outdoor * 0.01666666666);
+            str_outdoor = "" + hours + " : " + mins + " : " + secs_outdoor;
 
             if (pos != prev_pos) {
+
                 if (pos == 1) {
+                    duration = (1000 * 64) - (long) (1000 * 64 * progress_desk);
+                    runProgressBar(progress_desk,duration,0,188,212);
+
                     window.setStatusBarColor(Color.rgb(0, 151, 167));
                     d = new ColorDrawable(Color.rgb(0,188,212));
                     ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
@@ -192,7 +217,11 @@ public class HomeFragment extends Fragment {
                     tv_main.setText(str_desk);
                     tv_left.setText(str_outdoor);
                     tv_right.setText(str_office);
-                } else if (pos == 2) {
+                }
+                else if (pos == 2) {
+                    duration = (1000 * 64) - (long) (1000 * 64 * progress_office);
+                    runProgressBar(progress_office,duration,76,175,80);
+
                     window.setStatusBarColor(Color.rgb(56,142,60));
                     d = new ColorDrawable(Color.rgb(76,175,80));
                     ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
@@ -204,7 +233,11 @@ public class HomeFragment extends Fragment {
                     tv_main.setText(str_office);
                     tv_left.setText(str_desk);
                     tv_right.setText(str_outdoor);
-                } else if (pos == 3) {
+                }
+                else if (pos == 3) {
+                    duration = (1000 * 64)-(long)(1000*64*progress_outdoor);
+                    runProgressBar(progress_outdoor,duration,251,192,45);
+
                     window.setStatusBarColor(Color.rgb(251,192,45));
                     d = new ColorDrawable(Color.rgb(255,213,79));
                     ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
@@ -225,12 +258,20 @@ public class HomeFragment extends Fragment {
                         tv_left.setText(str_outdoor);
                         tv_right.setText(str_office);
                     }
+
+                    if (secs_desk == 0) {
+                        runProgressBar(0f,1000*64,0,188,212);
+                    }
                 }
                 else if (pos == 2) {
                     tv_main.setText(str_office);
                     if (time_desk == 0 && time_outdoor == 0) {
                         tv_left.setText(str_desk);
                         tv_right.setText(str_outdoor);
+                    }
+
+                    if (secs_office == 0) {
+                        runProgressBar(0f,1000*64,76,175,80);
                     }
                 }
                 else if (pos == 3) {
@@ -239,6 +280,9 @@ public class HomeFragment extends Fragment {
                         tv_left.setText(str_office);
                         tv_right.setText(str_desk);
                     }
+                    if (secs_outdoor == 0) {
+                        runProgressBar(0f, 1000 * 64, 251, 192, 45);
+                    }
                 }
             }
             prev_pos = pos;
@@ -246,4 +290,14 @@ public class HomeFragment extends Fragment {
         }
     };
 
+    void runProgressBar( float start, long duration, int r, int g, int b) {
+        progressAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.PROGRESS_PROPERTY,
+                start, 1f);
+        progressAnimation.setDuration(duration);
+        progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+        colorAnimator = ObjectAnimator.ofInt(drawable, CircularProgressDrawable.RING_COLOR_PROPERTY,
+                Color.rgb(r,g,b));
+        animation.playTogether(progressAnimation, colorAnimator);
+        animation.start();
+    }
 }

@@ -1,9 +1,8 @@
 package com.beaconapp.user.navigation.services;
 
 /**
- * Created by user on 30/6/15.
+ * Created by user on 22/6/15.
  */
-
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -27,9 +26,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Created by user on 22/6/15.
- */
 public class NotificationService extends Service {
 
     private BeaconManager beaconManager1, beaconManager2, beaconManager3;
@@ -49,6 +45,7 @@ public class NotificationService extends Service {
     public IBinder onBind(Intent arg0) {
         return null;
     }
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

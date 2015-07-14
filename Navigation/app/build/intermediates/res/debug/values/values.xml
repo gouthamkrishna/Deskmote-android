@@ -162,6 +162,11 @@
     <item name="dialog_fixed_width_minor" type="dimen">320dp</item>
     <item format="float" name="disabled_alpha_material_dark" type="dimen">0.30</item>
     <item format="float" name="disabled_alpha_material_light" type="dimen">0.26</item>
+    <!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/src/main/res/values/dimens.xml -->
+    <eat-comment/>
+    <dimen name="drawable_ring_size">7dip</dimen>
+    <!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/22.2.0/res/values/values.xml -->
+    <eat-comment/>
     <dimen name="notification_large_icon_height">64dp</dimen>
     <dimen name="notification_large_icon_width">64dp</dimen>
     <dimen name="notification_subtext_size">12dp</dimen>
