@@ -19,18 +19,17 @@ import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.DailyStat;
 import com.beaconapp.user.navigation.database.DatabaseHandler;
 import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.Highlight;
-import com.github.mikephil.charting.utils.PercentFormatter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 
 public class DailyChartFragment extends Fragment implements DatePickerFragment.DailyChartFragment {
@@ -39,13 +38,12 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
     private RelativeLayout mainLayout;
     private PieChart mchart;
     private long Ydata[] = {0, 0, 0}, total,stotal,mtotal,htotal;
-    private String Xdata[] = {"At Desk", "Inside Office", "Outside Office"};
     long current_timestamp, picked_timestamp;
-    TextView datePick, noDataDisplay;
+    TextView datePick, noDataDisplay, deskValue, officeValue, outsideValue;
     ImageView preDay, nextDay;
     DatePickerFragment newDateFragment;
     Date cDate;
-    String date;
+    String date, deskTime, officeTime, outsideTime;
 
     SharedPreferences sharedPref;
 
@@ -63,7 +61,16 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         noDataDisplay = (TextView)view.findViewById(R.id.noDataDay);
         preDay = (ImageView)view.findViewById(R.id.previousDate);
         nextDay = (ImageView)view.findViewById(R.id.nextDate);
+        deskValue = (TextView)view.findViewById(R.id.desk_value);
+        officeValue = (TextView)view.findViewById(R.id.inside_value);
+        outsideValue = (TextView)view.findViewById(R.id.outside_value);
 
+        outsideValue.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
+        outsideValue.setTextSize(20f);
+        deskValue.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
+        deskValue.setTextSize(20f);
+        officeValue.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
+        officeValue.setTextSize(20f);
         noDataDisplay.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         noDataDisplay.setTextSize(25f);
         Calendar calendar = Calendar.getInstance();
@@ -83,27 +90,26 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
     private void addData() {
 
         ArrayList<Entry> Yval = new ArrayList<Entry>();
-        for (int i = 0; i < Ydata.length; i++) {
+        for (int i = 0; i < 3; i++) {
             Yval.add(new Entry(Ydata[i], i));
         }
         ArrayList<String> Xval = new ArrayList<String>();
-        for (int i = 0; i < Xdata.length; i++) {
-            Xval.add(Xdata[i]);
+        for (int i = 0; i < 3; i++) {
+            Xval.add("");
         }
 
         PieDataSet dataset = new PieDataSet(Yval, "");
-        dataset.setSliceSpace(3);
-        dataset.setSelectionShift(13);
-
+        dataset.setSliceSpace(0);
+        dataset.setSelectionShift(8);
+        mchart.getLegend().setEnabled(false);
         dataset.setColors(new int[]{Color.rgb(1, 187, 212), Color.rgb(76, 175, 81), Color.rgb(255, 191, 6)});
         PieData data = new PieData(Xval, dataset);
-        data.setValueFormatter(new PercentFormatter());
-        data.setValueTextSize(11f);
-        data.setValueTextColor(Color.GRAY);
 
+        data.setDrawValues(false);
         mchart.setData(data);
-        mchart.highlightValues(null);
         mchart.invalidate();
+        mchart.setDrawSliceText(false);
+
     }
 
     public void datePickerFunction() {
@@ -152,7 +158,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
     private void setView() {
 
         cDate = new Date(picked_timestamp);
-        date = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+        date = new SimpleDateFormat("MMM dd, yyyy").format(cDate);
         datePick.setText(date);
 
         if(current_timestamp-picked_timestamp >= 86400000) {
@@ -190,13 +196,10 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
             mainLayout.setVisibility(View.VISIBLE);
             noDataDisplay.setVisibility(View.INVISIBLE);
 
-
             mchart = new PieChart(getActivity());
 
             mainLayout.addView(mchart);
             mainLayout.setBackgroundColor(Color.WHITE);
-
-            mchart.setUsePercentValues(true);
 
             mchart.setDescription("");
             mchart.setDrawHoleEnabled(true);
@@ -205,30 +208,33 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
             mchart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
 
             mchart.setCenterText("  TOTAL \n\n " + htotal + ":" + mtotal);
-            Legend i = mchart.getLegend();
-            i.setPosition(Legend.LegendPosition.LEFT_OF_CHART);
-            i.setTextSize(15f);
-            mchart.setHoleRadius(50);
-            mchart.setTransparentCircleRadius(10);
-
-            mchart.setRotationAngle(0);
-            mchart.setRotationEnabled(true);
-
+            mchart.setHoleRadius(60);
             addData();
 
         }
         else{
-           // mchart.setCenterText("NO DATA TO DISPLAY");
             mainLayout.setVisibility(View.INVISIBLE);
             noDataDisplay.setVisibility(View.VISIBLE);
         }
+
+        deskTime = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(Ydata[0]),
+                TimeUnit.MILLISECONDS.toMinutes(Ydata[0]) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(Ydata[0])));
+        officeTime = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(Ydata[1]),
+                TimeUnit.MILLISECONDS.toMinutes(Ydata[1]) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(Ydata[1])));
+        outsideTime = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(Ydata[2]),
+                TimeUnit.MILLISECONDS.toMinutes(Ydata[2]) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(Ydata[2])));
+
+
+        deskValue.setText(deskTime);
+        officeValue.setText(officeTime);
+        outsideValue.setText(outsideTime);
 
         mchart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry entry, int i, Highlight highlight) {
                 if (entry == null)
                     return;
-                //Toast.makeText(getActivity(), Xdata[entry.getXIndex()] + "'" + entry.getVal() + "%", Toast.LENGTH_LONG).show();
+
             }
 
             @Override
