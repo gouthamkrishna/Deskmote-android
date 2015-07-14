@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.beaconapp.user.navigation.R;
@@ -32,7 +31,6 @@ public class ListViewAdapter extends BaseAdapter {
     public class ViewHolder {
         TextView title;
         TextView time;
-        ImageView close;
     }
 
     @Override
@@ -57,7 +55,6 @@ public class ListViewAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.activity_list, null);
             holder.title = (TextView) view.findViewById(R.id.title);
             holder.time = (TextView) view.findViewById(R.id.time);
-            holder.close = (ImageView) view.findViewById(R.id.close);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();

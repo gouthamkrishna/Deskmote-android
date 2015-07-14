@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minWidth="1000dp"
+    android:minHeight="200dp"
+    android:padding="10dp"
+    android:weightSum="1"
+    android:layout_margin="10dp">
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:id="@+id/popUpHeader"
+        android:layout_weight="0.39" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:layout_weight="0.31">
+
+        <EditText
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/tagLine"
+            android:hint="Description"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="39dp"
+            android:layout_height="39dp"
+            android:id="@+id/saveReminder"
+            android:src="@drawable/add"/>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/timePicker"
+            android:src="@drawable/clock"/>
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/reminderTimeView"
+            android:textSize="20sp"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/timePicker"
+            android:paddingStart="20dp" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:id="@+id/datePicker"
+            android:src="@drawable/date1"
+            android:layout_alignParentTop="true"
+            android:layout_toStartOf="@+id/reminderDateView" />
+
+        <TextView
+            android:layout_width="140dp"
+            android:layout_height="fill_parent"
+            android:id="@+id/reminderDateView"
+            android:textSize="20sp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:paddingStart="20dp"/>
+
+    </RelativeLayout>
+
+</LinearLayout><!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/src/main/res/layout/reminder_dialog.xml -->

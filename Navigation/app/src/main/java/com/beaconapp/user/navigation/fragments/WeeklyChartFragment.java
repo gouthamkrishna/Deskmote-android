@@ -80,10 +80,10 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         ArrayList<BarEntry> Yvalue2 = new ArrayList<>();
         ArrayList<BarEntry> Yvalue3 = new ArrayList<>();
 
-        sDate = new Date(((picked_timestamp/604800000L)*604800000L)-19799000L);
-        eDate = new Date(sDate.getTime()+604798000L);
-        startDate = new SimpleDateFormat("yyyy.MM.dd").format(sDate);
-        endDate = new SimpleDateFormat("yyyy.MM.dd").format(eDate);
+        sDate = new Date((((picked_timestamp+19800000L)/604800000L)*604800000L));
+        eDate = new Date(sDate.getTime()+604800000L);
+        startDate = new SimpleDateFormat("MMM dd").format(sDate);
+        endDate = new SimpleDateFormat("MMM dd, yyyy").format(eDate);
         datePicker.setText(startDate + " - " + endDate);
 
         if(weekly.size()!=0) {

@@ -18,18 +18,16 @@
         android:src="@drawable/prev"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_toStartOf="@+id/dateView" />
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="true"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:text=""
-        android:id="@id/dateView"
+        android:id="@+id/dateView"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:textSize="18sp"/>
 
     <ImageView
@@ -39,17 +37,16 @@
         android:paddingBottom="5dp"
         android:id="@+id/nextDate"
         android:src="@drawable/next"
-        android:layout_marginLeft="10dp"
-        android:layout_toEndOf="@id/dateView" />
+        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true"/>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="250dp"
         tools:context=".MainActivity"
         android:background="#FFFFFF"
         android:id="@+id/mainLayout"
         android:layout_below="@+id/previousDate"
-        android:layout_alignParentBottom="true"
         android:visibility="invisible">
 
     </RelativeLayout>
@@ -60,8 +57,99 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="NO DATA TO DISPLAY"
         android:id="@+id/noDataDay"
-        android:layout_centerVertical="true"
+        android:layout_alignTop="@+id/mainLayout"
+        android:layout_marginTop="120dp"
         android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:id="@+id/desk_icon"
+        android:src="@drawable/desk_low"
+        android:layout_below="@+id/mainLayout"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginStart="40dp"/>
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:id="@+id/inside_icon"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/office_low"
+        android:layout_below="@+id/desk_icon"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"/>
+
+    <ImageView
+        android:layout_width="18dp"
+        android:layout_height="18dp"
+        android:id="@+id/outside_icon"
+        android:layout_marginTop="30dp"
+        android:src="@drawable/outdoor_low"
+        android:layout_below="@+id/inside_icon"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:text="AT YOUR DESK"
+        android:textSize="15sp"
+        android:gravity="center"
+        android:textAlignment="center"
+        android:id="@+id/at_your_desk"
+        android:layout_alignTop="@+id/desk_icon"
+        android:layout_toEndOf="@+id/desk_icon"
+        android:layout_marginStart="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:text="INSIDE OFFICE"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:id="@+id/inside_office"
+        android:layout_alignTop="@+id/inside_icon"
+        android:layout_toEndOf="@+id/inside_icon"
+        android:layout_marginStart="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:text="OUTSIDE OFFICE"
+        android:gravity="center"
+        android:textSize="15sp"
+        android:textAlignment="center"
+        android:id="@+id/outside_office"
+        android:layout_alignTop="@+id/outside_icon"
+        android:layout_toEndOf="@+id/outside_icon"
+        android:layout_marginStart="30dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/desk_value"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/desk_icon"
+        android:layout_marginEnd="60dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/inside_value"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/inside_icon"
+        android:layout_marginEnd="60dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/outside_value"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/outside_icon"
+        android:layout_marginEnd="60dp"/>
 
 </RelativeLayout>
 <!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/src/main/res/layout/fragment_daily_chart_layout.xml -->

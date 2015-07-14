@@ -17,18 +17,16 @@
         android:src="@drawable/prev"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_toStartOf="@+id/monthView" />
+        android:layout_marginLeft="10dp"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:text=""
-        android:id="@id/monthView"
+        android:id="@+id/monthView"
         android:layout_centerHorizontal="true"
         android:gravity="center"
-        android:paddingRight="10dp"
-        android:paddingLeft="10dp"
         android:textSize="18sp"/>
 
     <ImageView
@@ -36,10 +34,10 @@
         android:layout_height="30dp"
         android:id="@+id/nextMonth"
         android:src="@drawable/next"
-        android:layout_marginLeft="10dp"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        android:layout_toEndOf="@id/monthView" />
+        android:layout_marginRight="10dp"
+        android:layout_alignParentEnd="true" />
 
     <com.github.mikephil.charting.charts.HorizontalBarChart
         android:id="@+id/monthlybchart"

@@ -24,17 +24,12 @@
         android:orientation="vertical"
         android:layout_marginTop="10dp">
 
-        <ListView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/reminderList"
-            android:dividerHeight="3dp"
-            android:divider="#FFFFFF"
-            android:listSelector="@android:color/transparent"
-            android:cacheColorHint="#0FBC00"
-            android:drawSelectorOnTop="false"
-            android:clickable="true"
-            android:focusableInTouchMode="true" />
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="#ffffff"
+            android:dividerHeight="3dp"/>
 
     </LinearLayout>
 

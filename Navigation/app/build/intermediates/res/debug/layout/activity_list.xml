@@ -15,7 +15,7 @@
         android:textAlignment="center"
         android:textColor="#528B8B"
         android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/close" />
+        />
 
     <TextView
         android:layout_width="fill_parent"
@@ -25,15 +25,6 @@
         android:textColor="#a8a8a8"
         android:layout_toEndOf="@+id/alarm"
         android:layout_below="@+id/title" />
-
-    <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:id="@+id/close"
-        android:src="@drawable/close"
-        android:paddingTop="10dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
 
     <ImageView
         android:layout_width="20dp"
