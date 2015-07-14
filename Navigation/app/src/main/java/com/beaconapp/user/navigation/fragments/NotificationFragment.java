@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
@@ -41,6 +42,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
     ListView listView;
     List<Reminder> reminderList;
     Calendar calendar;
+    TextView upcoming;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -50,7 +52,7 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
 
         db_reminder = new ReminderDatabaseHandler(getActivity());
         listView = (ListView) root.findViewById(R.id.reminderList);
-
+        upcoming = (TextView)root.findViewById(R.id.upcoming);
         setView();
         listView.setOnItemClickListener(this);
 
@@ -71,6 +73,10 @@ public class NotificationFragment extends Fragment implements AdapterView.OnItem
         arraylist = new ArrayList<Reminder>();
         reminderList = db_reminder.getAllReminders();
         listcounter=0;
+
+        if (listcounter<reminderList.size()){
+           upcoming.setVisibility(View.VISIBLE);
+        }
 
         while (listcounter<reminderList.size()) {
 

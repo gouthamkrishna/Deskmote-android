@@ -96,13 +96,13 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
                 Yvalue3.add(new BarEntry((float) weekly.get(i).getOutdoor_time(), i));
             }
             BarDataSet dataset1 = new BarDataSet(Yvalue1, "At Desk");
-            dataset1.setColor(Color.rgb(255, 191, 6));
+            dataset1.setColor(Color.rgb(1,187,212));
 
-            BarDataSet dataset2 = new BarDataSet(Yvalue2, "At Office");
+            BarDataSet dataset2 = new BarDataSet(Yvalue2, "Inside Office");
             dataset2.setColor(Color.rgb(76,175,81));
 
             BarDataSet dataset3 = new BarDataSet(Yvalue3, "Outside Office");
-            dataset3.setColor(Color.rgb(1,187,212));
+            dataset3.setColor(Color.rgb(255, 191, 6));
 
             ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
             dataSets.add(dataset1);

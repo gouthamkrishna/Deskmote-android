@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
+import com.beaconapp.user.navigation.activities.MainActivity;
 import com.beaconapp.user.navigation.classes.Reminder;
 import com.beaconapp.user.navigation.database.ReminderDatabaseHandler;
 import com.beaconapp.user.navigation.receivers.AlarmReceiver;
@@ -64,7 +65,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.reminder_dialog, container, false);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        TextView title = (TextView)rootView.findViewById(R.id.title);
+        TextView title = (TextView)rootView.findViewById(R.id.popUpHeader);
         title.setText("Add Reminder");
         title.setGravity(Gravity.CENTER);
         title.setTextSize(20);
@@ -199,7 +200,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     @Override
     public void onDismiss(DialogInterface dialog) {
 
-        if (flag) {
+        if (flag && (MainActivity.position==3)) {
             fragmentManager = getActivity().getSupportFragmentManager();
             fragmentTransaction = fragmentManager.beginTransaction();
             fragmentTransaction.replace(R.id.container, new NotificationFragment());

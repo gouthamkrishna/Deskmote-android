@@ -104,7 +104,7 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
 
             set1.setColors(new int[]{Color.rgb(1, 187, 212), Color.rgb(76, 175, 81), Color.rgb(255, 191, 6)});
             set1.setStackLabels(new String[]{
-                    "At Desk", "At Office", "Outside Office"});
+                    "At Desk", "Inside Office", "Outside Office"});
 
             chart.animateXY(3000, 3000);
 
