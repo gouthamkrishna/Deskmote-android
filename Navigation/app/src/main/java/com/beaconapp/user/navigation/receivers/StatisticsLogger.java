@@ -18,31 +18,13 @@ import com.beaconapp.user.navigation.services.NotificationService;
 
 public class StatisticsLogger extends BroadcastReceiver {
 
-    public static final String TIMESTAMP_ID = "com.beaconapp.user.deskmote.TIMESTAMP_ID";
-    public static final long SINGLEDAY_TIMESTAMP = 86400000L;
-    public static final int ALARM_ID = 1729;
-
-    long timeStamp = 0L;
-    Intent alarmIntent, start_logger_service;
-    PendingIntent pendingIntent;
-    AlarmManager manager;
+    Intent start_logger_service;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        timeStamp = intent.getLongExtra(TIMESTAMP_ID, timeStamp) + SINGLEDAY_TIMESTAMP;
-
-        alarmIntent = new Intent(context, StatisticsLogger.class);
-        alarmIntent.putExtra(TIMESTAMP_ID, timeStamp);
-        pendingIntent = PendingIntent.getBroadcast(context, ALARM_ID, alarmIntent, 0);
-        manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
         start_logger_service = new Intent(context, LoggerService.class);
-        start_logger_service.putExtra(TIMESTAMP_ID, timeStamp);
         context.startService(start_logger_service);
-
-        manager.setExact(AlarmManager.RTC_WAKEUP, timeStamp, pendingIntent);
-
     }
 }

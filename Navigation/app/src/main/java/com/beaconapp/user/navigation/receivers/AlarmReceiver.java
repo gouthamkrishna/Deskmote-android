@@ -17,7 +17,6 @@ import java.util.Random;
 public class AlarmReceiver extends BroadcastReceiver {
 
     public static final String TAG = "com.beaconapp.user.deskmote.TAG";
-    public static final int NOTIFICATION_ID = 113;
     public NotificationManager notificationManager;
     String reminderMessage;
     Notification notification;

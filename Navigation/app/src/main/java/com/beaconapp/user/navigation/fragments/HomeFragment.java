@@ -3,6 +3,9 @@ package com.beaconapp.user.navigation.fragments;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -29,9 +32,11 @@ import android.widget.ViewSwitcher;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.activities.MainActivity;
-import com.beaconapp.user.navigation.services.LoggerService;
+import com.beaconapp.user.navigation.receivers.StatisticsLogger;
 import com.beaconapp.user.navigation.services.NotificationService;
 import com.beaconapp.user.navigation.classes.CircularProgressDrawable;
+
+import java.util.Calendar;
 
 
 public class HomeFragment extends Fragment {
@@ -85,11 +90,17 @@ public class HomeFragment extends Fragment {
             sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
             sharedPrefEditor.commit();
 
-            Intent intent = new Intent(getActivity(), NotificationService.class);
-            getActivity().startService(intent);
+            Intent notificationServiceIntent = new Intent(getActivity(), NotificationService.class);
+            getActivity().startService(notificationServiceIntent);
 
-            Intent intent1 = new Intent(getActivity(), LoggerService.class);
-            getActivity().startService(intent1);
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 23);
+            calendar.set(Calendar.MINUTE, 50);
+            Intent alarmIntent = new Intent(getActivity(), StatisticsLogger.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), 1729, alarmIntent, 0);
+            AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingIntent);
+
         }
 
         sw_main = (ImageSwitcher) root.findViewById(R.id.sw_main);
