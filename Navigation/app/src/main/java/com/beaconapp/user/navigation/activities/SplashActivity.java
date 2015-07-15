@@ -24,7 +24,6 @@ public class SplashActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        /* New Handler to start the MainActivity and close this Splash-Screen after 3 seconds.*/
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

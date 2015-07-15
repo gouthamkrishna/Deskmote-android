@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListViewAdapter extends BaseAdapter {
-    // Declare Variables
+
     Context mContext;
     LayoutInflater inflater;
     private List<Reminder> reminderlist = null;

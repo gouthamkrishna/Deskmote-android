@@ -20,30 +20,19 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     private static final int TYPE_HEADER = 0;
     private static final int TYPE_ITEM = 1;
-
     private String mNavTitles[];
     private int mIcons[];
-
     private String name;
     private String path;
     private String email;
 
-
-    // Creating a ViewHolder which extends the RecyclerView View Holder
-    // ViewHolder are used to to store the inflated views in order to recycle them
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
+
         int Holderid;
-
-        TextView textView;
-        ImageView imageView;
-        ImageView profile;
-        TextView Name;
-        TextView email;
-
+        TextView textView, Name, email;
+        ImageView imageView, profile;
 
         public ViewHolder(View itemView,int ViewType) {
-
             super(itemView);
 
             if(ViewType == TYPE_ITEM) {
@@ -54,51 +43,39 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             }
             else{
 
-                Name = (TextView) itemView.findViewById(R.id.name);         // Creating Text View object from header.xml for name
-                email = (TextView) itemView.findViewById(R.id.email);       // Creating Text View object from header.xml for email
-                profile = (ImageView) itemView.findViewById(R.id.circleView);// Creating Image view object from header.xml for profile pic
-                Holderid = 0;                                                // Setting holder id = 0 as the object being populated are of type header view
+                Name = (TextView) itemView.findViewById(R.id.name);
+                email = (TextView) itemView.findViewById(R.id.email);
+                profile = (ImageView) itemView.findViewById(R.id.circleView);
+                Holderid = 0;
             }
         }
-
-
     }
-
-
 
     public MyAdapter(String Titles[],int Icons[],String Name,String Email, String Profile){
 
-        mNavTitles = Titles;
-        mIcons = Icons;
-        name = Name;
-        email = Email;
-        path = Profile;
-
+        this.mNavTitles = Titles;
+        this.mIcons = Icons;
+        this.name = Name;
+        this.email = Email;
+        this.path = Profile;
     }
-
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_ITEM) {
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false); //Inflating the layout
-
             ViewHolder vhItem = new ViewHolder(v,viewType); //Creating ViewHolder and passing the object of type view
-
             return vhItem;
 
         } else if (viewType == TYPE_HEADER) {
 
             View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header,parent,false); //Inflating the layout
-
             ViewHolder vhHeader = new ViewHolder(v,viewType); //Creating ViewHolder and passing the object of type view
-
             return vhHeader; //returning the object created
-
 
         }
         return null;
-
     }
 
     @Override
@@ -120,12 +97,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
     }
 
-
     @Override
     public int getItemCount() {
         return mNavTitles.length+1;
     }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -153,6 +128,5 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         }
 
         return  bitmap;
-
     }
 }
