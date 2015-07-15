@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,6 +70,12 @@ public class NotificationFragment extends Fragment {
             }
         };
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getActivity(), "Swipe to Delete !!", Toast.LENGTH_SHORT).show();
+            }
+        });
         listView.setMenuCreator(creator);
 
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
@@ -112,7 +119,7 @@ public class NotificationFragment extends Fragment {
         listcounter=0;
 
         if (listcounter<reminderList.size()){
-           upcoming.setVisibility(View.VISIBLE);
+            upcoming.setVisibility(View.VISIBLE);
         }
 
         while (listcounter<reminderList.size()) {
@@ -135,5 +142,6 @@ public class NotificationFragment extends Fragment {
         listViewAdapter = new ListViewAdapter(getActivity(), arraylist);
         listView.setAdapter(listViewAdapter);
     }
+
 }
 

@@ -5,18 +5,16 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,7 +44,8 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     Reminder temporaryReminder;
     ReminderDatabaseHandler db_reminder;
     TextView tvDisplayDate, tvDisplayTime;
-    ImageView datePickerIcon, timePickerIcon, saveReminderIcon;
+    TextView datePickerIcon, timePickerIcon;
+    Button saveReminderIcon,cancelReminderIcon;
     String displayTime = "", displayDate = "";
     TimePickerFragment newTimeFragment;
     DatePickerFragment newDateFragment;
@@ -65,18 +64,14 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.reminder_dialog, container, false);
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-        TextView title = (TextView)rootView.findViewById(R.id.popUpHeader);
-        title.setText("Add Reminder");
-        title.setGravity(Gravity.CENTER);
-        title.setTextSize(20);
-        title.setTextColor(Color.BLACK);
 
         db_reminder = new ReminderDatabaseHandler(getActivity());
         tvDisplayDate = (TextView)rootView.findViewById(R.id.reminderDateView);
         tvDisplayTime = (TextView)rootView.findViewById(R.id.reminderTimeView);
-        timePickerIcon = (ImageView) rootView.findViewById(R.id.timePicker);
-        datePickerIcon = (ImageView) rootView.findViewById(R.id.datePicker);
-        saveReminderIcon = (ImageView) rootView.findViewById(R.id.saveReminder);
+        timePickerIcon = (TextView) rootView.findViewById(R.id.reminderTimeView);
+        datePickerIcon = (TextView) rootView.findViewById(R.id.reminderDateView);
+        saveReminderIcon = (Button) rootView.findViewById(R.id.saveReminder);
+        cancelReminderIcon = (Button) rootView.findViewById(R.id.cancelReminder);
         reminderTagLine = (EditText)rootView.findViewById(R.id.tagLine);
         newDateFragment = new DatePickerFragment(this);
         newTimeFragment = new TimePickerFragment(this);
@@ -168,8 +163,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
                 reminderTagLine.setText("");
 
                 if (reminderDescription.equals("")) {
-
-                    Toast.makeText(getActivity(), "Title Empty !!", Toast.LENGTH_SHORT).show();
+                    reminderTagLine.setError("Empty field!!");
                 } else if (timestamp <= temporaryTimestamp) {
 
                     Toast.makeText(getActivity(), "Invalid Date or Time !!", Toast.LENGTH_SHORT).show();
@@ -189,7 +183,18 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
                 }
             }
         });
+
+        cancelReminderIcon.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick (View v) {
+                dismiss();
+            }
+        });
     }
+
+
+
 
     @Override
     public void onCancel(DialogInterface dialog) {

@@ -29,8 +29,7 @@ public class ListViewAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-        TextView title;
-        TextView time;
+        TextView title, time, date;
     }
 
     @Override
@@ -55,14 +54,14 @@ public class ListViewAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.activity_list, null);
             holder.title = (TextView) view.findViewById(R.id.title);
             holder.time = (TextView) view.findViewById(R.id.time);
+            holder.date = (TextView) view.findViewById(R.id.date);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
-        // Set the results into TextViews
         holder.title.setText(reminderlist.get(position).getTag());
         holder.time.setText(reminderlist.get(position).getTime());
-
+        holder.date.setText(reminderlist.get(position).getDate());
         return view;
     }
 }
