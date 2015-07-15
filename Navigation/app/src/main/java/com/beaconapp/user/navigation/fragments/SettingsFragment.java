@@ -14,11 +14,11 @@ import com.beaconapp.user.navigation.classes.SetTimePreference;
 
 public class SettingsFragment extends PreferenceFragment {
 
-    SetTimePreference pref_office_time_from, pref_lunch_break_to, pref_office_time_to, pref_lunch_break_from;
+    SetTimePreference pref_office_time, pref_lunch_break;
     String officeFrom, officeTo, lunchFrom, lunchTo;
     SharedPreferences sharedPref;
     PreferenceScreen preferenceScreen;
-    PreferenceCategory categoryOffice, categoryLunch;
+    PreferenceCategory setTimings;
 
     public SettingsFragment(){
 
@@ -33,8 +33,7 @@ public class SettingsFragment extends PreferenceFragment {
         addPreferencesFromResource(R.xml.preferences);
 
         preferenceScreen = this.getPreferenceScreen();
-        categoryOffice = new PreferenceCategory(preferenceScreen.getContext());
-        categoryLunch = new PreferenceCategory(preferenceScreen.getContext());
+        setTimings = new PreferenceCategory(preferenceScreen.getContext());
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
@@ -43,23 +42,13 @@ public class SettingsFragment extends PreferenceFragment {
         lunchFrom = sharedPref.getString("lunch_from_time", "13 : 00");
         lunchTo = sharedPref.getString("lunch_to_time", "13 : 30");
 
-        categoryOffice.setTitle("Office Timing");
-        preferenceScreen.addPreference(categoryOffice);
-        pref_office_time_from = new SetTimePreference(preferenceScreen.getContext(), "FROM", officeFrom, "office");
-        pref_office_time_from.setKey("key_office_from");
-        categoryOffice.addPreference(pref_office_time_from);
-        pref_office_time_to = new SetTimePreference(preferenceScreen.getContext(), "TO", officeTo, "officee");
-        pref_office_time_to.setKey("key_office_to");
-        categoryOffice.addPreference(pref_office_time_to);
-
-        categoryLunch.setTitle("Lunch Break");
-        preferenceScreen.addPreference(categoryLunch);
-        pref_lunch_break_from = new SetTimePreference(preferenceScreen.getContext(), "FROM", lunchFrom, "lunch");
-        pref_lunch_break_from.setKey("key_lunch_from");
-        categoryLunch.addPreference(pref_lunch_break_from);
-        pref_lunch_break_to = new SetTimePreference(preferenceScreen.getContext(), "TO", lunchTo, "lunch");
-        pref_lunch_break_to.setKey("key_lunch_to");
-        categoryLunch.addPreference(pref_lunch_break_to);
-
+        setTimings.setTitle("SET TIMINGS");
+        preferenceScreen.addPreference(setTimings);
+        pref_office_time = new SetTimePreference(preferenceScreen.getContext(), officeFrom, officeTo, "Office Time");
+        pref_office_time.setKey("key_office_time");
+        setTimings.addPreference(pref_office_time);
+        pref_lunch_break = new SetTimePreference(preferenceScreen.getContext(), lunchFrom, lunchTo, "Lunch Break");
+        pref_lunch_break.setKey("key_lunch_break");
+        setTimings.addPreference(pref_lunch_break);
     }
 }

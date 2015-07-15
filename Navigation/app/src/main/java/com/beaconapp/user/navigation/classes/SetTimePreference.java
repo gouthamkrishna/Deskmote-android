@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,24 +15,20 @@ import android.widget.TimePicker;
 
 import com.beaconapp.user.navigation.R;
 
-import java.util.Calendar;
 
-/**
- * Created by user on 13/7/15.
- */
 public class SetTimePreference extends Preference implements TimePickerDialog.OnTimeSetListener {
 
     Context mContext;
-    String mFromTo, mTime, mCategory;
-    TextView mFromToView, mTimeView;
+    String mFromTime, mToTime, mCategory, fromTo;
+    TextView mFromTimeView, mToTimeView, mTitle;
     RelativeLayout setTime;
 
-    public SetTimePreference(Context context, String fromTo, String time, String category) {
+    public SetTimePreference(Context context, String fromTime, String toTime, String category) {
         super(context);
 
         mContext = context;
-        mFromTo = fromTo;
-        mTime = time;
+        mFromTime = fromTime;
+        mToTime = toTime;
         mCategory = category;
     }
 
@@ -44,55 +41,71 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
     }
 
     @Override
-    protected void onBindView (View view) {
+    protected void onBindView (@NonNull View view) {
         super.onBindView(view);
-        setTime = (RelativeLayout)view.findViewById(R.id.setTimings);
-        setTime.setMinimumHeight(250);
-        mFromToView = (TextView)view.findViewById(R.id.fromToTextView);
-        mFromToView.setText(mFromTo);
-        mFromToView.setTextSize(18f);
-        mTimeView = (TextView)view.findViewById(R.id.fromToTime);
-        mTimeView.setText(mTime);
-        mTimeView.setTextSize(18f);
+        setTime = (RelativeLayout)view.findViewById(R.id.fromToSet);
+        setTime.setMinimumHeight(400);
+        mFromTimeView = (TextView)view.findViewById(R.id.fromTextView);
+        mFromTimeView.setText(mFromTime);
+        mFromTimeView.setTextSize(18f);
+        mToTimeView = (TextView)view.findViewById(R.id.toTextView);
+        mToTimeView.setText(mToTime);
+        mToTimeView.setTextSize(18f);
+        mTitle = (TextView)view.findViewById(R.id.titleFromTo);
+        mTitle.setText(mCategory);
+        mTitle.setTextSize(16f);
 
-        mTimeView.setOnClickListener(new View.OnClickListener() {
+        mFromTimeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                fromTo = "from";
                 showTimeDialog();
             }
         });
 
+        mToTimeView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fromTo = "to";
+                showTimeDialog();
+            }
+        });
     }
     private void showTimeDialog(){
 
-        final Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        new TimePickerDialog(mContext,this, hour, minute, true).show();
+        new TimePickerDialog(mContext,this, 10, 10, true).show();
 
     }
 
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        String hour=""+hourOfDay, min=""+minute, picked_time, startEnd;
-
-        if(mFromTo.equals("FROM")) {
-            startEnd = "from";
-        }
-        else {
-            startEnd = "to";
-        }
+        String hour=""+hourOfDay, min=""+minute, picked_time, category;
 
         if(hourOfDay<10){hour = "0"+hourOfDay;}
         if(minute<10){min = "0"+minute;}
         picked_time = ""+hour+" : "+min;
-        mTimeView.setText(picked_time);
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);;
+
+        if (mCategory.equals("Office Time")) {
+            category = "office";
+        }
+        else {
+            category = "lunch";
+        }
+
+        if (fromTo.equals("from")) {
+            mFromTimeView.setText(picked_time);
+        }
+        else {
+            mToTimeView.setText(picked_time);
+        }
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
-        sharedPrefEditor.putString(mCategory+"_"+startEnd+"_time", picked_time);
-        sharedPrefEditor.putInt("pref_key_" + mCategory + "_time_" + startEnd + "_hour", hourOfDay);
-        sharedPrefEditor.putInt("pref_key_"+mCategory+"_time_"+startEnd+"_minute", minute);
+        sharedPrefEditor.putString(category+"_"+fromTo+"_time", picked_time);
+        sharedPrefEditor.putInt("pref_key_" + category + "_time_" + fromTo + "_hour", hourOfDay);
+        sharedPrefEditor.putInt("pref_key_"+category+"_time_"+fromTo+"_minute", minute);
         sharedPrefEditor.apply();
     }
 }
+
