@@ -113,6 +113,9 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
             chart.setData(data);
             data.setGroupSpace(200);
             chart.setDescription("");
+            chart.getAxisLeft().setDrawLabels(false);
+            chart.getAxisRight().setDrawLabels(false);
+            chart.getXAxis().setDrawLabels(false);
         }
         else{
             chart.setVisibility(View.INVISIBLE);

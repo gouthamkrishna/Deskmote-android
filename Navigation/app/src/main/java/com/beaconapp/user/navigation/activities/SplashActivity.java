@@ -23,8 +23,6 @@ public class SplashActivity extends Activity {
 
     public static final int DELAY = 2000;
     SharedPreferences sharedPref;
-    SharedPreferences.Editor sharedPrefEditor;
-    boolean defaultValue = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,26 +35,29 @@ public class SplashActivity extends Activity {
         setContentView(R.layout.activity_splash);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPrefEditor = sharedPref.edit();
 
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        int hour = sharedPref.getInt("pref_key_office_time_from_hour", 8);
+        int minute = sharedPref.getInt("pref_key_office_time_from_minute", 30);
 
-        boolean start = sharedPref.getBoolean(getString(R.string.shared_start), defaultValue);
-        if (!start) {
-            sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
-            sharedPrefEditor.commit();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        Intent notificationService = new Intent(this, StatisticsLogger.class);
+        notificationService.putExtra("service_name", "notification");
+        PendingIntent pendingnotificationService = PendingIntent.getBroadcast(this, 1728, notificationService, 0);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingnotificationService);
 
-            Intent notificationServiceIntent = new Intent(this, NotificationService.class);
-            startService(notificationServiceIntent);
+        Intent notificationServiceIntent = new Intent(this, NotificationService.class);
+        startService(notificationServiceIntent);
 
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, 23);
-            calendar.set(Calendar.MINUTE, 50);
-            Intent alarmIntent = new Intent(this, StatisticsLogger.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1729, alarmIntent, 0);
-            AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingIntent);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 50);
+        Intent loggerService = new Intent(this, StatisticsLogger.class);
+        loggerService.putExtra("service_name", "logging");
+        PendingIntent pendingLoggerService = PendingIntent.getBroadcast(this, 1729, loggerService, 0);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingLoggerService);
 
-        }
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -66,5 +67,4 @@ public class SplashActivity extends Activity {
             }
         }, DELAY);
     }
-
 }
