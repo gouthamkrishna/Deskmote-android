@@ -75,6 +75,8 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     }
 
     public void setView(){
+
+        chart.removeAllViews();
         weekly = db.getWeeklyStat(picked_timestamp);
 
         ArrayList<BarEntry> Yvalue1 = new ArrayList<>();
@@ -124,6 +126,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             chart.animateXY(3000, 3000);
 
             BarData data = new BarData(labels,dataSets);
+
             chart.setData(data);
             data.setGroupSpace(200);
             chart.setDescription("");

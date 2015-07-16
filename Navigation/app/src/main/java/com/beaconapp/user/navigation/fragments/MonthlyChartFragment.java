@@ -74,6 +74,7 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
     }
 
     public void setView() {
+        chart.removeAllViews();
         monthly = db.getMonthlyStat(timestamp);
 
         ArrayList<BarEntry> Yvalue1 = new ArrayList<>();

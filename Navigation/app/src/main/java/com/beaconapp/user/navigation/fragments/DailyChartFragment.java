@@ -22,8 +22,6 @@ import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.Highlight;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -73,6 +71,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         officeValue.setTextSize(20f);
         noDataDisplay.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         noDataDisplay.setTextSize(25f);
+
         Calendar calendar = Calendar.getInstance();
         current_timestamp = calendar.getTimeInMillis();
         picked_timestamp = current_timestamp;
@@ -100,7 +99,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
         PieDataSet dataset = new PieDataSet(Yval, "");
         dataset.setSliceSpace(0);
-        dataset.setSelectionShift(0);
+        dataset.setSelectionShift(8);
         mchart.getLegend().setEnabled(false);
         dataset.setColors(new int[]{Color.rgb(1, 187, 212), Color.rgb(76, 175, 81), Color.rgb(255, 191, 6)});
         PieData data = new PieData(Xval, dataset);
@@ -157,7 +156,6 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
     private void setView() {
 
-//        mchart.clear();
         cDate = new Date(picked_timestamp);
         date = new SimpleDateFormat("MMM dd, yyyy").format(cDate);
         datePick.setText(date);
@@ -200,6 +198,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
             mchart = new PieChart(getActivity());
 
+            mainLayout.removeAllViews();
             mainLayout.addView(mchart);
             mainLayout.setBackgroundColor(Color.WHITE);
 
@@ -226,24 +225,8 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         outsideTime = String.format("%02d:%02d", TimeUnit.MILLISECONDS.toHours(Ydata[2]),
                 TimeUnit.MILLISECONDS.toMinutes(Ydata[2]) - TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(Ydata[2])));
 
-
         deskValue.setText(deskTime);
         officeValue.setText(officeTime);
         outsideValue.setText(outsideTime);
-
-        mchart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry entry, int i, Highlight highlight) {
-                if (entry == null)
-                    return;
-
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
-
     }
 }
