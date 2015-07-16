@@ -156,6 +156,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
     private void setView() {
 
+        mainLayout.removeAllViews();
         cDate = new Date(picked_timestamp);
         date = new SimpleDateFormat("MMM dd, yyyy").format(cDate);
         datePick.setText(date);
@@ -198,7 +199,6 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
             mchart = new PieChart(getActivity());
 
-            mainLayout.removeAllViews();
             mainLayout.addView(mchart);
             mainLayout.setBackgroundColor(Color.WHITE);
 

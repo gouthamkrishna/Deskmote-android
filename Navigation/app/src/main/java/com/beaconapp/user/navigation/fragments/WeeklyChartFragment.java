@@ -42,6 +42,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     Date sDate,eDate;
     String startDate, endDate;
     ImageView preWeek, nextWeek;
+    ArrayList<String> labels;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,15 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         preWeek = (ImageView)view.findViewById(R.id.previousWeek);
         nextWeek = (ImageView)view.findViewById(R.id.nextWeek);
         weekly = new ArrayList<>();
+
+        labels = new ArrayList<String>();
+        labels.add("Fri");
+        labels.add("Sat");
+        labels.add("Sun");
+        labels.add("Mon");
+        labels.add("Tue");
+        labels.add("Wed");
+        labels.add("Thu");
 
         setView();
         datePickerFunction();
@@ -113,15 +123,6 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             dataSets.add(dataset1);
             dataSets.add(dataset2);
             dataSets.add(dataset3);
-
-            ArrayList<String> labels = new ArrayList<String>();
-            labels.add("Fri");
-            labels.add("Sat");
-            labels.add("Sun");
-            labels.add("Mon");
-            labels.add("Tue");
-            labels.add("Wed");
-            labels.add("Thu");
 
             chart.animateXY(3000, 3000);
 
