@@ -186,6 +186,14 @@ public class NotificationService extends Service {
         return START_STICKY;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        obj1.customHandler.removeCallbacks(updateTimerThread);
+        obj2.customHandler.removeCallbacks(updateTimerThread);
+        obj3.customHandler.removeCallbacks(updateTimerThread);
+    }
+
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
             if(obj ==1) {
@@ -241,38 +249,6 @@ public class NotificationService extends Service {
             Calendar calendar = Calendar.getInstance();
             int hr = calendar.get(Calendar.HOUR_OF_DAY);
             int min = calendar.get(Calendar.MINUTE);
-
-            if (hr < sharedPref.getInt("pref_key_office_time_from_hour", 8)) {
-                obj1.customHandler.removeCallbacks(updateTimerThread);
-                obj2.customHandler.removeCallbacks(updateTimerThread);
-                obj3.customHandler.removeCallbacks(updateTimerThread);
-                stopSelf();
-            }
-
-            if(hr == sharedPref.getInt("pref_key_office_time_from_hour", 8)) {
-                if (min < sharedPref.getInt("pref_key_office_time_from_minute", 30)) {
-                    obj1.customHandler.removeCallbacks(updateTimerThread);
-                    obj2.customHandler.removeCallbacks(updateTimerThread);
-                    obj3.customHandler.removeCallbacks(updateTimerThread);
-                    stopSelf();
-                }
-                else if (min == sharedPref.getInt("pref_key_office_time_from_minute", 30)) {
-                    obj1.startTime = SystemClock.uptimeMillis();
-                    obj2.startTime = SystemClock.uptimeMillis();
-                    obj3.startTime = SystemClock.uptimeMillis();
-                    sharedPrefEditor.putLong(getString(R.string.shared_timer_desk), 0L);
-                    sharedPrefEditor.putLong(getString(R.string.shared_timer_office), 0L);
-                    sharedPrefEditor.putLong(getString(R.string.shared_timer_outdoor), 0L);
-                    sharedPrefEditor.commit();
-                }
-            }
-
-            if((hr == sharedPref.getInt("pref_key_office_time_to_hour", 17)) && (min == sharedPref.getInt("pref_key_office_time_to_minute", 30))) {
-                obj1.customHandler.removeCallbacks(updateTimerThread);
-                obj2.customHandler.removeCallbacks(updateTimerThread);
-                obj3.customHandler.removeCallbacks(updateTimerThread);
-                stopSelf();
-            }
 
             if ((sharedPref.getBoolean("pref_key_break",true)) && ((hr == 11 && min == 00) || (hr == 16 && min == 00))) {
                 postNotification("Tea Break", "Break Alert");
