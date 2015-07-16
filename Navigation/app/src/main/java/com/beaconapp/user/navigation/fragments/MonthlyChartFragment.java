@@ -93,10 +93,14 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
                 float val2 = (float) monthly.get(i).getOffice_time();
                 float val3 = (float) monthly.get(i).getOutdoor_time();
 
+                Calendar tempCalendar = Calendar.getInstance();
+                tempCalendar.setTimeInMillis(monthly.get(i).getTstamp());
+                int day = tempCalendar.get(Calendar.DAY_OF_MONTH);
+
                 Yvalue1.add(new BarEntry(new float[]{
                         val1, val2, val3
                 }, i));
-                labels.add("" + i);
+                labels.add("" + day);
             }
 
 
@@ -115,7 +119,7 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
             chart.setDescription("");
             chart.getAxisLeft().setDrawLabels(false);
             chart.getAxisRight().setDrawLabels(false);
-            chart.getXAxis().setDrawLabels(false);
+            data.setDrawValues(false);
         }
         else{
             chart.setVisibility(View.INVISIBLE);

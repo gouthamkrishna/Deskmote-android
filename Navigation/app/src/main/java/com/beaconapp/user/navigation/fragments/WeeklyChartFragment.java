@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.DailyStat;
+import com.beaconapp.user.navigation.classes.YvalueFormatter;
 import com.beaconapp.user.navigation.database.DatabaseHandler;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -95,11 +96,13 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
                 Yvalue2.add(new BarEntry((float) weekly.get(i).getOffice_time(), i));
                 Yvalue3.add(new BarEntry((float) weekly.get(i).getOutdoor_time(), i));
             }
+
+
             BarDataSet dataset1 = new BarDataSet(Yvalue1, "At Desk");
-            dataset1.setColor(Color.rgb(1,187,212));
+            dataset1.setColor(Color.rgb(1, 187, 212));
 
             BarDataSet dataset2 = new BarDataSet(Yvalue2, "Inside Office");
-            dataset2.setColor(Color.rgb(76,175,81));
+            dataset2.setColor(Color.rgb(76, 175, 81));
 
             BarDataSet dataset3 = new BarDataSet(Yvalue3, "Outside Office");
             dataset3.setColor(Color.rgb(255, 191, 6));
@@ -126,7 +129,10 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             chart.setDescription("");
             chart.getAxisLeft().setDrawLabels(false);
             chart.getAxisRight().setDrawLabels(false);
-            chart.getXAxis().setDrawLabels(false);
+
+            data.setValueFormatter(new YvalueFormatter());
+            data.setValueTextSize(10f);
+
         }
         else{
             chart.setVisibility(View.INVISIBLE);
@@ -173,7 +179,6 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     @Override
     public void onDateSelected(int selected_year, int selected_month, int selected_day) {
 
-//        cDate = new Date(selected_year-1900,selected_month,selected_day);
         Calendar calendar = Calendar.getInstance();
         calendar.set(selected_year, selected_month, selected_day);
         picked_timestamp = calendar.getTimeInMillis();

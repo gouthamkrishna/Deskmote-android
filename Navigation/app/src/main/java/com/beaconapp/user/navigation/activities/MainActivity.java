@@ -40,7 +40,7 @@ public class MainActivity extends ActionBarActivity{
 
     String NAME = "", EMAIL = "", PROFILE = "";
     RecyclerView mRecyclerView;
-    MyAdapter mAdapter;
+    RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
     DrawerLayout mDrawer;
     ActionBarDrawerToggle mDrawerToggle;

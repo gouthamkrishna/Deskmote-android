@@ -37,7 +37,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
     DatabaseHandler db;
     private RelativeLayout mainLayout;
     private PieChart mchart;
-    private long Ydata[] = {0, 0, 0}, total,stotal,mtotal,htotal;
+    private long Ydata[] = {0, 0, 0}, total,mtotal,htotal;
     long current_timestamp, picked_timestamp;
     TextView datePick, noDataDisplay, deskValue, officeValue, outsideValue;
     ImageView preDay, nextDay;
@@ -100,7 +100,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
         PieDataSet dataset = new PieDataSet(Yval, "");
         dataset.setSliceSpace(0);
-        dataset.setSelectionShift(8);
+        dataset.setSelectionShift(0);
         mchart.getLegend().setEnabled(false);
         dataset.setColors(new int[]{Color.rgb(1, 187, 212), Color.rgb(76, 175, 81), Color.rgb(255, 191, 6)});
         PieData data = new PieData(Xval, dataset);
@@ -157,6 +157,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
     private void setView() {
 
+//        mchart.clear();
         cDate = new Date(picked_timestamp);
         date = new SimpleDateFormat("MMM dd, yyyy").format(cDate);
         datePick.setText(date);
@@ -187,9 +188,10 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         }
 
         total = Ydata[0] + Ydata[1] + Ydata[2];
-        stotal = total/1000;
-        mtotal = stotal/60;
+
+        mtotal = total/60000;
         htotal = mtotal/60;
+        mtotal = mtotal%60;
 
         if(total!=0) {
 
