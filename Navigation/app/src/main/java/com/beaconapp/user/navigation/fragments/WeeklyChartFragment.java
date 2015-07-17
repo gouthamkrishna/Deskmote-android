@@ -37,12 +37,18 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
 
     List<DailyStat> weekly;
     TextView noDataDisplay, datePicker;
-    long timestamp, picked_timestamp;
+    long picked_timestamp;
     DatePickerFragment newDateFragment;
     Date sDate,eDate;
     String startDate, endDate;
     ImageView preWeek, nextWeek;
+    String daysOfWeek[] = {"Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"};
+    BarData data;
+    ArrayList<BarDataSet> dataSets;
+    BarDataSet dataset1, dataset2, dataset3;
+    ArrayList<BarEntry> Yvalue1, Yvalue2, Yvalue3;
     ArrayList<String> labels;
+    View view;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,30 +58,19 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_weekly_chart_layout, container, false);
-
-        Calendar calendar = Calendar.getInstance();
-        timestamp = calendar.getTimeInMillis();
-        picked_timestamp = timestamp;
-        newDateFragment = new DatePickerFragment(this);
-        datePicker = (TextView)view.findViewById(R.id.weekView);
+        view = inflater.inflate(R.layout.fragment_weekly_chart_layout, container, false);
         db = new DatabaseHandler(getActivity());
+        newDateFragment = new DatePickerFragment(this);
+        weekly = new ArrayList<>();
+
+        picked_timestamp = Calendar.getInstance().getTimeInMillis();
+        datePicker = (TextView)view.findViewById(R.id.weekView);
+        preWeek = (ImageView)view.findViewById(R.id.previousWeek);
+        nextWeek = (ImageView)view.findViewById(R.id.nextWeek);
+
         noDataDisplay = (TextView)view.findViewById(R.id.noDataWeek);
         noDataDisplay.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         noDataDisplay.setTextSize(25f);
-        chart = (HorizontalBarChart)view.findViewById(R.id.weeklybchart);
-        preWeek = (ImageView)view.findViewById(R.id.previousWeek);
-        nextWeek = (ImageView)view.findViewById(R.id.nextWeek);
-        weekly = new ArrayList<>();
-
-        labels = new ArrayList<String>();
-        labels.add("Fri");
-        labels.add("Sat");
-        labels.add("Sun");
-        labels.add("Mon");
-        labels.add("Tue");
-        labels.add("Wed");
-        labels.add("Thu");
 
         setView();
         datePickerFunction();
@@ -86,12 +81,14 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
 
     public void setView(){
 
-        chart.removeAllViews();
+        chart = (HorizontalBarChart)view.findViewById(R.id.weeklybchart);
+
         weekly = db.getWeeklyStat(picked_timestamp);
 
-        ArrayList<BarEntry> Yvalue1 = new ArrayList<>();
-        ArrayList<BarEntry> Yvalue2 = new ArrayList<>();
-        ArrayList<BarEntry> Yvalue3 = new ArrayList<>();
+        Yvalue1 = new ArrayList<>();
+        Yvalue2 = new ArrayList<>();
+        Yvalue3 = new ArrayList<>();
+        labels = new ArrayList<String>();
 
         sDate = new Date((((picked_timestamp)/604800000L)*604800000L));
         eDate = new Date(sDate.getTime()+584999000);
@@ -107,26 +104,27 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
                 Yvalue1.add(new BarEntry((float) weekly.get(i).getDesk_time(), i));
                 Yvalue2.add(new BarEntry((float) weekly.get(i).getOffice_time(), i));
                 Yvalue3.add(new BarEntry((float) weekly.get(i).getOutdoor_time(), i));
+                labels.add(daysOfWeek[i]);
             }
 
 
-            BarDataSet dataset1 = new BarDataSet(Yvalue1, "At Desk");
+            dataset1 = new BarDataSet(Yvalue1, "At Desk");
             dataset1.setColor(Color.rgb(1, 187, 212));
 
-            BarDataSet dataset2 = new BarDataSet(Yvalue2, "Inside Office");
+            dataset2 = new BarDataSet(Yvalue2, "Inside Office");
             dataset2.setColor(Color.rgb(76, 175, 81));
 
-            BarDataSet dataset3 = new BarDataSet(Yvalue3, "Outside Office");
+            dataset3 = new BarDataSet(Yvalue3, "Outside Office");
             dataset3.setColor(Color.rgb(255, 191, 6));
 
-            ArrayList<BarDataSet> dataSets = new ArrayList<BarDataSet>();
+            dataSets = new ArrayList<BarDataSet>();
             dataSets.add(dataset1);
             dataSets.add(dataset2);
             dataSets.add(dataset3);
 
             chart.animateXY(3000, 3000);
 
-            BarData data = new BarData(labels,dataSets);
+            data = new BarData(labels,dataSets);
 
             chart.setData(data);
             data.setGroupSpace(200);

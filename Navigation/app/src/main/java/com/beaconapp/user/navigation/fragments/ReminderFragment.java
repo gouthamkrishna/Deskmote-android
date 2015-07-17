@@ -23,6 +23,7 @@ import com.beaconapp.user.navigation.activities.MainActivity;
 import com.beaconapp.user.navigation.classes.Reminder;
 import com.beaconapp.user.navigation.database.ReminderDatabaseHandler;
 import com.beaconapp.user.navigation.receivers.AlarmReceiver;
+import com.beaconapp.user.navigation.services.TestCaseGenerator;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -188,6 +189,9 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
 
             @Override
             public void onClick (View v) {
+                Intent intent = new Intent(getActivity(), TestCaseGenerator.class);
+                intent.putExtra("case", 2);
+                getActivity().startService(intent);
                 dismiss();
             }
         });

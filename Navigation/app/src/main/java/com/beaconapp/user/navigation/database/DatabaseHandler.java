@@ -167,13 +167,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(tstamp);
-        calendar.set(Calendar.DAY_OF_MONTH, 1);  // 1st day of month.
+        calendar.set(Calendar.DAY_OF_MONTH, 1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
 
         long start_of_month = calendar.getTimeInMillis();
 
         calendar.add(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
-        calendar.add(Calendar.DATE,-1);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
 
         long end_of_month = calendar.getTimeInMillis();
 

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.DailyStat;
@@ -36,7 +37,7 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
     TextView monthPick, noDataDisplay;
     ImageView preMonth, nextMonth;
     DatePickerFragment newDateFragment;
-    long timestamp, picked_timestamp;
+    long picked_timestamp;
     Calendar calendar;
     Date currentDate, cDate;
     String month;
@@ -52,9 +53,8 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
         View view = inflater.inflate(R.layout.fragment_monthly_chart_layout, container, false);
 
         calendar = Calendar.getInstance();
-        timestamp = calendar.getTimeInMillis();
 
-        picked_timestamp = timestamp;
+        picked_timestamp = calendar.getTimeInMillis();
         monthPick = (TextView) view.findViewById(R.id.monthView);
         newDateFragment = new DatePickerFragment(this);
         preMonth = (ImageView) view.findViewById(R.id.previousMonth);
@@ -75,7 +75,7 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
 
     public void setView() {
         chart.removeAllViews();
-        monthly = db.getMonthlyStat(timestamp);
+        monthly = db.getMonthlyStat(picked_timestamp);
 
         ArrayList<BarEntry> Yvalue1 = new ArrayList<>();
         ArrayList<String> labels = new ArrayList<String>();
@@ -103,7 +103,7 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
                 }, i));
                 labels.add("" + day);
             }
-
+            Toast.makeText(getActivity(), ""+monthly.size(), Toast.LENGTH_SHORT).show();
 
             BarDataSet set1 = new BarDataSet(Yvalue1, "");
 
