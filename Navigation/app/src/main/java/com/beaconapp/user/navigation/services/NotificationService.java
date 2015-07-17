@@ -10,7 +10,6 @@ import android.bluetooth.BluetoothAdapter;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.SystemClock;
@@ -22,7 +21,6 @@ import com.estimote.sdk.Beacon;
 import com.estimote.sdk.BeaconManager;
 import com.estimote.sdk.Region;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -30,7 +28,6 @@ public class NotificationService extends Service {
 
     private BeaconManager beaconManager1, beaconManager2, beaconManager3;
     private NotificationManager notificationManager;
-    public Handler cHandler = new Handler();
     private Region region_door_entry, region_desk, region_door_exit;
     public int obj = 0;
     BluetoothAdapter bt=null;
@@ -68,8 +65,6 @@ public class NotificationService extends Service {
         beaconManager1.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
         beaconManager2.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
         beaconManager3.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
-
-        cHandler.postDelayed(breakAlert, 0);
 
         beaconManager1.setMonitoringListener(new BeaconManager.MonitoringListener() {
             @Override
@@ -186,6 +181,14 @@ public class NotificationService extends Service {
         return START_STICKY;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        obj1.customHandler.removeCallbacks(updateTimerThread);
+        obj2.customHandler.removeCallbacks(updateTimerThread);
+        obj3.customHandler.removeCallbacks(updateTimerThread);
+    }
+
     private Runnable updateTimerThread = new Runnable() {
         public void run() {
             if(obj ==1) {
@@ -235,56 +238,6 @@ public class NotificationService extends Service {
         ob.lastPauseTime = ob.timeInMilliseconds;
         ob.customHandler.removeCallbacks(updateTimerThread);
     }
-
-    public Runnable breakAlert = new Runnable() {
-        public void run() {
-            Calendar calendar = Calendar.getInstance();
-            int hr = calendar.get(Calendar.HOUR_OF_DAY);
-            int min = calendar.get(Calendar.MINUTE);
-
-            if (hr < sharedPref.getInt("pref_key_office_time_from_hour", 8)) {
-                obj1.customHandler.removeCallbacks(updateTimerThread);
-                obj2.customHandler.removeCallbacks(updateTimerThread);
-                obj3.customHandler.removeCallbacks(updateTimerThread);
-                stopSelf();
-            }
-
-            if(hr == sharedPref.getInt("pref_key_office_time_from_hour", 8)) {
-                if (min < sharedPref.getInt("pref_key_office_time_from_minute", 30)) {
-                    obj1.customHandler.removeCallbacks(updateTimerThread);
-                    obj2.customHandler.removeCallbacks(updateTimerThread);
-                    obj3.customHandler.removeCallbacks(updateTimerThread);
-                    stopSelf();
-                }
-                else if (min == sharedPref.getInt("pref_key_office_time_from_minute", 30)) {
-                    obj1.startTime = SystemClock.uptimeMillis();
-                    obj2.startTime = SystemClock.uptimeMillis();
-                    obj3.startTime = SystemClock.uptimeMillis();
-                    sharedPrefEditor.putLong(getString(R.string.shared_timer_desk), 0L);
-                    sharedPrefEditor.putLong(getString(R.string.shared_timer_office), 0L);
-                    sharedPrefEditor.putLong(getString(R.string.shared_timer_outdoor), 0L);
-                    sharedPrefEditor.commit();
-                }
-            }
-
-            if((hr == sharedPref.getInt("pref_key_office_time_to_hour", 17)) && (min == sharedPref.getInt("pref_key_office_time_to_minute", 30))) {
-                obj1.customHandler.removeCallbacks(updateTimerThread);
-                obj2.customHandler.removeCallbacks(updateTimerThread);
-                obj3.customHandler.removeCallbacks(updateTimerThread);
-                stopSelf();
-            }
-
-            if ((sharedPref.getBoolean("pref_key_break",true)) && ((hr == 11 && min == 00) || (hr == 16 && min == 00))) {
-                postNotification("Tea Break", "Break Alert");
-            }
-
-            if ((sharedPref.getBoolean("pref_key_break",true)) && hr == sharedPref.getInt("pref_key_lunch_time_from_hour", 13) && min == sharedPref.getInt("pref_key_lunch_time_from_minute", 0)) {
-                postNotification("Lunch Break", "Break Alert");
-            }
-
-            cHandler.postDelayed(breakAlert, 60 * 1000);
-        }
-    };
 
     private void postNotification(String msg, String title) {
         if (sharedPref.getBoolean("pref_key_notifications", true)) {
