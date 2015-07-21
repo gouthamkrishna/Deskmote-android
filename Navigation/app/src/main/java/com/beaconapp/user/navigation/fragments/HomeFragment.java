@@ -3,13 +3,11 @@ package com.beaconapp.user.navigation.fragments;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -43,7 +41,6 @@ public class HomeFragment extends Fragment {
     Handler chHandler = new Handler();
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
-    SharedPreferences.Editor sharedPrefEditor;
     Drawable d;
     Window window;
     CircularProgressDrawable drawable;
@@ -51,7 +48,6 @@ public class HomeFragment extends Fragment {
     AnimatorSet animation = new AnimatorSet();
     ObjectAnimator colorAnimator, progressAnimation;
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Home");
@@ -120,7 +116,6 @@ public class HomeFragment extends Fragment {
         ivDrawable = (ImageView) root.findViewById(R.id.iv_drawable);
         drawable = new CircularProgressDrawable.Builder()
                 .setRingWidth(getResources().getDimensionPixelSize(R.dimen.drawable_ring_size))
-                .setOutlineColor(getResources().getColor(android.R.color.darker_gray))
                 .create();
         ivDrawable.setImageDrawable(drawable);
 
@@ -158,8 +153,13 @@ public class HomeFragment extends Fragment {
                 time_office = sharedPref.getLong(getString(R.string.shared_timer_office), 0);
                 time_outdoor = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
             }
-            catch (Exception ignored) {
+            catch (Exception e ) {
             }
+
+            boolean a = sharedPref.getBoolean("progressbarRunning", true);
+            if (! a)
+                animation.pause();
+
             secs_desk = (int) (time_desk / 1000);
             mins = secs_desk / 60;
             secs_desk = secs_desk % 60;
@@ -275,13 +275,14 @@ public class HomeFragment extends Fragment {
     };
 
     public void runProgressBar( float start, long duration, int r, int g, int b) {
-        progressAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.PROGRESS_PROPERTY,
-                start, 1f);
-        progressAnimation.setDuration(duration);
-        progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
-        colorAnimator = ObjectAnimator.ofInt(drawable, CircularProgressDrawable.RING_COLOR_PROPERTY,
-                Color.rgb(r,g,b));
-        animation.playTogether(progressAnimation, colorAnimator);
-        animation.start();
+
+            progressAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.PROGRESS_PROPERTY,
+                    start, 1f);
+            progressAnimation.setDuration(duration);
+            progressAnimation.setInterpolator(new AccelerateDecelerateInterpolator());
+            colorAnimator = ObjectAnimator.ofInt(drawable, CircularProgressDrawable.RING_COLOR_PROPERTY,
+                    Color.rgb(r, g, b));
+            animation.playTogether(progressAnimation, colorAnimator);
+            animation.start();
     }
 }

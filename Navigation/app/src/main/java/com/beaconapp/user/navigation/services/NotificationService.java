@@ -1,5 +1,8 @@
 package com.beaconapp.user.navigation.services;
 
+/**
+ * Created by user on 22/6/15.
+ */
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -49,6 +52,8 @@ public class NotificationService extends Service {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefEditor = sharedPref.edit();
+        sharedPrefEditor.putBoolean("progressbarRunning", true);
+        sharedPrefEditor.commit();
 
         region_door_entry = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 29666, 63757);
         region_desk = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 36798, 29499);
@@ -85,6 +90,8 @@ public class NotificationService extends Service {
 
             @Override
             public void onExitedRegion(Region region) {
+                sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 0);
+                sharedPrefEditor.commit();
             }
         });
 
@@ -110,6 +117,8 @@ public class NotificationService extends Service {
 
             @Override
             public void onExitedRegion(Region region) {
+                sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 0);
+                sharedPrefEditor.commit();
             }
         });
 
@@ -183,6 +192,8 @@ public class NotificationService extends Service {
         obj1.customHandler.removeCallbacks(updateTimerThread);
         obj2.customHandler.removeCallbacks(updateTimerThread);
         obj3.customHandler.removeCallbacks(updateTimerThread);
+        sharedPrefEditor.putBoolean("progressbarRunning", false);
+        sharedPrefEditor.commit();
     }
 
     private Runnable updateTimerThread = new Runnable() {

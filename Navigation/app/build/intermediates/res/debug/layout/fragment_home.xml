@@ -14,6 +14,7 @@
         android:layout_height="210dp"
         android:id="@+id/sw_main"
         android:layout_below="@+id/header2"
+        android:layout_marginTop="2.5dp"
         android:layout_centerHorizontal="true" >
 
     </ImageSwitcher>
@@ -87,8 +88,8 @@
 
     <ImageView
         android:id="@+id/iv_drawable"
-        android:layout_width="210dp"
-        android:layout_height="210dp"
+        android:layout_width="215dp"
+        android:layout_height="215dp"
         android:layout_below="@+id/header2"
         android:layout_centerHorizontal="true"
         />

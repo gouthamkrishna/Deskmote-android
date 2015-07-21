@@ -173,5 +173,9 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
             Intent stopNotificationService = new Intent(getContext(), NotificationService.class);
             getContext().stopService(stopNotificationService);
         }
+        else {
+            Intent startNotificationService = new Intent(getContext(), NotificationService.class);
+            getContext().startService(startNotificationService);
+        }
     }
 }
