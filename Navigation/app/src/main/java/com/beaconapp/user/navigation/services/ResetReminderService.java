@@ -5,7 +5,6 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
 
 import com.beaconapp.user.navigation.receivers.AlarmReceiver;
 import com.beaconapp.user.navigation.classes.Reminder;
@@ -14,21 +13,16 @@ import com.beaconapp.user.navigation.database.ReminderDatabaseHandler;
 import java.util.Calendar;
 import java.util.List;
 
-/**
- * Created by user on 29/6/15.
- */
 public class ResetReminderService extends IntentService {
 
     public PendingIntent pendingIntent;
     public static final String TAG = "com.beaconapp.user.deskmote.TAG";
     long currentTimestamp, reminderTimestamp;
-    int listcounter=0;
+    int listCounter=0;
 
     Intent alarmIntent;
     AlarmManager alarmManager;
     ReminderDatabaseHandler db = new ReminderDatabaseHandler(this);
-    List<Reminder> reminderList;
-    Calendar calendar;
     Reminder reminder;
 
     public ResetReminderService(){
@@ -36,14 +30,14 @@ public class ResetReminderService extends IntentService {
     }
 
     public void onHandleIntent(Intent intent) {
-        reminderList = db.getAllReminders();
 
-        calendar = Calendar.getInstance();
+        List<Reminder> reminderList = db.getAllReminders();
+        Calendar calendar = Calendar.getInstance();
         currentTimestamp = calendar.getTimeInMillis();
-        listcounter=0;
+        listCounter=0;
 
-        while (listcounter<reminderList.size()) {
-            reminder = reminderList.get(listcounter);
+        while (listCounter<reminderList.size()) {
+            reminder = reminderList.get(listCounter);
 
             reminderTimestamp = reminder.getTstamp();
             if(reminderTimestamp>=currentTimestamp){
@@ -53,7 +47,7 @@ public class ResetReminderService extends IntentService {
                 alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
                 alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTimestamp, pendingIntent);
             }
-            listcounter++;
+            listCounter++;
         }
     }
 }

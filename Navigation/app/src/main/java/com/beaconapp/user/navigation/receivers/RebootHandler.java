@@ -13,20 +13,17 @@ import com.beaconapp.user.navigation.services.ResetReminderService;
 
 import java.util.Calendar;
 
-/**
- * Created by user on 29/6/15.
- */
 public class RebootHandler extends BroadcastReceiver {
 
-    Intent resetReminderService;
-    SharedPreferences sharedPref;
 
     public void onReceive(Context context, Intent intent) {
 
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 
-            sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+            Intent resetReminderService = new Intent(context, ResetReminderService.class);
+            context.startService(resetReminderService);
 
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
             int office_from_hour = sharedPref.getInt("pref_key_office_time_from_hour", 8);
             int office_from_minute = sharedPref.getInt("pref_key_office_time_from_minute", 30);
             int office_to_hour = sharedPref.getInt("pref_key_office_time_to_hour", 17);
@@ -42,14 +39,11 @@ public class RebootHandler extends BroadcastReceiver {
             AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingIntent);
 
-            resetReminderService = new Intent(context, ResetReminderService.class);
-            context.startService(resetReminderService);
-
             calendar.set(Calendar.HOUR_OF_DAY, office_from_hour);
             calendar.set(Calendar.MINUTE, office_from_minute);
             Intent startNotificationService = new Intent(context, StatisticsLogger.class);
             startNotificationService.putExtra("service_name", "notification");
-            PendingIntent pendingnotificationService = PendingIntent.getBroadcast(context, 1727, startNotificationService, 0);
+            PendingIntent pendingnotificationService = PendingIntent.getBroadcast(context, 1728, startNotificationService, 0);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingnotificationService);
 
             calendar.set(Calendar.HOUR_OF_DAY, office_to_hour);

@@ -1,8 +1,5 @@
 package com.beaconapp.user.navigation.classes;
 
-/**
- * Created by user on 14/7/15.
- */
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;

@@ -27,6 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 
@@ -34,8 +35,8 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
     DatabaseHandler db;
     private RelativeLayout mainLayout;
-    private PieChart mchart;
-    private long Ydata[] = {0, 0, 0}, total,mtotal,htotal;
+    private PieChart mChart;
+    private long Ydata[] = {0, 0, 0};
     long current_timestamp, picked_timestamp;
     TextView datePick, noDataDisplay, deskValue, officeValue, outsideValue;
     ImageView preDay, nextDay;
@@ -88,11 +89,11 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
     private void addData() {
 
-        ArrayList<Entry> Yval = new ArrayList<Entry>();
+        ArrayList<Entry> Yval = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Yval.add(new Entry(Ydata[i], i));
         }
-        ArrayList<String> Xval = new ArrayList<String>();
+        ArrayList<String> Xval = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             Xval.add("");
         }
@@ -100,14 +101,14 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         PieDataSet dataset = new PieDataSet(Yval, "");
         dataset.setSliceSpace(0);
         dataset.setSelectionShift(8);
-        mchart.getLegend().setEnabled(false);
+        mChart.getLegend().setEnabled(false);
         dataset.setColors(new int[]{Color.rgb(1, 187, 212), Color.rgb(76, 175, 81), Color.rgb(255, 191, 6)});
         PieData data = new PieData(Xval, dataset);
 
         data.setDrawValues(false);
-        mchart.setData(data);
-        mchart.invalidate();
-        mchart.setDrawSliceText(false);
+        mChart.setData(data);
+        mChart.invalidate();
+        mChart.setDrawSliceText(false);
 
     }
 
@@ -158,7 +159,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
         mainLayout.removeAllViews();
         cDate = new Date(picked_timestamp);
-        date = new SimpleDateFormat("MMM dd, yyyy").format(cDate);
+        date = new SimpleDateFormat("MMM dd, yyyy", Locale.UK).format(cDate);
         datePick.setText(date);
 
         if(current_timestamp-picked_timestamp >= 86400000) {
@@ -186,30 +187,30 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
             Ydata[2] = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
         }
 
-        total = Ydata[0] + Ydata[1] + Ydata[2];
+        long total = Ydata[0] + Ydata[1] + Ydata[2];
 
-        mtotal = total/60000;
-        htotal = mtotal/60;
-        mtotal = mtotal%60;
+        long mtotal = total / 60000;
+        long htotal = mtotal / 60;
+        mtotal = mtotal %60;
 
-        if(total!=0) {
+        if(total !=0) {
 
             mainLayout.setVisibility(View.VISIBLE);
             noDataDisplay.setVisibility(View.INVISIBLE);
 
-            mchart = new PieChart(getActivity());
+            mChart = new PieChart(getActivity());
 
-            mainLayout.addView(mchart);
+            mainLayout.addView(mChart);
             mainLayout.setBackgroundColor(Color.WHITE);
 
-            mchart.setDescription("");
-            mchart.setDrawHoleEnabled(true);
-            mchart.setHoleColorTransparent(true);
-            mchart.setCenterTextSize(25f);
-            mchart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
+            mChart.setDescription("");
+            mChart.setDrawHoleEnabled(true);
+            mChart.setHoleColorTransparent(true);
+            mChart.setCenterTextSize(25f);
+            mChart.setCenterTextTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
 
-            mchart.setCenterText("  TOTAL \n\n " + htotal + ":" + mtotal);
-            mchart.setHoleRadius(60);
+            mChart.setCenterText("  TOTAL \n\n " + htotal + ":" + mtotal);
+            mChart.setHoleRadius(60);
             addData();
 
         }

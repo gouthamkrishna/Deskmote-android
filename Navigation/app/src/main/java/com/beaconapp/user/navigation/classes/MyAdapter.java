@@ -22,14 +22,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private static final int TYPE_ITEM = 1;
     private String mNavTitles[];
     private int mIcons[];
-    private String name;
-    private String path;
-    private String email;
+    private String mName;
+    private String mPath;
+    private String mEmail;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        int Holderid;
-        TextView textView, Name, email;
+        int holderId;
+        TextView textView, name, email;
         ImageView imageView, profile;
 
         public ViewHolder(View itemView,int ViewType) {
@@ -39,14 +39,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
                 textView = (TextView) itemView.findViewById(R.id.rowText);
                 imageView = (ImageView) itemView.findViewById(R.id.rowIcon);
-                Holderid = 1;
+                holderId = 1;
             }
             else{
 
-                Name = (TextView) itemView.findViewById(R.id.name);
+                name = (TextView) itemView.findViewById(R.id.name);
                 email = (TextView) itemView.findViewById(R.id.email);
                 profile = (ImageView) itemView.findViewById(R.id.circleView);
-                Holderid = 0;
+                holderId = 0;
             }
         }
     }
@@ -55,45 +55,43 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         this.mNavTitles = Titles;
         this.mIcons = Icons;
-        this.name = Name;
-        this.email = Email;
-        this.path = Profile;
+        this.mName = Name;
+        this.mEmail = Email;
+        this.mPath = Profile;
     }
 
     @Override
     public MyAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         if (viewType == TYPE_ITEM) {
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row,parent,false); //Inflating the layout
-            ViewHolder vhItem = new ViewHolder(v,viewType); //Creating ViewHolder and passing the object of type view
-            return vhItem;
 
-        } else if (viewType == TYPE_HEADER) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_row, parent, false);
+            return new ViewHolder(view, viewType);
+        }
+        else if (viewType == TYPE_HEADER) {
 
-            View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.header,parent,false); //Inflating the layout
-            ViewHolder vhHeader = new ViewHolder(v,viewType); //Creating ViewHolder and passing the object of type view
-            return vhHeader; //returning the object created
-
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.header, parent, false);
+            return new ViewHolder(view, viewType);
         }
         return null;
     }
 
     @Override
     public void onBindViewHolder(MyAdapter.ViewHolder holder, int position) {
-        if(holder.Holderid ==1) {
 
-            holder.textView.setText(mNavTitles[position - 1]); // Setting the Text with the array of our Titles
-            holder.imageView.setImageResource(mIcons[position -1]);// Settimg the image with array of our icons
+        if(holder.holderId ==1) {
+            holder.textView.setText(mNavTitles[position - 1]);
+            holder.imageView.setImageResource(mIcons[position -1]);
         }
         else{
-            if(path.equals("")){
+            if(mPath.equals("")){
                 holder.profile.setImageResource(R.drawable.profile);
             }
             else {
-                holder.profile.setImageBitmap(loadImageFromStorage(path));
+                holder.profile.setImageBitmap(loadImageFromStorage(mPath));
             }
-            holder.Name.setText(name);
-            holder.email.setText(email);
+            holder.name.setText(mName);
+            holder.email.setText(mEmail);
         }
     }
 
@@ -104,6 +102,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     @Override
     public int getItemViewType(int position) {
+
         if (isPositionHeader(position))
             return TYPE_HEADER;
 
@@ -119,14 +118,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         Bitmap bitmap = null;
         try {
-            File f=new File(path, "profile.png");
-            bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
+            File file=new File(path, "profile.png");
+            bitmap = BitmapFactory.decodeStream(new FileInputStream(file));
         }
         catch (FileNotFoundException e)
         {
             e.printStackTrace();
         }
-
         return  bitmap;
     }
 }

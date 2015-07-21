@@ -51,4 +51,9 @@ public class SettingsFragment extends PreferenceFragment {
         pref_lunch_break.setKey("key_lunch_break");
         setTimings.addPreference(pref_lunch_break);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 }

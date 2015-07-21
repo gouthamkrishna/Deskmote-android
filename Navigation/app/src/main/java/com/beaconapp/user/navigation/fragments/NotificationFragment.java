@@ -32,18 +32,15 @@ import java.util.List;
 public class NotificationFragment extends Fragment {
 
     public static final String TAG = "com.beaconapp.user.deskmote.TAG";
-    public PendingIntent pendingIntent;
     private ArrayList<Reminder> arraylist;
     public int listcounter = 0;
-    private long timestamp, reminderTimestamp;
+    long timestamp;
 
-    Intent alarmIntent;
-    AlarmManager alarmManager;
     ReminderDatabaseHandler db_reminder;
-    Reminder temporaryReminder, reminder;
+    Reminder reminder;
+    List<Reminder> reminderList;
     ListViewAdapter listViewAdapter;
     com.baoyz.swipemenulistview.SwipeMenuListView listView;
-    List<Reminder> reminderList;
     Calendar calendar;
     TextView upcoming;
 
@@ -56,6 +53,8 @@ public class NotificationFragment extends Fragment {
         db_reminder = new ReminderDatabaseHandler(getActivity());
         listView = (com.baoyz.swipemenulistview.SwipeMenuListView) root.findViewById(R.id.reminderList);
         upcoming = (TextView)root.findViewById(R.id.upcoming);
+        arraylist = new ArrayList<Reminder>();
+
         setView();
 
         SwipeMenuCreator creator = new SwipeMenuCreator() {
@@ -83,12 +82,12 @@ public class NotificationFragment extends Fragment {
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                 switch (index) {
                     case 0:
-                        temporaryReminder = arraylist.get(position);
+                        Reminder temporaryReminder = arraylist.get(position);
                         db_reminder.deleteReminder(temporaryReminder);
-                        alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
+                        Intent alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
                         alarmIntent.putExtra(TAG, temporaryReminder.getTag());
-                        pendingIntent = PendingIntent.getBroadcast(getActivity(), temporaryReminder.getID(), alarmIntent, 0);
-                        alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), temporaryReminder.getID(), alarmIntent, 0);
+                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                         alarmManager.cancel(pendingIntent);
                         Toast.makeText(getActivity(), "Alarm Canceled", Toast.LENGTH_SHORT).show();
                         arraylist.remove(position);
@@ -114,7 +113,7 @@ public class NotificationFragment extends Fragment {
         calendar = Calendar.getInstance();
         timestamp = calendar.getTimeInMillis();
 
-        arraylist = new ArrayList<Reminder>();
+        arraylist.clear();
         reminderList = db_reminder.getAllReminders();
         listcounter=0;
 
@@ -125,9 +124,9 @@ public class NotificationFragment extends Fragment {
         while (listcounter<reminderList.size()) {
 
             reminder = reminderList.get(listcounter);
-            reminderTimestamp = reminder.getTstamp();
+            long reminderTimestamp = reminder.getTstamp();
 
-            if(reminderTimestamp>=timestamp){
+            if(reminderTimestamp >= timestamp){
 
                 arraylist.add(reminder);
             }

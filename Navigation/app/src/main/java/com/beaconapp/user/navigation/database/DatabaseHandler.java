@@ -15,17 +15,9 @@ import java.util.List;
 
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    // All Static variables
-    // Database Version
     private static final int DATABASE_VERSION = 1;
-
-    // Database Name
     private static final String DATABASE_NAME = "DailyStatistics";
-
-    // Contacts table name
     private static final String TABLE_STATISTICS = "statistics";
-
-    // Contacts Table Columns names
     private static final String KEY_ID = "id";
     private static final String KEY_DESK = "desk";
     private static final String KEY_OFFICE = "office";
@@ -36,7 +28,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    // Creating Tables
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_STATISTICS_TABLE = "CREATE TABLE " + TABLE_STATISTICS + "("
@@ -45,19 +36,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_STATISTICS_TABLE);
     }
 
-    // Upgrading database
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // Drop older table if existed
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATISTICS);
 
-        // Create tables again
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_STATISTICS);
         onCreate(db);
     }
 
-
-    // Adding new Statistics
     public void addDailyStat(DailyStat dailyStat) {
+
         SQLiteDatabase db = this.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -66,33 +53,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_OFFICE, dailyStat.getOffice_time());
         values.put(KEY_OUTDOOR, dailyStat.getOutdoor_time());
 
-        // Inserting Row
         db.insert(TABLE_STATISTICS, null, values);
-        db.close(); // Closing database connection
+        db.close();
     }
 
-    // Getting single statistics
-    public DailyStat getDailyStat(long tstamp) {
+    public DailyStat getSelectedDayStat(long start_of_day) {
+
         SQLiteDatabase db = this.getReadableDatabase();
-
-        Cursor cursor = db.query(TABLE_STATISTICS, new String[] { KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR }, KEY_STAMP + "=?",
-                new String[] { String.valueOf(tstamp) }, null, null, null, null);
-
-        if (cursor != null)
-            cursor.moveToFirst();
-
-        DailyStat dailyStat = new DailyStat(Integer.parseInt(cursor.getString(0)),Long.parseLong(cursor.getString(1)),
-                Long.parseLong(cursor.getString(2)),Long.parseLong(cursor.getString(3)),Long.parseLong(cursor.getString(4)));
-        // return statistics
-        return dailyStat;
-    }
-
-    // Getting single statistics
-    public DailyStat getSelectedDayStat(long tstamp) {
-        SQLiteDatabase db = this.getReadableDatabase();
-
-        long start_of_day = tstamp;
-        long end_of_day = tstamp+86400000;
+        long end_of_day = start_of_day+86400000;
 
         Cursor cursor = db.query(TABLE_STATISTICS, new String[]{KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR}, KEY_STAMP + " >? AND " + KEY_STAMP + " <?",
                 new String[]{String.valueOf(start_of_day), String.valueOf(end_of_day)}, null, null, null, null);
@@ -101,7 +69,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             DailyStat dailyStat = new DailyStat(Integer.parseInt(cursor.getString(0)), Long.parseLong(cursor.getString(1)),
                     Long.parseLong(cursor.getString(2)), Long.parseLong(cursor.getString(3)), Long.parseLong(cursor.getString(4)));
-            // return statistics
+            cursor.close();
             return dailyStat;
         }
         else {
@@ -109,16 +77,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
-    // Getting All statistics
     public List<DailyStat> getAllDailyStat() {
-        List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
-        // Select All Query
+        List<DailyStat> dailyStatList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(selectQuery, null);
 
-        // looping through all rows and adding to list
         if (cursor.moveToLast()) {
             do {
                 DailyStat dailyStat = new DailyStat();
@@ -130,13 +95,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 dailyStatList.add(dailyStat);
             } while (cursor.moveToPrevious());
         }
+        cursor.close();
 
         return dailyStatList;
     }
 
     public List<DailyStat> getWeeklyStat(long tstamp) {
-        List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
 
+        List<DailyStat> dailyStatList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(tstamp);
         while (calendar.get(Calendar.DAY_OF_WEEK) >= calendar.getFirstDayOfWeek()) {
@@ -150,14 +116,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         calendar.set(Calendar.MINUTE, 50);
         long end_of_week = calendar.getTimeInMillis();
 
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
-
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_STATISTICS, new String[]{KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR}, KEY_STAMP + " >? AND " + KEY_STAMP + " <?",
                 new String[]{String.valueOf(start_of_week), String.valueOf(end_of_week)}, null, null, null, null);
 
-        // looping through all rows and adding to list
         if (cursor.moveToLast()) {
             do {
                 DailyStat dailyStat = new DailyStat();
@@ -169,33 +131,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 dailyStatList.add(dailyStat);
             } while (cursor.moveToPrevious());
         }
+        cursor.close();
 
         return dailyStatList;
     }
 
     public List<DailyStat> getMonthlyStat(long tstamp) {
-        List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
+
+        List<DailyStat> dailyStatList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(tstamp);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-
         long start_of_month = calendar.getTimeInMillis();
 
         calendar.add(Calendar.MONTH, 1);
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         calendar.set(Calendar.HOUR_OF_DAY, 0);
-
         long end_of_month = calendar.getTimeInMillis();
-
-        // Select All Query
-        String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.query(TABLE_STATISTICS, new String[]{KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR}, KEY_STAMP + " >? AND " + KEY_STAMP + " <?",
                 new String[]{String.valueOf(start_of_month), String.valueOf(end_of_month)}, null, null, null, null);
 
-        // looping through all rows and adding to list
         if (cursor.moveToLast()) {
             do {
                 DailyStat dailyStat = new DailyStat();
@@ -207,6 +165,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 dailyStatList.add(dailyStat);
             } while (cursor.moveToPrevious());
         }
+        cursor.close();
 
         return dailyStatList;
     }

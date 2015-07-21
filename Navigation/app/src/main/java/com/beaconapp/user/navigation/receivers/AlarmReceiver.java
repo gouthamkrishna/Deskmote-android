@@ -19,24 +19,19 @@ import java.util.Random;
 public class AlarmReceiver extends BroadcastReceiver {
 
     public static final String TAG = "com.beaconapp.user.deskmote.TAG";
-    public NotificationManager notificationManager;
-    String reminderMessage;
-    Notification notification;
-    SharedPreferences sharedPreferences;
-    boolean notifications, reminders;
 
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        notifications = sharedPreferences.getBoolean("pref_key_notifications", false);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        boolean notifications = sharedPreferences.getBoolean("pref_key_notifications", false);
         if(notifications) {
-            reminders = sharedPreferences.getBoolean("pref_key_reminders", false);
+            boolean reminders = sharedPreferences.getBoolean("pref_key_reminders", false);
             if(reminders) {
-                reminderMessage = intent.getStringExtra(TAG);
-                notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                notification = new Notification.Builder(context)
+                String reminderMessage = intent.getStringExtra(TAG);
+                NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification notification = new Notification.Builder(context)
                         .setSmallIcon(R.drawable.alarm4)
                         .setContentTitle("Reminder")
                         .setContentText(reminderMessage)

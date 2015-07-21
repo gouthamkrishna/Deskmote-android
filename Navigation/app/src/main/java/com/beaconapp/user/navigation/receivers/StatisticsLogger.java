@@ -62,7 +62,7 @@ public class StatisticsLogger extends BroadcastReceiver {
                             .build();
                     notification.defaults |= Notification.DEFAULT_SOUND;
                     notification.defaults |= Notification.DEFAULT_LIGHTS;
-                    notificationManager.notify(1, notification);
+                    notificationManager.notify(153, notification);
                 }
             }
         }

@@ -24,7 +24,7 @@ public class ListViewAdapter extends BaseAdapter {
         mContext = context;
         this.reminderlist = reminderlist;
         inflater = LayoutInflater.from(mContext);
-        this.arraylist = new ArrayList<Reminder>();
+        this.arraylist = new ArrayList<>();
         this.arraylist.addAll(reminderlist);
     }
 

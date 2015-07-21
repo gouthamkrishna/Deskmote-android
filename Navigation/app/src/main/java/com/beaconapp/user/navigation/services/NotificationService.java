@@ -1,8 +1,5 @@
 package com.beaconapp.user.navigation.services;
 
-/**
- * Created by user on 22/6/15.
- */
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -30,7 +27,6 @@ public class NotificationService extends Service {
     private NotificationManager notificationManager;
     private Region region_door_entry, region_desk, region_door_exit;
     public int obj = 0;
-    boolean start = false;
     BluetoothAdapter bt=null;
     TimerClass obj1 = new TimerClass();
     TimerClass obj2 = new TimerClass();

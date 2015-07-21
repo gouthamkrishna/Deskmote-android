@@ -3,11 +3,13 @@ package com.beaconapp.user.navigation.fragments;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -49,6 +51,7 @@ public class HomeFragment extends Fragment {
     AnimatorSet animation = new AnimatorSet();
     ObjectAnimator colorAnimator, progressAnimation;
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("Home");
@@ -58,7 +61,6 @@ public class HomeFragment extends Fragment {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        sharedPrefEditor = sharedPref.edit();
 
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, null);
 
@@ -156,7 +158,7 @@ public class HomeFragment extends Fragment {
                 time_office = sharedPref.getLong(getString(R.string.shared_timer_office), 0);
                 time_outdoor = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
             }
-            catch (Exception e ) {
+            catch (Exception ignored) {
             }
             secs_desk = (int) (time_desk / 1000);
             mins = secs_desk / 60;

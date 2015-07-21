@@ -2,6 +2,7 @@ package com.beaconapp.user.navigation.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.widget.DatePicker;
@@ -18,19 +19,19 @@ public class DatePickerFragment extends DialogFragment
     MonthlyChartFragment monthlyChartFragment;
 
     public interface ReminderFragment {
-        public void onDateSelected(int year, int month, int day);
+        void onDateSelected(int year, int month, int day);
     }
 
     public interface DailyChartFragment {
-        public void onDateSelected(int year, int month, int day);
+        void onDateSelected(int year, int month, int day);
     }
 
     public interface WeeklyChartFragment {
-        public void onDateSelected(int year, int month, int day);
+        void onDateSelected(int year, int month, int day);
     }
 
     public interface MonthlyChartFragment {
-        public void onDateSelected(int year, int month, int day);
+        void onDateSelected(int year, int month, int day);
     }
 
     public DatePickerFragment(com.beaconapp.user.navigation.fragments.ReminderFragment remFragment) {
@@ -55,6 +56,7 @@ public class DatePickerFragment extends DialogFragment
     }
 
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current date as the default date in the picker
