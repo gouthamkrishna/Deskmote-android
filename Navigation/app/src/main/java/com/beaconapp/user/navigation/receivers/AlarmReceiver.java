@@ -37,7 +37,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 reminderMessage = intent.getStringExtra(TAG);
                 notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 notification = new Notification.Builder(context)
-                        .setSmallIcon(R.mipmap.ic_launcher)
+                        .setSmallIcon(R.drawable.alarm4)
                         .setContentTitle("Reminder")
                         .setContentText(reminderMessage)
                         .setAutoCancel(true)

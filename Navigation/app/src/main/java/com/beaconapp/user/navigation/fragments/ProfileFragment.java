@@ -1,6 +1,5 @@
 package com.beaconapp.user.navigation.fragments;
 
-import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -13,16 +12,21 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.beaconapp.user.navigation.activities.MainActivity;
 import com.beaconapp.user.navigation.R;
+import com.beaconapp.user.navigation.activities.MainActivity;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,21 +37,17 @@ import java.io.FileOutputStream;
 public class ProfileFragment extends Fragment {
 
     private static int RESULT_LOAD_IMAGE = 1;
-    private static int RESULT_OK = -1;
     View rootView;
     private SharedPreferences savednotes;
     SharedPreferences.Editor preferencesEditor;
-    TextView text_name,text_cname;
-    EditText name_field,cname_field;
-    ImageView image,image1,imageView;
+    TextView textName,textCompanyName;
+    EditText nameField,cnameField;
+    ImageView photo;
+    Button save;
     InputMethodManager imm;
     String path = null;
     Boolean defaultval = false, test;
-
-    public static Fragment newInstance(Context context) {
-        ProfileFragment f = new ProfileFragment();
-        return f;
-    }
+    String nameTag,companyNameTag;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -56,31 +56,29 @@ public class ProfileFragment extends Fragment {
 
         rootView =  inflater.inflate(R.layout.fragment_profile, null);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        image = (ImageView)rootView.findViewById(R.id.imageView);
-        image1 = (ImageView)rootView.findViewById(R.id.imageView2);
-        text_name = (TextView)rootView.findViewById(R.id.textView);
-        text_cname = (TextView)rootView.findViewById(R.id.textView2);
-        name_field = (EditText)rootView.findViewById(R.id.editText);
-        cname_field = (EditText)rootView.findViewById(R.id.editText2);
-        text_name.setText(savednotes.getString("NAME_KEY", "NAME"));
-        text_cname.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
-        name_field.setHint(savednotes.getString("NAME_KEY", "NAME"));
-        cname_field.setHint(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
+
+        save = (Button)rootView.findViewById(R.id.save);
+        textName = (TextView)rootView.findViewById(R.id.name_text);
+        textCompanyName = (TextView)rootView.findViewById(R.id.company_name_text);
+        nameField = (EditText)rootView.findViewById(R.id.name_edit);
+        cnameField = (EditText)rootView.findViewById(R.id.company_name_edit);
+        textName.setText(savednotes.getString("NAME_KEY", "Name"));
+        textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
+        cnameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
-        imageView = (ImageView)rootView.findViewById(R.id.imgView);
+        photo = (ImageView)rootView.findViewById(R.id.circle_image_view);
         Resources res = getActivity().getResources();
         int id = R.drawable.picture;
-        imageView.setImageBitmap(BitmapFactory.decodeResource(res, id));
-        ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.imageButton);
+        photo.setImageBitmap(BitmapFactory.decodeResource(res, id));
+        ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.load_image_Button);
 
         test = savednotes.getBoolean("IMAGE_KEY", defaultval);
         if(test){
             path = savednotes.getString("PATH_KEY",path);
             Bitmap bitmap = loadImageFromStorage(path);
-
-            imageView.setImageBitmap(bitmap);
+            photo.setImageBitmap(bitmap);
         }
 
         buttonLoadImage.setOnClickListener(new View.OnClickListener() {
@@ -96,53 +94,58 @@ public class ProfileFragment extends Fragment {
         });
 
 
-        image.setOnClickListener(new View.OnClickListener() {
+        textName.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
 
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,0);
-                name_field.setVisibility(View.VISIBLE);
-                cname_field.setVisibility(View.VISIBLE);
-                text_name.setVisibility(View.INVISIBLE);
-                text_cname.setVisibility(View.INVISIBLE);
-                image.setVisibility(View.INVISIBLE);
-                image1.setVisibility(View.VISIBLE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                nameField.setVisibility(View.VISIBLE);
+                cnameField.setVisibility(View.VISIBLE);
+                textName.setVisibility(View.INVISIBLE);
+                textCompanyName.setVisibility(View.INVISIBLE);
+                save.setVisibility(View.VISIBLE);
 
             }
-        });;
+        });
 
-        image1.setOnClickListener(new View.OnClickListener() {
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-                String name = name_field.getText().toString();
-                if (name.equals(""))
-                    name = savednotes.getString("NAME_KEY", "NAME");
+                nameTag = nameField.getText().toString();
+                companyNameTag = cnameField.getText().toString();
+                if (nameTag.equals("")) {
+                    nameField.setError("Empty field!!");
+                    Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                    nameField.startAnimation(shake);
 
-                preferencesEditor = savednotes.edit();
-                preferencesEditor.putString("NAME_KEY", name);
+                }
+                else if(companyNameTag.equals("")){
+                    cnameField.setError("Empty field!!");
+                    Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                    cnameField.startAnimation(shake);
+                }
+                else {
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
-                String cname = cname_field.getText().toString();
-                if (cname.equals(""))
-                    cname = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
+                    preferencesEditor = savednotes.edit();
+                    preferencesEditor.putString("NAME_KEY", nameTag);
+                    preferencesEditor.putString("COMPANY_NAME_KEY", companyNameTag);
+                    preferencesEditor.apply();
 
-                preferencesEditor.putString("COMPANY_NAME_KEY", cname);
-                preferencesEditor.commit();
-
-                name_field.setVisibility(View.INVISIBLE);
-                cname_field.setVisibility(View.INVISIBLE);
-                image.setVisibility(View.VISIBLE);
-                text_name.setVisibility(View.VISIBLE);
-                text_cname.setVisibility(View.VISIBLE);
-                image1.setVisibility(View.INVISIBLE);
-                text_name.setText(savednotes.getString("NAME_KEY", "NAME"));
-                text_cname.setText(savednotes.getString("COMPANY_NAME_KEY", "COMPANY_NAME"));
+                    nameField.setVisibility(View.INVISIBLE);
+                    cnameField.setVisibility(View.INVISIBLE);
+                    textName.setVisibility(View.VISIBLE);
+                    textCompanyName.setVisibility(View.VISIBLE);
+                    save.setVisibility(View.INVISIBLE);
+                    textName.setText(savednotes.getString("NAME_KEY", "Name"));
+                    textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
+                }
             }
 
             });
-            return  rootView;
+        return  rootView;
 
     }
 
@@ -150,6 +153,7 @@ public class ProfileFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+        int RESULT_OK = -1;
         if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
             Uri selectedImage = data.getData();
             String[] filePathColumn = { MediaStore.Images.Media.DATA };
@@ -160,8 +164,11 @@ public class ProfileFragment extends Fragment {
             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
             String picturePath = cursor.getString(columnIndex);
             cursor.close();
-
-            path = saveToInternalSorage(BitmapFactory.decodeFile(picturePath));
+            BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inJustDecodeBounds=false;
+            BitmapFactory.decodeFile(picturePath,options);
+            options.inSampleSize=calculateInSampleSize(options, 200, 200);
+            path = saveToInternalSorage(BitmapFactory.decodeFile(picturePath,options));
 
             preferencesEditor = savednotes.edit();
             preferencesEditor.putString("PATH_KEY", path);
@@ -170,27 +177,43 @@ public class ProfileFragment extends Fragment {
                 preferencesEditor.putBoolean("IMAGE_KEY", true);
             }
 
-            preferencesEditor.commit();
+            preferencesEditor.apply();
             Bitmap bitmap = loadImageFromStorage(path);
-            imageView.setImageBitmap(bitmap);
+            photo.setImageBitmap(bitmap);
         }
 
     }
 
+    public static int calculateInSampleSize(
+            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+
+        return inSampleSize;
+    }
+
     private String saveToInternalSorage(Bitmap bitmapImage) {
         ContextWrapper cw = new ContextWrapper(getActivity());
-        // path to /data/data/yourapp/app_data/imageDir
         File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
-        // Create imageDir
-        File mypath = new File(directory, "profile.jpg");
+        File mypath = new File(directory, "profile.png");
 
-        FileOutputStream fos = null;
+        FileOutputStream fos;
         try {
 
             fos = new FileOutputStream(mypath);
-
-            // Use the compress method on the BitMap object to write image to the OutputStream
-            bitmapImage.compress(Bitmap.CompressFormat.PNG, 100, fos);
+            bitmapImage.compress(Bitmap.CompressFormat.PNG, 10, fos);
             fos.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -202,8 +225,9 @@ public class ProfileFragment extends Fragment {
     {
 
         Bitmap bitmap = null;
+
         try {
-            File f=new File(path, "profile.jpg");
+            File f=new File(path, "profile.png");
             bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
         }
         catch (FileNotFoundException e)

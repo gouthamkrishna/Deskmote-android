@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:minWidth="1000dp"
-    android:minHeight="190dp"
+    android:minHeight="200dp"
     android:padding="10dp"
     android:weightSum="1"
     android:layout_margin="10dp"
@@ -17,7 +17,7 @@
         android:paddingLeft="8dp"
         android:layout_height="wrap_content"
         android:id="@+id/tagLine"
-        android:hint="Description..."/>
+        android:hint="Remind me about..."/>
 
     <RelativeLayout
         android:layout_width="fill_parent"

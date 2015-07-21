@@ -57,8 +57,8 @@ public class MainActivity extends ActionBarActivity{
 
         savednotes = PreferenceManager.getDefaultSharedPreferences(this);
         PROFILE = savednotes.getString("PATH_KEY", PROFILE);
-        NAME = savednotes.getString("NAME_KEY", "NAME");
-        EMAIL = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
+        NAME = savednotes.getString("NAME_KEY", "Name");
+        EMAIL = savednotes.getString("COMPANY_NAME_KEY", "Company Name");
         ICONS = new int[]{R.drawable.home_active, R.drawable.graph, R.drawable.reminder, R.drawable.profile, R.drawable.settings};
 
         mRecyclerView = (RecyclerView) findViewById(R.id.RecyclerView);
@@ -83,8 +83,8 @@ public class MainActivity extends ActionBarActivity{
                 imm.hideSoftInputFromWindow(drawerView.getWindowToken(), 0);
                 if(position==4) {
                     PROFILE = savednotes.getString("PATH_KEY", PROFILE);
-                    NAME = savednotes.getString("NAME_KEY", "NAME");
-                    EMAIL = savednotes.getString("COMPANY_NAME_KEY", "COMPANY NAME");
+                    NAME = savednotes.getString("NAME_KEY", "Name");
+                    EMAIL = savednotes.getString("COMPANY_NAME_KEY", "Company Name");
                     mAdapter = new MyAdapter(TITLES, ICONS, NAME, EMAIL, PROFILE);
                     mRecyclerView.setAdapter(mAdapter);
                 }
@@ -92,7 +92,6 @@ public class MainActivity extends ActionBarActivity{
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                //Do nothing
             }
         };
         mDrawer.setDrawerListener(mDrawerToggle);

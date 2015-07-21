@@ -137,8 +137,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public List<DailyStat> getWeeklyStat(long tstamp) {
         List<DailyStat> dailyStatList = new ArrayList<DailyStat>();
 
-        long start_of_week = (((tstamp/604800000L)*604800000L));
-        long end_of_week = start_of_week+604800000L;
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(tstamp);
+        while (calendar.get(Calendar.DAY_OF_WEEK) >= calendar.getFirstDayOfWeek()) {
+            calendar.add(Calendar.DATE, -1);
+        }
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        long start_of_week = (calendar.getTimeInMillis());
+
+        calendar.add(Calendar.DATE, 6);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 50);
+        long end_of_week = calendar.getTimeInMillis();
 
         // Select All Query
         String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;

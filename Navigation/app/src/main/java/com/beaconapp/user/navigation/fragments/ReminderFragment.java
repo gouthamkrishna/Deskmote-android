@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,15 +25,12 @@ import com.beaconapp.user.navigation.activities.MainActivity;
 import com.beaconapp.user.navigation.classes.Reminder;
 import com.beaconapp.user.navigation.database.ReminderDatabaseHandler;
 import com.beaconapp.user.navigation.receivers.AlarmReceiver;
-import com.beaconapp.user.navigation.services.TestCaseGenerator;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-/**
- * Created by user on 13/7/15.
- */
+
 public class ReminderFragment extends DialogFragment implements DatePickerFragment.ReminderFragment, TimePickerFragment.ReminderFragment {
 
     public static final String TAG = "com.beaconapp.user.deskmote.TAG";
@@ -44,7 +43,6 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     AlarmManager alarmManager;
     Reminder temporaryReminder;
     ReminderDatabaseHandler db_reminder;
-    TextView tvDisplayDate, tvDisplayTime;
     TextView datePickerIcon, timePickerIcon;
     Button saveReminderIcon,cancelReminderIcon;
     String displayTime = "", displayDate = "";
@@ -64,11 +62,10 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.reminder_dialog, container, false);
+        getDialog().getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         getDialog().getWindow().requestFeature(Window.FEATURE_NO_TITLE);
 
         db_reminder = new ReminderDatabaseHandler(getActivity());
-        tvDisplayDate = (TextView)rootView.findViewById(R.id.reminderDateView);
-        tvDisplayTime = (TextView)rootView.findViewById(R.id.reminderTimeView);
         timePickerIcon = (TextView) rootView.findViewById(R.id.reminderTimeView);
         datePickerIcon = (TextView) rootView.findViewById(R.id.reminderDateView);
         saveReminderIcon = (Button) rootView.findViewById(R.id.saveReminder);
@@ -98,8 +95,8 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
         hour = calendar.get(Calendar.HOUR_OF_DAY);
         minute = calendar.get(Calendar.MINUTE);
 
-        tvDisplayDate.setText(displayDate);
-        tvDisplayTime.setText(displayTime);
+        datePickerIcon.setText(displayDate);
+        timePickerIcon.setText(displayTime);
     }
 
     public void addListenerOntimePickerIcon() {
@@ -136,7 +133,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
         currentDate = new Date(year-1900,month,day,hour,minute);
         displayDate = new SimpleDateFormat("yyyy-MM-dd").format(currentDate);
         timestamp = currentDate.getTime();
-        tvDisplayDate.setText(displayDate);
+        datePickerIcon.setText(displayDate);
     }
 
     @Override
@@ -147,7 +144,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
         currentDate = new Date(year-1900,month,day,hour,minute);
         displayTime = new SimpleDateFormat("HH:mm").format(currentDate);
         timestamp = currentDate.getTime();
-        tvDisplayTime.setText(displayTime);
+        timePickerIcon.setText(displayTime);
     }
 
     public void addListenerOnsaveReminderIcon() {
@@ -161,12 +158,12 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
                 temporaryTimestamp = temporaryDate.getTime();
 
                 reminderDescription = reminderTagLine.getText().toString();
-                reminderTagLine.setText("");
 
                 if (reminderDescription.equals("")) {
                     reminderTagLine.setError("Empty field!!");
+                    Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                    reminderTagLine.startAnimation(shake);
                 } else if (timestamp <= temporaryTimestamp) {
-
                     Toast.makeText(getActivity(), "Invalid Date or Time !!", Toast.LENGTH_SHORT).show();
                 } else {
 
@@ -189,9 +186,6 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
 
             @Override
             public void onClick (View v) {
-                Intent intent = new Intent(getActivity(), TestCaseGenerator.class);
-                intent.putExtra("case", 2);
-                getActivity().startService(intent);
                 dismiss();
             }
         });
@@ -211,9 +205,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
 
         if (flag && (MainActivity.position==3)) {
             fragmentManager = getActivity().getSupportFragmentManager();
-            fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.container, new NotificationFragment());
-            fragmentTransaction.commit();
+            fragmentManager.beginTransaction().replace(R.id.container, new NotificationFragment()).commit();
         }
         super.onDismiss(dialog);
     }

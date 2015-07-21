@@ -16,7 +16,7 @@
             android:key="pref_key_reminders"
             android:summary="@string/pref_reminders_summary"
             android:title="@string/pref_reminders_title"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
 
         <CheckBoxPreference
             android:dependency="pref_key_notifications"
@@ -30,7 +30,7 @@
             android:key="pref_key_health"
             android:summary="@string/pref_health_summary"
             android:title="@string/pref_health_title"
-            android:defaultValue="false"/>
+            android:defaultValue="true"/>
 
         <CheckBoxPreference
             android:dependency="pref_key_notifications"

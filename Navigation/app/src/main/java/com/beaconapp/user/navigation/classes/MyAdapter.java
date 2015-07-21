@@ -119,7 +119,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         Bitmap bitmap = null;
         try {
-            File f=new File(path, "profile.jpg");
+            File f=new File(path, "profile.png");
             bitmap = BitmapFactory.decodeStream(new FileInputStream(f));
         }
         catch (FileNotFoundException e)

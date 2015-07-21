@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.DailyStat;
@@ -103,7 +102,6 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
                 }, i));
                 labels.add("" + day);
             }
-            Toast.makeText(getActivity(), ""+monthly.size(), Toast.LENGTH_SHORT).show();
 
             BarDataSet set1 = new BarDataSet(Yvalue1, "");
 

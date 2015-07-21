@@ -39,16 +39,16 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     TextView noDataDisplay, datePicker;
     long picked_timestamp;
     DatePickerFragment newDateFragment;
-    Date sDate,eDate;
+    Date sDate,eDate, cDate;
     String startDate, endDate;
     ImageView preWeek, nextWeek;
-    String daysOfWeek[] = {"Thu", "Fri", "Sat", "Sun", "Mon", "Tue", "Wed"};
+    String daysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
     BarData data;
     ArrayList<BarDataSet> dataSets;
     BarDataSet dataset1, dataset2, dataset3;
     ArrayList<BarEntry> Yvalue1, Yvalue2, Yvalue3;
     ArrayList<String> labels;
-    View view;
+    YvalueFormatter yvalueFormatter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -58,15 +58,17 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_weekly_chart_layout, container, false);
+        View view = inflater.inflate(R.layout.fragment_weekly_chart_layout, container, false);
         db = new DatabaseHandler(getActivity());
         newDateFragment = new DatePickerFragment(this);
         weekly = new ArrayList<>();
+        chart = (HorizontalBarChart)view.findViewById(R.id.weeklybchart);
 
         picked_timestamp = Calendar.getInstance().getTimeInMillis();
         datePicker = (TextView)view.findViewById(R.id.weekView);
         preWeek = (ImageView)view.findViewById(R.id.previousWeek);
         nextWeek = (ImageView)view.findViewById(R.id.nextWeek);
+        yvalueFormatter = new YvalueFormatter();
 
         noDataDisplay = (TextView)view.findViewById(R.id.noDataWeek);
         noDataDisplay.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
@@ -80,8 +82,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     }
 
     public void setView(){
-
-        chart = (HorizontalBarChart)view.findViewById(R.id.weeklybchart);
+        chart.removeAllViews();
 
         weekly = db.getWeeklyStat(picked_timestamp);
 
@@ -90,8 +91,15 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         Yvalue3 = new ArrayList<>();
         labels = new ArrayList<String>();
 
-        sDate = new Date((((picked_timestamp)/604800000L)*604800000L));
-        eDate = new Date(sDate.getTime()+584999000);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(picked_timestamp);
+        while (calendar.get(Calendar.DAY_OF_WEEK) >= calendar.getFirstDayOfWeek()) {
+            calendar.add(Calendar.DATE, -1);
+        }
+
+        sDate = new Date(calendar.getTimeInMillis());
+        calendar.add(Calendar.DATE,6);
+        eDate = new Date(calendar.getTimeInMillis());
         startDate = new SimpleDateFormat("MMM dd").format(sDate);
         endDate = new SimpleDateFormat("MMM dd, yyyy").format(eDate);
         datePicker.setText(startDate + " - " + endDate);
@@ -127,12 +135,11 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             data = new BarData(labels,dataSets);
 
             chart.setData(data);
-            data.setGroupSpace(200);
             chart.setDescription("");
             chart.getAxisLeft().setDrawLabels(false);
             chart.getAxisRight().setDrawLabels(false);
 
-            data.setValueFormatter(new YvalueFormatter());
+            data.setValueFormatter(yvalueFormatter);
             data.setValueTextSize(10f);
 
         }
@@ -181,9 +188,8 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     @Override
     public void onDateSelected(int selected_year, int selected_month, int selected_day) {
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(selected_year, selected_month, selected_day);
-        picked_timestamp = calendar.getTimeInMillis();
+        cDate = new Date(selected_year-1900,selected_month,selected_day);
+        picked_timestamp = cDate.getTime();
         setView();
     }
 }
