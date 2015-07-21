@@ -125,19 +125,22 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
         int office_to_minute = sharedPref.getInt("pref_key_office_time_to_minute", 30);
 
         if (category.equals("office")) {
-            calendar.set(Calendar.HOUR_OF_DAY, office_from_hour);
-            calendar.set(Calendar.MINUTE, office_from_minute);
-            Intent startNotificationService = new Intent(getContext(), StatisticsLogger.class);
-            startNotificationService.putExtra("service_name", "notification");
-            PendingIntent pendingnotificationService = PendingIntent.getBroadcast(getContext(), 1727, startNotificationService, 0);
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingnotificationService);
-
-            calendar.set(Calendar.HOUR_OF_DAY, office_to_hour);
-            calendar.set(Calendar.MINUTE, office_to_minute);
-            Intent stopNotificationService = new Intent(getContext(), StatisticsLogger.class);
-            stopNotificationService.putExtra("service_name", "notificationstop");
-            PendingIntent pendingStopNotificationService = PendingIntent.getBroadcast(getContext(), 1726, stopNotificationService, 0);
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingStopNotificationService);
+            if (fromTo.equals("from")) {
+                calendar.set(Calendar.HOUR_OF_DAY, office_from_hour);
+                calendar.set(Calendar.MINUTE, office_from_minute);
+                Intent startNotificationService = new Intent(getContext(), StatisticsLogger.class);
+                startNotificationService.putExtra("service_name", "notification");
+                PendingIntent pendingnotificationService = PendingIntent.getBroadcast(getContext(), 1728, startNotificationService, 0);
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingnotificationService);
+            }
+            else {
+                calendar.set(Calendar.HOUR_OF_DAY, office_to_hour);
+                calendar.set(Calendar.MINUTE, office_to_minute);
+                Intent stopNotificationService = new Intent(getContext(), StatisticsLogger.class);
+                stopNotificationService.putExtra("service_name", "notificationstop");
+                PendingIntent pendingStopNotificationService = PendingIntent.getBroadcast(getContext(), 1726, stopNotificationService, 0);
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingStopNotificationService);
+            }
         }
 
         if (category.equals("lunch")) {

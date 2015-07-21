@@ -3,10 +3,6 @@ package com.beaconapp.user.navigation.fragments;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -46,7 +42,6 @@ public class HomeFragment extends Fragment {
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
     SharedPreferences.Editor sharedPrefEditor;
-    boolean defaultValue = false;
     Drawable d;
     Window window;
     CircularProgressDrawable drawable;
@@ -62,6 +57,9 @@ public class HomeFragment extends Fragment {
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
+        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        sharedPrefEditor = sharedPref.edit();
+
         ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, null);
 
         tv_main = (TextView) root.findViewById(R.id.timer_main);
@@ -75,9 +73,6 @@ public class HomeFragment extends Fragment {
         tv_left.setTypeface(face);
         tv_right.setTypeface(face);
         chHandler.postDelayed(timer, 0);
-
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
-        sharedPrefEditor = sharedPref.edit();
 
         sw_main = (ImageSwitcher) root.findViewById(R.id.sw_main);
         sw_left = (ImageSwitcher) root.findViewById(R.id.sw_left);
@@ -277,7 +272,7 @@ public class HomeFragment extends Fragment {
         }
     };
 
-    void runProgressBar( float start, long duration, int r, int g, int b) {
+    public void runProgressBar( float start, long duration, int r, int g, int b) {
         progressAnimation = ObjectAnimator.ofFloat(drawable, CircularProgressDrawable.PROGRESS_PROPERTY,
                 start, 1f);
         progressAnimation.setDuration(duration);

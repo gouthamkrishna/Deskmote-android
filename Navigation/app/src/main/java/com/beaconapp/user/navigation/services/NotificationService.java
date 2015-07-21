@@ -30,6 +30,7 @@ public class NotificationService extends Service {
     private NotificationManager notificationManager;
     private Region region_door_entry, region_desk, region_door_exit;
     public int obj = 0;
+    boolean start = false;
     BluetoothAdapter bt=null;
     TimerClass obj1 = new TimerClass();
     TimerClass obj2 = new TimerClass();
@@ -41,7 +42,6 @@ public class NotificationService extends Service {
     public IBinder onBind(Intent arg0) {
         return null;
     }
-
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
