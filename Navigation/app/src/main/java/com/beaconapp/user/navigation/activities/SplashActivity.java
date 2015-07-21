@@ -11,6 +11,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.receivers.StatisticsLogger;
@@ -21,7 +25,7 @@ import java.util.Calendar;
 
 public class SplashActivity extends Activity {
 
-    public static final int DELAY = 2000;
+    public static final int DELAY = 4000;
     SharedPreferences sharedPref;
     SharedPreferences.Editor sharedPrefEditor;
 
@@ -34,6 +38,7 @@ public class SplashActivity extends Activity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
+        StartAnimations();
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPrefEditor = sharedPref.edit();
@@ -74,5 +79,19 @@ public class SplashActivity extends Activity {
                 SplashActivity.this.finish();
             }
         }, DELAY);
+    }
+    private void StartAnimations() {
+        Animation anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        anim.reset();
+        RelativeLayout r=(RelativeLayout) findViewById(R.id.splash_layout);
+        r.clearAnimation();
+        r.startAnimation(anim);
+
+        anim = AnimationUtils.loadAnimation(this, R.anim.alpha);
+        anim.reset();
+        ImageView iv = (ImageView) findViewById(R.id.splash_image);
+        iv.clearAnimation();
+        iv.startAnimation(anim);
+
     }
 }

@@ -57,7 +57,7 @@
             android:name="com.beaconapp.user.navigation.activities.SplashActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
+            android:theme="@style/MyTranslucentTheme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
