@@ -4,6 +4,7 @@ package com.beaconapp.user.navigation.receivers;
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +13,7 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 
 import com.beaconapp.user.navigation.R;
+import com.beaconapp.user.navigation.activities.MainActivity;
 
 import java.util.Random;
 //import android.os.Vibrator;
@@ -33,10 +35,15 @@ public class AlarmReceiver extends BroadcastReceiver {
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification notification = new Notification.Builder(context)
                         .setSmallIcon(R.drawable.ic_action_alarm4)
-                        .setContentTitle("Reminder")
-                        .setContentText(reminderMessage)
                         .setAutoCancel(true)
                         .build();
+
+                Intent startMyActivity = new Intent(context, MainActivity.class);
+                startMyActivity.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                PendingIntent myIntent = PendingIntent.getActivity(context, 0, startMyActivity, 0);
+                notification.setLatestEventInfo(context,"Reminder", reminderMessage,myIntent);
+
                 notification.defaults |= Notification.DEFAULT_SOUND;
                 notification.defaults |= Notification.DEFAULT_LIGHTS;
                 notification.defaults |= Notification.DEFAULT_VIBRATE;

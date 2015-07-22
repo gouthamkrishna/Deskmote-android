@@ -112,6 +112,15 @@ public class MainActivity extends ActionBarActivity{
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        resetAdapter();
+        reminder_action.setIcon(R.drawable.add_reminder);
+        fragmentManager.beginTransaction().replace(R.id.container, new NotificationFragment()).commit();
+        ICONS[2] = R.drawable.reminder_active;
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         loadCorrespondingFragment();

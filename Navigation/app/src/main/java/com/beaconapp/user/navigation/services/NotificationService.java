@@ -90,8 +90,8 @@ public class NotificationService extends Service {
 
             @Override
             public void onExitedRegion(Region region) {
-                sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 0);
-                sharedPrefEditor.commit();
+//                sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 0);
+//                sharedPrefEditor.commit();
             }
         });
 
@@ -117,8 +117,8 @@ public class NotificationService extends Service {
 
             @Override
             public void onExitedRegion(Region region) {
-                sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 0);
-                sharedPrefEditor.commit();
+//                sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 0);
+//                sharedPrefEditor.commit();
             }
         });
 

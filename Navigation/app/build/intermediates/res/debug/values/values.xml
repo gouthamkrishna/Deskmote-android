@@ -291,6 +291,7 @@
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <!-- From: file:/home/user/AndroidStudioProjects/Navigation/app/src/main/res/values/strings.xml -->
     <eat-comment/>
+    <string name="cancel_profile">CANCEL</string>
     <string name="closeDrawer">Close Drawer</string>
     <string name="company_name_profile">Company Name</string>
     <string name="edit_profile">Edit Profile</string>

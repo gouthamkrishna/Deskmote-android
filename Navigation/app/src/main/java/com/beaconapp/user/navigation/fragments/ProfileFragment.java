@@ -46,10 +46,10 @@ public class ProfileFragment extends Fragment {
     EditText nameField,cnameField;
     TextInputLayout nameFieldLayout, cnameFieldLayout;
     ImageView photo;
-    Button save;
+    Button cancel;
     InputMethodManager imm;
     String path = null;
-    Boolean defaultval = false, test;
+    boolean flag = false, test;
     String nameTag,companyNameTag;
 
     @Override
@@ -60,9 +60,9 @@ public class ProfileFragment extends Fragment {
         rootView =  inflater.inflate(R.layout.fragment_profile, null);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        MenuItem menuButton = MainActivity.reminder_action;
+        final MenuItem menuButton = MainActivity.reminder_action;
 
-        save = (Button)rootView.findViewById(R.id.save);
+        cancel = (Button)rootView.findViewById(R.id.cancel);
         textName = (TextView)rootView.findViewById(R.id.name_text);
         textCompanyName = (TextView)rootView.findViewById(R.id.company_name_text);
         nameFieldLayout = (TextInputLayout)rootView.findViewById(R.id.name_layout);
@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
         photo.setImageBitmap(BitmapFactory.decodeResource(res, id));
         ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.load_image_Button);
 
-        test = savednotes.getBoolean("IMAGE_KEY", defaultval);
+        test = savednotes.getBoolean("IMAGE_KEY", false);
         if(test){
             path = savednotes.getString("PATH_KEY",path);
             Bitmap bitmap = loadImageFromStorage(path);
@@ -106,55 +106,65 @@ public class ProfileFragment extends Fragment {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                nameFieldLayout.setVisibility(View.VISIBLE);
-                cnameFieldLayout.setVisibility(View.VISIBLE);
-                textName.setVisibility(View.INVISIBLE);
-                textCompanyName.setVisibility(View.INVISIBLE);
-                save.setVisibility(View.VISIBLE);
+                if (!flag) {
+                    menuButton.setIcon(R.drawable.ic_action_action_done);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    nameFieldLayout.setVisibility(View.VISIBLE);
+                    cnameFieldLayout.setVisibility(View.VISIBLE);
+                    textName.setVisibility(View.INVISIBLE);
+                    cancel.setVisibility(View.VISIBLE);
+                    textCompanyName.setVisibility(View.INVISIBLE);
+                } else {
+                    menuButton.setIcon(R.drawable.pencil);
+                    nameTag = nameField.getText().toString();
+                    companyNameTag = cnameField.getText().toString();
+                    if (nameTag.equals("")) {
+                        nameField.setError("Name Not Set!!");
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                        nameField.startAnimation(shake);
+                    } else if (companyNameTag.equals("")) {
+                        cnameField.setError("Company Name Not Set!!");
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                        cnameField.startAnimation(shake);
+                    } else {
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+
+                        preferencesEditor = savednotes.edit();
+                        preferencesEditor.putString("NAME_KEY", nameTag);
+                        preferencesEditor.putString("COMPANY_NAME_KEY", companyNameTag);
+                        preferencesEditor.apply();
+
+                        nameFieldLayout.setVisibility(View.INVISIBLE);
+                        cnameFieldLayout.setVisibility(View.INVISIBLE);
+                        textName.setVisibility(View.VISIBLE);
+                        textCompanyName.setVisibility(View.VISIBLE);
+                        cancel.setVisibility(View.INVISIBLE);
+                        textName.setText(savednotes.getString("NAME_KEY", "Name"));
+                        textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
+                    }
+                }
+                flag = !flag;
                 return false;
             }
         });
 
-
-        save.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-
-                nameTag = nameField.getText().toString();
-                companyNameTag = cnameField.getText().toString();
-                if (nameTag.equals("")) {
-                    nameField.setError("Name Not Set!!");
-                    Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
-                    nameField.startAnimation(shake);
-
-                }
-                else if(companyNameTag.equals("")){
-                    cnameField.setError("Company Name Not Set!!");
-                    Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
-                    cnameField.startAnimation(shake);
-                }
-                else {
-                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-
-                    preferencesEditor = savednotes.edit();
-                    preferencesEditor.putString("NAME_KEY", nameTag);
-                    preferencesEditor.putString("COMPANY_NAME_KEY", companyNameTag);
-                    preferencesEditor.apply();
-
-                    nameFieldLayout.setVisibility(View.INVISIBLE);
-                    cnameFieldLayout.setVisibility(View.INVISIBLE);
-                    textName.setVisibility(View.VISIBLE);
-                    textCompanyName.setVisibility(View.VISIBLE);
-                    save.setVisibility(View.INVISIBLE);
-                    textName.setText(savednotes.getString("NAME_KEY", "Name"));
-                    textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
-                }
+        cancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                menuButton.setIcon(R.drawable.pencil);
+                flag = !flag;
+                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                nameFieldLayout.setVisibility(View.INVISIBLE);
+                cnameFieldLayout.setVisibility(View.INVISIBLE);
+                textName.setVisibility(View.VISIBLE);
+                textCompanyName.setVisibility(View.VISIBLE);
+                cancel.setVisibility(View.INVISIBLE);
+                textName.setText(savednotes.getString("NAME_KEY", "Name"));
+                textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
             }
+        });
 
-            });
         return  rootView;
-
     }
 
     @Override
