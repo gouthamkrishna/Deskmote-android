@@ -31,7 +31,7 @@ import com.beaconapp.user.navigation.fragments.StatisticsFragment;
 
 public class MainActivity extends ActionBarActivity{
 
-    public static  int position = 0;
+    public static int position = 0;
     public final String TITLES[] = {"Home", "Statistics", "Reminders", "Profile", "Settings"};
     public int ICONS[];
 

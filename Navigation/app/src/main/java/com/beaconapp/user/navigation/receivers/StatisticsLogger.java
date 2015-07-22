@@ -1,9 +1,6 @@
 package com.beaconapp.user.navigation.receivers;
 
 
-/**
- * Created by user on 30/6/15.
- */
 import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;

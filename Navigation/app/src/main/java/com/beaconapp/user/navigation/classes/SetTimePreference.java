@@ -116,6 +116,7 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
         sharedPrefEditor.apply();
 
         Calendar calendar = Calendar.getInstance();
+        long currentTime = calendar.getTimeInMillis();
         int current_hour = calendar.get(Calendar.HOUR_OF_DAY);
         int current_min = calendar.get(Calendar.MINUTE);
 
@@ -128,6 +129,9 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
             if (fromTo.equals("from")) {
                 calendar.set(Calendar.HOUR_OF_DAY, office_from_hour);
                 calendar.set(Calendar.MINUTE, office_from_minute);
+                if(currentTime > calendar.getTimeInMillis()) {
+                    calendar.add(Calendar.DATE, 1);
+                }
                 Intent startNotificationService = new Intent(getContext(), StatisticsLogger.class);
                 startNotificationService.putExtra("service_name", "notification");
                 PendingIntent pendingnotificationService = PendingIntent.getBroadcast(getContext(), 1728, startNotificationService, 0);
@@ -136,6 +140,9 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
             else {
                 calendar.set(Calendar.HOUR_OF_DAY, office_to_hour);
                 calendar.set(Calendar.MINUTE, office_to_minute);
+                if(currentTime > calendar.getTimeInMillis()) {
+                    calendar.add(Calendar.DATE, 1);
+                }
                 Intent stopNotificationService = new Intent(getContext(), StatisticsLogger.class);
                 stopNotificationService.putExtra("service_name", "notificationstop");
                 PendingIntent pendingStopNotificationService = PendingIntent.getBroadcast(getContext(), 1726, stopNotificationService, 0);
@@ -147,8 +154,12 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
             int lunch_from_hour  = sharedPref.getInt("pref_key_lunch_time_from_hour", 13);
             int lunch_from_minute = sharedPref.getInt("pref_key_lunch_time_from_minute", 0);
 
+            calendar.setTimeInMillis(currentTime);
             calendar.set(Calendar.HOUR_OF_DAY, lunch_from_hour);
             calendar.set(Calendar.MINUTE, lunch_from_minute);
+            if(currentTime > calendar.getTimeInMillis()) {
+                calendar.add(Calendar.DATE, 1);
+            }
             Intent lunchNotification = new Intent(getContext(), StatisticsLogger.class);
             lunchNotification.putExtra("service_name", "lunchnotification");
             PendingIntent pendinglunchNotification = PendingIntent.getBroadcast(getContext(), 1725, lunchNotification, 0);

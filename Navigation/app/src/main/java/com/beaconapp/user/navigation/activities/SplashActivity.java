@@ -49,26 +49,61 @@ public class SplashActivity extends Activity {
             sharedPrefEditor.commit();
 
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            int hour = sharedPref.getInt("pref_key_office_time_from_hour", 8);
-            int minute = sharedPref.getInt("pref_key_office_time_from_minute", 30);
-
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY, hour);
-            calendar.set(Calendar.MINUTE, minute);
+            long currentTime = calendar.getTimeInMillis();
+            int startHour = sharedPref.getInt("pref_key_office_time_from_hour", 8);
+            int startMinute = sharedPref.getInt("pref_key_office_time_from_minute", 30);
+
+            calendar.set(Calendar.HOUR_OF_DAY, startHour);
+            calendar.set(Calendar.MINUTE, startMinute);
+            if(currentTime > calendar.getTimeInMillis()) {
+                calendar.add(Calendar.DATE, 1);
+            }
             Intent notificationService = new Intent(this, StatisticsLogger.class);
             notificationService.putExtra("service_name", "notification");
             PendingIntent pendingnotificationService = PendingIntent.getBroadcast(this, 1728, notificationService, 0);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingnotificationService);
+            calendar.setTimeInMillis(currentTime);
 
             Intent notificationServiceIntent = new Intent(this, NotificationService.class);
             startService(notificationServiceIntent);
 
-            calendar.set(Calendar.HOUR_OF_DAY, 23);
-            calendar.set(Calendar.MINUTE, 50);
+            int stopHour = sharedPref.getInt("pref_key_office_time_to_hour", 17);
+            int stopMinute = (sharedPref.getInt("pref_key_office_time_to_minute", 30)) + 10;
+
+            calendar.set(Calendar.HOUR_OF_DAY, stopHour);
+            calendar.set(Calendar.MINUTE, stopMinute + 10);
+            if(currentTime > calendar.getTimeInMillis()) {
+                calendar.add(Calendar.DATE, 1);
+            }
             Intent loggerService = new Intent(this, StatisticsLogger.class);
             loggerService.putExtra("service_name", "logging");
             PendingIntent pendingLoggerService = PendingIntent.getBroadcast(this, 1729, loggerService, 0);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingLoggerService);
+            calendar.setTimeInMillis(currentTime);
+
+            calendar.set(Calendar.MINUTE, stopMinute);
+            if(currentTime > calendar.getTimeInMillis()) {
+                calendar.add(Calendar.DATE, 1);
+            }
+            Intent notificationStop = new Intent(this, StatisticsLogger.class);
+            loggerService.putExtra("service_name", "notificationstop");
+            PendingIntent pendingStopService = PendingIntent.getBroadcast(this, 1726, notificationStop, 0);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingStopService);
+            calendar.setTimeInMillis(currentTime);
+
+            int lunchStart = sharedPref.getInt("pref_key_lunch_time_from_hour", 8);
+            int lunchStop = sharedPref.getInt("pref_key_lunch_time_from_minute", 30);
+
+            calendar.set(Calendar.HOUR_OF_DAY, lunchStart);
+            calendar.set(Calendar.MINUTE, lunchStop);
+            if(currentTime > calendar.getTimeInMillis()) {
+                calendar.add(Calendar.DATE, 1);
+            }
+            Intent lunchNotification = new Intent(this, StatisticsLogger.class);
+            lunchNotification.putExtra("service_name", "lunchnotification");
+            PendingIntent pendinglunchNotification = PendingIntent.getBroadcast(this, 1725, lunchNotification, 0);
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendinglunchNotification);
 
         }
         new Handler().postDelayed(new Runnable() {

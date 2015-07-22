@@ -220,7 +220,7 @@ public class NotificationService extends Service {
 
         if(ob == obj1) {
             shared_variable = getString(R.string.shared_timer_desk);
-            if ((sharedPref.getBoolean("pref_key_health",true) && ((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 40) ) {
+            if ((sharedPref.getBoolean("pref_key_health",true) && ((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 7200) ) {
                 String msg2 = "Go Take a Break";
                 postNotification(msg2, "Health Warning");
             }
@@ -230,7 +230,7 @@ public class NotificationService extends Service {
 
         else if(ob == obj3) {
             shared_variable = getString(R.string.shared_timer_outdoor);
-            if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 10 ) {
+            if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 7200 ) {
                 String msg2 = "Get inside Office";
                 postNotification(msg2, "Office Hours");
             }
