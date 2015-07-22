@@ -9,14 +9,14 @@
             android:key="pref_key_notifications"
             android:summary="@string/pref_notifications_summary"
             android:title="@string/pref_notifications_title"
-            android:defaultValue="true"/>
+            android:defaultValue="false"/>
 
         <CheckBoxPreference
             android:dependency="pref_key_notifications"
             android:key="pref_key_reminders"
             android:summary="@string/pref_reminders_summary"
             android:title="@string/pref_reminders_title"
-            android:defaultValue="true"/>
+            android:defaultValue="false"/>
 
         <CheckBoxPreference
             android:dependency="pref_key_notifications"

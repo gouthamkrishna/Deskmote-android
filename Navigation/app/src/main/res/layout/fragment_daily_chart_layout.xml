@@ -65,7 +65,7 @@
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:id="@+id/desk_icon"
-        android:src="@drawable/desk_low"
+        android:src="@drawable/ic_desk_low"
         android:layout_below="@+id/mainLayout"
         android:layout_alignParentStart="true"
         android:layout_marginTop="30dp"
@@ -76,7 +76,7 @@
         android:layout_height="18dp"
         android:id="@+id/inside_icon"
         android:layout_marginTop="30dp"
-        android:src="@drawable/office_low"
+        android:src="@drawable/ic_office_low"
         android:layout_below="@+id/desk_icon"
         android:layout_alignParentStart="true"
         android:layout_marginStart="40dp"/>
@@ -86,7 +86,7 @@
         android:layout_height="18dp"
         android:id="@+id/outside_icon"
         android:layout_marginTop="30dp"
-        android:src="@drawable/outdoor_low"
+        android:src="@drawable/ic_outdoor_low"
         android:layout_below="@+id/inside_icon"
         android:layout_alignParentStart="true"
         android:layout_marginStart="40dp"/>

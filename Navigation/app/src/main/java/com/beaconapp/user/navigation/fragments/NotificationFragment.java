@@ -89,7 +89,7 @@ public class NotificationFragment extends Fragment {
                         PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), temporaryReminder.getID(), alarmIntent, 0);
                         AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
                         alarmManager.cancel(pendingIntent);
-                        Toast.makeText(getActivity(), "Alarm Canceled", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Reminder Deleted !!", Toast.LENGTH_SHORT).show();
                         arraylist.remove(position);
                         listViewAdapter.notifyDataSetChanged();
                         listView.setAdapter(listViewAdapter);

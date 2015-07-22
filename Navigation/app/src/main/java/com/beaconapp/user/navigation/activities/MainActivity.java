@@ -32,6 +32,7 @@ import com.beaconapp.user.navigation.fragments.StatisticsFragment;
 public class MainActivity extends ActionBarActivity{
 
     public static int position = 0;
+    public static MenuItem reminder_action;
     public final String TITLES[] = {"Home", "Statistics", "Reminders", "Profile", "Settings"};
     public int ICONS[];
 
@@ -52,7 +53,7 @@ public class MainActivity extends ActionBarActivity{
         setContentView(R.layout.activity_main);
 
         getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_ic_menu);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         savednotes = PreferenceManager.getDefaultSharedPreferences(this);
@@ -74,7 +75,7 @@ public class MainActivity extends ActionBarActivity{
         fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         mDrawer = (DrawerLayout) findViewById(R.id.DrawerLayout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.drawable.ic_menu,R.string.openDrawer,R.string.closeDrawer){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.drawable.ic_action_ic_menu,R.string.openDrawer,R.string.closeDrawer){
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -120,26 +121,32 @@ public class MainActivity extends ActionBarActivity{
         switch (position){
             case 0:break;
             case 1:resetAdapter();
+                reminder_action.setIcon(R.drawable.add_reminder);
                 fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                 ICONS[0] = R.drawable.home_active;
                 break;
             case 2:resetAdapter();
+                reminder_action.setIcon(R.drawable.add_reminder);
                 fragmentManager.beginTransaction().replace(R.id.container, new StatisticsFragment()).commit();
                 ICONS[1] = R.drawable.graph_active;
                 break;
             case 3:resetAdapter();
+                reminder_action.setIcon(R.drawable.add_reminder);
                 fragmentManager.beginTransaction().replace(R.id.container, new NotificationFragment()).commit();
                 ICONS[2] = R.drawable.reminder_active;
                 break;
             case 4:resetAdapter();
+                reminder_action.setIcon(R.drawable.pencil);
                 fragmentManager.beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
                 ICONS[3] = R.drawable.profile_active;
                 break;
             case 5:resetAdapter();
+                reminder_action.setIcon(R.drawable.add_reminder);
                 fragmentManager.beginTransaction().replace(R.id.container, new SettingsFragment()).commit();
                 ICONS[4] = R.drawable.settings_active;
                 break;
             default:resetAdapter();
+                reminder_action.setIcon(R.drawable.add_reminder);
                 fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                 break;
         }
@@ -155,6 +162,10 @@ public class MainActivity extends ActionBarActivity{
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
+
+        reminder_action = (MenuItem) menu.findItem(R.id.reminder);
+        reminder_action.setIcon(R.drawable.add_reminder);
+
         return true;
     }
 
@@ -163,9 +174,9 @@ public class MainActivity extends ActionBarActivity{
 
         int id = item.getItemId();
 
-        if (id == R.id.reminder) {
+        if (id == R.id.reminder && position != 4) {
 
-            ReminderFragment dialogFragment = new ReminderFragment ();
+            ReminderFragment dialogFragment = new ReminderFragment();
             dialogFragment.show(getSupportFragmentManager().beginTransaction(), "");
         }
 

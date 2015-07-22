@@ -25,14 +25,14 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean notifications = sharedPreferences.getBoolean("pref_key_notifications", false);
+        boolean notifications = sharedPreferences.getBoolean("pref_key_notifications", true);
         if(notifications) {
-            boolean reminders = sharedPreferences.getBoolean("pref_key_reminders", false);
+            boolean reminders = sharedPreferences.getBoolean("pref_key_reminders", true);
             if(reminders) {
                 String reminderMessage = intent.getStringExtra(TAG);
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification notification = new Notification.Builder(context)
-                        .setSmallIcon(R.drawable.alarm4)
+                        .setSmallIcon(R.drawable.ic_action_alarm4)
                         .setContentTitle("Reminder")
                         .setContentText(reminderMessage)
                         .setAutoCancel(true)
@@ -44,6 +44,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 notification.ledARGB = 0xff00ff00;
                 notification.ledOnMS = 1000;
                 notification.ledOffMS = 300;
+
 
                 notificationManager.notify(new Random().nextInt(100), notification);
             }

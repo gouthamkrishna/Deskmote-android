@@ -160,16 +160,16 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
                 reminderDescription = reminderTagLine.getText().toString();
 
                 if (reminderDescription.equals("")) {
-                    reminderTagLine.setError("Empty field!!");
+                    reminderTagLine.setError("Give a Title !!");
                     Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                     reminderTagLine.startAnimation(shake);
                 } else if (timestamp <= temporaryTimestamp) {
-                    Toast.makeText(getActivity(), "Invalid Date or Time !!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Change Date or Time !!", Toast.LENGTH_SHORT).show();
                 } else {
 
                     db_reminder.addReminder(new Reminder(timestamp, reminderDescription, displayDate, displayTime));
                     temporaryReminder = db_reminder.getReminder(timestamp, reminderDescription);
-                    Toast.makeText(getActivity(), "Alarm Set !!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Reminder Added !!", Toast.LENGTH_SHORT).show();
 
                     alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
                     alarmIntent.putExtra(TAG, reminderDescription);

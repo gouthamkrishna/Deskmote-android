@@ -12,8 +12,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -42,6 +44,7 @@ public class ProfileFragment extends Fragment {
     SharedPreferences.Editor preferencesEditor;
     TextView textName,textCompanyName;
     EditText nameField,cnameField;
+    TextInputLayout nameFieldLayout, cnameFieldLayout;
     ImageView photo;
     Button save;
     InputMethodManager imm;
@@ -57,20 +60,26 @@ public class ProfileFragment extends Fragment {
         rootView =  inflater.inflate(R.layout.fragment_profile, null);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
+        MenuItem menuButton = MainActivity.reminder_action;
+
         save = (Button)rootView.findViewById(R.id.save);
         textName = (TextView)rootView.findViewById(R.id.name_text);
         textCompanyName = (TextView)rootView.findViewById(R.id.company_name_text);
+        nameFieldLayout = (TextInputLayout)rootView.findViewById(R.id.name_layout);
+        cnameFieldLayout = (TextInputLayout)rootView.findViewById(R.id.cname_layout);
         nameField = (EditText)rootView.findViewById(R.id.name_edit);
         cnameField = (EditText)rootView.findViewById(R.id.company_name_edit);
         textName.setText(savednotes.getString("NAME_KEY", "Name"));
         textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
+//        nameField.setText(savednotes.getString("NAME_KEY", "Name"));
+//        cnameField.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
         cnameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         photo = (ImageView)rootView.findViewById(R.id.circle_image_view);
         Resources res = getActivity().getResources();
-        int id = R.drawable.picture;
+        int id = R.drawable.displaypic;
         photo.setImageBitmap(BitmapFactory.decodeResource(res, id));
         ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.load_image_Button);
 
@@ -93,21 +102,20 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-
-        textName.setOnClickListener(new View.OnClickListener() {
-
+        menuButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
-            public void onClick(View arg0) {
+            public boolean onMenuItemClick(MenuItem item) {
 
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-                nameField.setVisibility(View.VISIBLE);
-                cnameField.setVisibility(View.VISIBLE);
+                nameFieldLayout.setVisibility(View.VISIBLE);
+                cnameFieldLayout.setVisibility(View.VISIBLE);
                 textName.setVisibility(View.INVISIBLE);
                 textCompanyName.setVisibility(View.INVISIBLE);
                 save.setVisibility(View.VISIBLE);
-
+                return false;
             }
         });
+
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,13 +124,13 @@ public class ProfileFragment extends Fragment {
                 nameTag = nameField.getText().toString();
                 companyNameTag = cnameField.getText().toString();
                 if (nameTag.equals("")) {
-                    nameField.setError("Empty field!!");
+                    nameField.setError("Name Not Set!!");
                     Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                     nameField.startAnimation(shake);
 
                 }
                 else if(companyNameTag.equals("")){
-                    cnameField.setError("Empty field!!");
+                    cnameField.setError("Company Name Not Set!!");
                     Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                     cnameField.startAnimation(shake);
                 }
@@ -134,8 +142,8 @@ public class ProfileFragment extends Fragment {
                     preferencesEditor.putString("COMPANY_NAME_KEY", companyNameTag);
                     preferencesEditor.apply();
 
-                    nameField.setVisibility(View.INVISIBLE);
-                    cnameField.setVisibility(View.INVISIBLE);
+                    nameFieldLayout.setVisibility(View.INVISIBLE);
+                    cnameFieldLayout.setVisibility(View.INVISIBLE);
                     textName.setVisibility(View.VISIBLE);
                     textCompanyName.setVisibility(View.VISIBLE);
                     save.setVisibility(View.INVISIBLE);
