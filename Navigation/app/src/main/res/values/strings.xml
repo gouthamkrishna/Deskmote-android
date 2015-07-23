@@ -40,6 +40,6 @@
     <string name="company_name_profile">Company Name</string>
     <string name="name_profile">Name</string>
     <string name="edit_profile">Edit Profile</string>
-    <string name="cancel_profile">CANCEL</string>
+    <string name="cancel_profile">Cancel</string>
 
 </resources>

@@ -1,8 +1,8 @@
 <resources>
-
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="android:windowBackground">@color/white</item>
+
     </style>
     <style name="DialogAnimation">
         <item name="android:windowEnterAnimation">@anim/slide_up</item>
@@ -15,4 +15,5 @@
 
 
     <color name="transparent_black">#DA000000</color>
+    <color name="white">#ffffff</color>
 </resources>

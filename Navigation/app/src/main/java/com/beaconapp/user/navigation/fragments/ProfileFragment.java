@@ -14,6 +14,8 @@ import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,10 +24,10 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.activities.MainActivity;
@@ -42,15 +44,15 @@ public class ProfileFragment extends Fragment {
     View rootView;
     private SharedPreferences savednotes;
     SharedPreferences.Editor preferencesEditor;
-    TextView textName,textCompanyName;
+    TextView textName,textCompanyName, cancel;
     EditText nameField,cnameField;
     TextInputLayout nameFieldLayout, cnameFieldLayout;
     ImageView photo;
-    Button cancel;
     InputMethodManager imm;
     String path = null;
     boolean flag = false, test;
     String nameTag,companyNameTag;
+    final MenuItem menuButton = MainActivity.reminder_action;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -60,9 +62,7 @@ public class ProfileFragment extends Fragment {
         rootView =  inflater.inflate(R.layout.fragment_profile, null);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        final MenuItem menuButton = MainActivity.reminder_action;
-
-        cancel = (Button)rootView.findViewById(R.id.cancel);
+        cancel = (TextView)rootView.findViewById(R.id.cancel);
         textName = (TextView)rootView.findViewById(R.id.name_text);
         textCompanyName = (TextView)rootView.findViewById(R.id.company_name_text);
         nameFieldLayout = (TextInputLayout)rootView.findViewById(R.id.name_layout);
@@ -71,8 +71,8 @@ public class ProfileFragment extends Fragment {
         cnameField = (EditText)rootView.findViewById(R.id.company_name_edit);
         textName.setText(savednotes.getString("NAME_KEY", "Name"));
         textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
-//        nameField.setText(savednotes.getString("NAME_KEY", "Name"));
-//        cnameField.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
+        nameField.setText(savednotes.getString("NAME_KEY", ""));
+        cnameField.setText(savednotes.getString("COMPANY_NAME_KEY", ""));
         cnameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -81,7 +81,7 @@ public class ProfileFragment extends Fragment {
         Resources res = getActivity().getResources();
         int id = R.drawable.displaypic;
         photo.setImageBitmap(BitmapFactory.decodeResource(res, id));
-        ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.load_image_Button);
+        final ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.load_image_Button);
 
         test = savednotes.getBoolean("IMAGE_KEY", false);
         if(test){
@@ -102,11 +102,52 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        nameField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable sequence) {
+
+                if (sequence.length() >= 16) {
+                    sequence.delete(15, 16);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+
+            }
+        });
+
+        cnameField.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence sequence, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable sequence) {
+
+                if (sequence.length() >= 16) {
+                    sequence.delete(15, 16);
+                }
+            }
+
+            @Override
+            public void onTextChanged(CharSequence sequence, int start, int before, int count) {
+
+            }
+        });
+
         menuButton.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
 
                 if (!flag) {
+
                     menuButton.setIcon(R.drawable.ic_action_action_done);
                     imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                     nameFieldLayout.setVisibility(View.VISIBLE);
@@ -114,26 +155,39 @@ public class ProfileFragment extends Fragment {
                     textName.setVisibility(View.INVISIBLE);
                     cancel.setVisibility(View.VISIBLE);
                     textCompanyName.setVisibility(View.INVISIBLE);
-                } else {
-                    menuButton.setIcon(R.drawable.pencil);
+                    buttonLoadImage.setVisibility(View.INVISIBLE);
+                    flag = !flag;
+                }
+                else {
+
+                    nameField.setSelection(nameField.length());
+                    cnameField.setSelection(cnameField.length());
                     nameTag = nameField.getText().toString();
                     companyNameTag = cnameField.getText().toString();
                     if (nameTag.equals("")) {
                         nameField.setError("Name Not Set!!");
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                         nameField.startAnimation(shake);
-                    } else if (companyNameTag.equals("")) {
+                    }
+                    else if (!nameTag.matches("[a-zA-Z ]+")) {
+                        nameField.setError("Alphabets Only !!");
+                        Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
+                        nameField.startAnimation(shake);
+                    }
+                    else if (companyNameTag.equals("")) {
                         cnameField.setError("Company Name Not Set!!");
                         Animation shake = AnimationUtils.loadAnimation(getActivity(), R.anim.shake);
                         cnameField.startAnimation(shake);
-                    } else {
+                    }
+                    else {
+                        menuButton.setIcon(R.drawable.pencil);
                         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
 
                         preferencesEditor = savednotes.edit();
                         preferencesEditor.putString("NAME_KEY", nameTag);
                         preferencesEditor.putString("COMPANY_NAME_KEY", companyNameTag);
                         preferencesEditor.apply();
-
+                        buttonLoadImage.setVisibility(View.VISIBLE);
                         nameFieldLayout.setVisibility(View.INVISIBLE);
                         cnameFieldLayout.setVisibility(View.INVISIBLE);
                         textName.setVisibility(View.VISIBLE);
@@ -141,9 +195,11 @@ public class ProfileFragment extends Fragment {
                         cancel.setVisibility(View.INVISIBLE);
                         textName.setText(savednotes.getString("NAME_KEY", "Name"));
                         textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
+                        Toast.makeText(getActivity(), "Personal Details Updated", Toast.LENGTH_SHORT).show();
+                        flag = !flag;
                     }
                 }
-                flag = !flag;
+
                 return false;
             }
         });
@@ -151,16 +207,17 @@ public class ProfileFragment extends Fragment {
         cancel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                menuButton.setIcon(R.drawable.pencil);
-                flag = !flag;
-                imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-                nameFieldLayout.setVisibility(View.INVISIBLE);
-                cnameFieldLayout.setVisibility(View.INVISIBLE);
-                textName.setVisibility(View.VISIBLE);
-                textCompanyName.setVisibility(View.VISIBLE);
-                cancel.setVisibility(View.INVISIBLE);
-                textName.setText(savednotes.getString("NAME_KEY", "Name"));
-                textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
+                    menuButton.setIcon(R.drawable.pencil);
+                    flag = !flag;
+                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    buttonLoadImage.setVisibility(View.VISIBLE);
+                    nameFieldLayout.setVisibility(View.INVISIBLE);
+                    cnameFieldLayout.setVisibility(View.INVISIBLE);
+                    textName.setVisibility(View.VISIBLE);
+                    textCompanyName.setVisibility(View.VISIBLE);
+                    cancel.setVisibility(View.INVISIBLE);
+                    textName.setText(savednotes.getString("NAME_KEY", "Name"));
+                    textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
             }
         });
 
@@ -257,4 +314,9 @@ public class ProfileFragment extends Fragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        menuButton.setOnMenuItemClickListener(null);
+    }
 }

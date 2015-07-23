@@ -63,16 +63,22 @@ public class NotificationFragment extends Fragment {
             public void create(SwipeMenu menu) {
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getActivity());
-                deleteItem.setWidth(350);
-                deleteItem.setIcon(R.drawable.delete);
+                deleteItem.setWidth(300);
+                deleteItem.setIcon(R.drawable.ic_action_delete);
                 menu.addMenuItem(deleteItem);
+
+                SwipeMenuItem updateItem = new SwipeMenuItem(
+                        getActivity());
+                updateItem.setWidth(300);
+                updateItem.setIcon(R.drawable.edit_reminder);
+                menu.addMenuItem(updateItem);
             }
         };
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(), "Swipe to Delete !!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), "Swipe to Modify !!", Toast.LENGTH_SHORT).show();
             }
         });
         listView.setMenuCreator(creator);
@@ -80,20 +86,24 @@ public class NotificationFragment extends Fragment {
         listView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+
+                Reminder temporaryReminder = arraylist.get(position);
+                Intent alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
+                alarmIntent.putExtra(TAG, temporaryReminder.getTag());
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), temporaryReminder.getID(), alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
                 switch (index) {
                     case 0:
-                        Reminder temporaryReminder = arraylist.get(position);
-                        db_reminder.deleteReminder(temporaryReminder);
-                        Intent alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
-                        alarmIntent.putExtra(TAG, temporaryReminder.getTag());
-                        PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), temporaryReminder.getID(), alarmIntent, 0);
-                        AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
-                        alarmManager.cancel(pendingIntent);
                         Toast.makeText(getActivity(), "Reminder Deleted !!", Toast.LENGTH_SHORT).show();
+                        db_reminder.deleteReminder(temporaryReminder);
                         arraylist.remove(position);
                         listViewAdapter.notifyDataSetChanged();
                         listView.setAdapter(listViewAdapter);
                         break;
+                    case 1:
+                        ReminderFragment dialogFragment = new ReminderFragment(temporaryReminder.getTag(), temporaryReminder.getTstamp(), temporaryReminder.getTime(), temporaryReminder.getDate(), temporaryReminder.getID());
+                        dialogFragment.show(getActivity().getSupportFragmentManager().beginTransaction(), "");
                 }
                 return false;
             }
