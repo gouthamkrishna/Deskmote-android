@@ -1,17 +1,18 @@
 package com.beaconapp.user.navigation.services;
 
 
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.TimerClass;
@@ -25,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 public class NotificationService extends Service {
 
     private BeaconManager beaconManager1, beaconManager2, beaconManager3;
-    private NotificationManager notificationManager;
     private Region region_door_entry, region_desk, region_door_exit;
     public int obj = 0;
     BluetoothAdapter bt=null;
@@ -56,7 +56,6 @@ public class NotificationService extends Service {
         region_door_entry = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 29666, 63757);
         region_desk = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 36798, 29499);
         region_door_exit = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 64157, 33188);
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         beaconManager1 = new BeaconManager(this);
         beaconManager2 = new BeaconManager(this);
         beaconManager3 = new BeaconManager(this);
@@ -246,15 +245,21 @@ public class NotificationService extends Service {
 
     private void postNotification(String msg, String title) {
         if (sharedPref.getBoolean("pref_key_notifications", true)) {
-            Notification notification = new Notification.Builder(getBaseContext())
+            Bitmap background = BitmapFactory.decodeResource(getBaseContext().getResources(), R.drawable.wearbg);
+
+            NotificationCompat.WearableExtender wearableExtender =
+                    new NotificationCompat.WearableExtender()
+                            .setBackground(background);
+            NotificationCompat.Builder notification = new NotificationCompat.Builder(getBaseContext())
                     .setSmallIcon(R.drawable.beacon_gray)
                     .setContentTitle(title)
                     .setContentText(msg)
-                    .setAutoCancel(true)
-                    .build();
-            notification.defaults |= Notification.DEFAULT_SOUND;
-            notification.defaults |= Notification.DEFAULT_LIGHTS;
-            notificationManager.notify(0, notification);
+                    .extend(wearableExtender)
+                    .setDefaults(NotificationCompat.DEFAULT_ALL)
+                    .setAutoCancel(true);
+
+            NotificationManagerCompat notificationManager =  NotificationManagerCompat.from(getBaseContext());
+            notificationManager.notify(0, notification.build());
         }
     }
 }

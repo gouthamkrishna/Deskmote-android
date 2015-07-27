@@ -139,7 +139,7 @@ public class NotificationFragment extends Fragment {
             reminder = reminderList.get(listcounter);
             long reminderTimestamp = reminder.getTstamp();
 
-            if(reminderTimestamp >= timestamp){
+            if(reminderTimestamp > timestamp){
 
                 arraylist.add(reminder);
             }

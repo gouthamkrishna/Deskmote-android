@@ -7,19 +7,19 @@ import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.support.v7.widget.Toolbar;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.MyAdapter;
@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private SharedPreferences savednotes;
     FragmentManager fragmentManager;
 
-    String NAME = "", EMAIL = "", PROFILE = "";
+    String NAME = "", EMAIL = "", PROFILE = "",typeOfLaunch = "";
     RecyclerView mRecyclerView;
     RecyclerView.Adapter mAdapter;
     RecyclerView.LayoutManager mLayoutManager;
@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        typeOfLaunch = getIntent().getStringExtra("LaunchType");
 
         if (getSupportActionBar()!= null) {
             getSupportActionBar().setHomeButtonEnabled(true);
@@ -107,6 +108,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        position = 3;
+        loadCorrespondingFragment();
+    }
+
+    @Override
     public void onBackPressed() {
         moveTaskToBack(true);
     }
@@ -119,18 +127,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        position = 3;
-        reminder_action.setIcon(R.drawable.add_reminder);
-        fragmentManager.beginTransaction().replace(R.id.container, new NotificationFragment()).commit();
-        ICONS[2] = R.drawable.reminder_active;
-    }
-
-    @Override
     protected void onResume() {
         super.onResume();
-        loadCorrespondingFragment();
     }
 
     private void loadCorrespondingFragment() {
@@ -199,7 +197,10 @@ public class MainActivity extends AppCompatActivity {
         reminder_action = menu.findItem(R.id.reminder);
         reminder_action.setIcon(R.drawable.add_reminder);
         reminder_action.setVisible(false);
-
+        if (typeOfLaunch.equals("reminder")) {
+            position = 3;
+            loadCorrespondingFragment();
+        }
         return true;
     }
 

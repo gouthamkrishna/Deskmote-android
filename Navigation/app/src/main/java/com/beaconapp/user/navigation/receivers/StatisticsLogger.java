@@ -1,15 +1,15 @@
 package com.beaconapp.user.navigation.receivers;
 
 
-import android.annotation.TargetApi;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.services.LoggerService;
@@ -20,7 +20,6 @@ public class StatisticsLogger extends BroadcastReceiver {
 
     SharedPreferences sharedPref;
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onReceive(Context context, Intent intent) {
 
@@ -51,16 +50,21 @@ public class StatisticsLogger extends BroadcastReceiver {
                 if (notifications) {
                     boolean breakAlert = sharedPref.getBoolean("pref_key_break", false);
                     if (breakAlert) {
-                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                        Notification notification = new Notification.Builder(context)
+                        Bitmap background = BitmapFactory.decodeResource(context.getResources(), R.drawable.wearbg);
+
+                        NotificationCompat.WearableExtender wearableExtender =
+                                new NotificationCompat.WearableExtender()
+                                        .setBackground(background);
+                        NotificationCompat.Builder notification = new NotificationCompat.Builder(context)
                                 .setSmallIcon(R.drawable.beacon_gray)
                                 .setContentTitle("Break Alert")
                                 .setContentText("Lunch Break")
-                                .setAutoCancel(true)
-                                .build();
-                        notification.defaults |= Notification.DEFAULT_SOUND;
-                        notification.defaults |= Notification.DEFAULT_LIGHTS;
-                        notificationManager.notify(153, notification);
+                                .setDefaults(NotificationCompat.DEFAULT_ALL)
+                                .extend(wearableExtender)
+                                .setAutoCancel(true);
+
+                        NotificationManagerCompat notificationManager =  NotificationManagerCompat.from(context);
+                        notificationManager.notify(153, notification.build());
                     }
                 }
                 break;

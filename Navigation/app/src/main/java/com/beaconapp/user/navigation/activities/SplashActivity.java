@@ -87,7 +87,7 @@ public class SplashActivity extends Activity {
                 calendar.add(Calendar.DATE, 1);
             }
             Intent notificationStop = new Intent(this, StatisticsLogger.class);
-            loggerService.putExtra("service_name", "notificationstop");
+            notificationStop.putExtra("service_name", "notificationstop");
             PendingIntent pendingStopService = PendingIntent.getBroadcast(this, 1726, notificationStop, 0);
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingStopService);
             calendar.setTimeInMillis(currentTime);
@@ -110,6 +110,7 @@ public class SplashActivity extends Activity {
             @Override
             public void run() {
                 Intent mainIntent = new Intent(SplashActivity.this, MainActivity.class);
+                mainIntent.putExtra("LaunchType","start");
                 startActivity(mainIntent);
                 SplashActivity.this.finish();
             }
