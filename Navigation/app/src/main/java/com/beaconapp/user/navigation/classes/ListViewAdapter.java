@@ -8,21 +8,17 @@ import android.widget.TextView;
 
 import com.beaconapp.user.navigation.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ListViewAdapter extends BaseAdapter {
 
     Context mContext;
     private List<Reminder> reminderList = null;
-    private ArrayList<Reminder> arrayList;
 
     public ListViewAdapter(Context context,
                            List<Reminder> reminderList) {
         mContext = context;
         this.reminderList = reminderList;
-        this.arrayList = new ArrayList<>();
-        this.arrayList.addAll(reminderList);
     }
 
     public class ViewHolder {
@@ -31,7 +27,7 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return arrayList.size();
+        return reminderList.size();
     }
 
     @Override

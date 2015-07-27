@@ -35,7 +35,6 @@ public class NotificationFragment extends Fragment {
     public static final String TAG = "com.beaconapp.user.deskmote.TAG";
     private ArrayList<Reminder> arraylist;
     public int listcounter = 0;
-    long timestamp;
 
     ReminderDatabaseHandler db_reminder;
     Reminder reminder;
@@ -123,9 +122,6 @@ public class NotificationFragment extends Fragment {
 
     public void setView() {
 
-        calendar = Calendar.getInstance();
-        timestamp = calendar.getTimeInMillis();
-
         arraylist.clear();
         reminderList = db_reminder.getAllReminders();
         listcounter=0;
@@ -134,12 +130,14 @@ public class NotificationFragment extends Fragment {
             upcoming.setVisibility(View.VISIBLE);
         }
 
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.SECOND, 59);
         while (listcounter<reminderList.size()) {
 
             reminder = reminderList.get(listcounter);
             long reminderTimestamp = reminder.getTstamp();
 
-            if(reminderTimestamp > timestamp){
+            if(reminderTimestamp >= calendar.getTimeInMillis()){
 
                 arraylist.add(reminder);
             }
@@ -159,6 +157,7 @@ public class NotificationFragment extends Fragment {
         listViewAdapter = new ListViewAdapter(getActivity(), arraylist);
         listView.setAdapter(listViewAdapter);
     }
+
 
 }
 

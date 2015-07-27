@@ -24,7 +24,6 @@
             android:exported="false" >
         </service>
         <service android:name=".services.ResetReminderService" />
-        <service android:name=".services.TestCaseGenerator" />
 
         <receiver android:name=".receivers.StatisticsLogger" />
         <receiver android:name=".receivers.RebootHandler" >

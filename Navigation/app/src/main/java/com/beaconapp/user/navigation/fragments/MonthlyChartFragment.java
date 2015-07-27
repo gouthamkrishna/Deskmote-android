@@ -86,16 +86,28 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
         if(monthly.size()!=0) {
 
             chart.setVisibility(View.VISIBLE);
+            int day = 0;
             noDataDisplay.setVisibility(View.INVISIBLE);
-            for (int i = 0; i < monthly.size(); i++) {
+            for (int i = 0; i < calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
 
-                float val1 = (float) monthly.get(i).getDesk_time();
-                float val2 = (float) monthly.get(i).getOffice_time();
-                float val3 = (float) monthly.get(i).getOutdoor_time();
+                float val1, val2, val3;
+                if (i < monthly.size()) {
+                    val1 = (float) monthly.get(i).getDesk_time();
+                    val2 = (float) monthly.get(i).getOffice_time();
+                    val3 = (float) monthly.get(i).getOutdoor_time();
 
-                Calendar tempCalendar = Calendar.getInstance();
-                tempCalendar.setTimeInMillis(monthly.get(i).getTstamp());
-                int day = tempCalendar.get(Calendar.DAY_OF_MONTH);
+                    Calendar tempCalendar = Calendar.getInstance();
+                    tempCalendar.setTimeInMillis(monthly.get(i).getTstamp());
+                    day = tempCalendar.get(Calendar.DAY_OF_MONTH);
+                }
+                else {
+                    val1 = 0f;
+                    val2 = 0f;
+                    val3 = 0f;
+                    day = day+1;
+                }
+
+
 
                 Yvalue1.add(new BarEntry(new float[]{
                         val1, val2, val3

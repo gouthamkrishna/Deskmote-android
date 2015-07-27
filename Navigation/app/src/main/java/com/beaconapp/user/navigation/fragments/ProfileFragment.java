@@ -24,7 +24,6 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,7 +31,6 @@ import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.activities.MainActivity;
-import com.beaconapp.user.navigation.services.TestCaseGenerator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -55,7 +53,6 @@ public class ProfileFragment extends Fragment {
     boolean flag = false, isImageSet;
     String nameTag,companyNameTag;
     final MenuItem menuButton = MainActivity.reminder_action;
-    Button testButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
@@ -64,8 +61,6 @@ public class ProfileFragment extends Fragment {
 
         rootView =  inflater.inflate(R.layout.fragment_profile, container, false);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
-
-        testButton = (Button)rootView.findViewById(R.id.testButton);
 
         cancel = (TextView)rootView.findViewById(R.id.cancel);
         textName = (TextView)rootView.findViewById(R.id.name_text);
@@ -231,13 +226,6 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        testButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), TestCaseGenerator.class);
-                getActivity().startService(intent);
-            }
-        });
         return rootView;
     }
 

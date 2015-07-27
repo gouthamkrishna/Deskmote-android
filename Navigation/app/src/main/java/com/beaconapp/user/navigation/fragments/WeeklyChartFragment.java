@@ -1,8 +1,10 @@
 package com.beaconapp.user.navigation.fragments;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -45,6 +47,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     ArrayList<BarEntry> Yvalue1, Yvalue2, Yvalue3;
     ArrayList<String> labels;
     YvalueFormatter yvalueFormatter;
+    SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +63,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         weekly = new ArrayList<>();
         chart = (HorizontalBarChart)view.findViewById(R.id.weeklybchart);
 
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         picked_timestamp = Calendar.getInstance().getTimeInMillis();
         datePicker = (TextView)view.findViewById(R.id.weekView);
         preWeek = (ImageView)view.findViewById(R.id.previousWeek);
@@ -107,7 +111,13 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
                 Yvalue1.add(new BarEntry((float) weekly.get(i).getDesk_time(), i));
                 Yvalue2.add(new BarEntry((float) weekly.get(i).getOffice_time(), i));
                 Yvalue3.add(new BarEntry((float) weekly.get(i).getOutdoor_time(), i));
-                labels.add(daysOfWeek[i]);
+                if (picked_timestamp < sharedPreferences.getLong("installed_weekend", 0L)){
+                    calendar.setTimeInMillis(picked_timestamp);
+                    labels.add(daysOfWeek[(calendar.get(Calendar.DAY_OF_WEEK)-1)+i]);
+                }
+                else {
+                    labels.add(daysOfWeek[i]);
+                }
             }
 
 
@@ -143,6 +153,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             noDataDisplay.setVisibility(View.VISIBLE);
         }
     }
+
 
     public void datePickerFunction() {
 
@@ -189,5 +200,11 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         calendar.set(Calendar.DAY_OF_MONTH, selected_day);
         picked_timestamp = calendar.getTimeInMillis();
         setView();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        System.gc();
     }
 }

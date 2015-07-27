@@ -156,7 +156,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         Cursor cursor = db.query(TABLE_STATISTICS, new String[]{KEY_ID, KEY_STAMP, KEY_DESK, KEY_OFFICE, KEY_OUTDOOR}, KEY_STAMP + " >? AND " + KEY_STAMP + " <?",
                 new String[]{String.valueOf(start_of_month), String.valueOf(end_of_month)}, null, null, null, null);
 
-        if (cursor.moveToLast()) {
+        if (cursor.moveToFirst()) {
             do {
                 DailyStat dailyStat = new DailyStat();
                 dailyStat.setID(Integer.parseInt(cursor.getString(0)));
@@ -165,7 +165,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 dailyStat.setOffice_time(Long.parseLong(cursor.getString(3)));
                 dailyStat.setOutdoor_time(Long.parseLong(cursor.getString(4)));
                 dailyStatList.add(dailyStat);
-            } while (cursor.moveToPrevious());
+            } while (cursor.moveToNext());
         }
         cursor.close();
 

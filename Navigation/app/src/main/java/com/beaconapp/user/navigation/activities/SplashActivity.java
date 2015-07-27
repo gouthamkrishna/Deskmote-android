@@ -45,12 +45,18 @@ public class SplashActivity extends Activity {
 
         if (!(sharedPref.getBoolean(getString(R.string.shared_start), false))) {
 
+            Calendar calendar = Calendar.getInstance();
+            long currentTime = calendar.getTimeInMillis();
+            while (calendar.get(Calendar.DAY_OF_WEEK) >= calendar.getFirstDayOfWeek()) {
+                calendar.add(Calendar.DATE, -1);
+            }
+            calendar.add(Calendar.DATE, 6);
+
             sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
+            sharedPrefEditor.putLong("installed_weekend", calendar.getTimeInMillis());
             sharedPrefEditor.apply();
 
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-            Calendar calendar = Calendar.getInstance();
-            long currentTime = calendar.getTimeInMillis();
             int startHour = sharedPref.getInt("pref_key_office_time_from_hour", 8);
             int startMinute = sharedPref.getInt("pref_key_office_time_from_minute", 30);
 
