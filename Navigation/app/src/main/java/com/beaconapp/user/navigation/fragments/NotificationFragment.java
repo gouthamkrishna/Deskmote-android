@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,18 +43,20 @@ public class NotificationFragment extends Fragment {
     ListViewAdapter listViewAdapter;
     com.baoyz.swipemenulistview.SwipeMenuListView listView;
     Calendar calendar;
+    InputMethodManager imm;
     TextView upcoming;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Reminders");
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_notification, null);
+        ((MainActivity) getActivity()).setActionBarTitle("Reminders");
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_notification, container, false);
 
         db_reminder = new ReminderDatabaseHandler(getActivity());
         listView = (com.baoyz.swipemenulistview.SwipeMenuListView) root.findViewById(R.id.reminderList);
         upcoming = (TextView)root.findViewById(R.id.upcoming);
-        arraylist = new ArrayList<Reminder>();
+        arraylist = new ArrayList<>();
+        imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         setView();
 
@@ -142,6 +145,11 @@ public class NotificationFragment extends Fragment {
             }
             else {
 
+                Intent alarmIntent = new Intent(getActivity(), AlarmReceiver.class);
+                alarmIntent.putExtra(TAG, reminder.getTag());
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(getActivity(), reminder.getID(), alarmIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+                AlarmManager alarmManager = (AlarmManager) getActivity().getSystemService(Context.ALARM_SERVICE);
+                alarmManager.cancel(pendingIntent);
                 db_reminder.deleteReminder(reminder);
             }
 

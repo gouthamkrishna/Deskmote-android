@@ -28,9 +28,11 @@ public class DailyStat {
         this.tstamp = tstamp;
     }
 
+/*
     public DailyStat(int id){
         this.id = id;
     }
+*/
 
     // getting tstamp
     public long getTstamp(){
@@ -43,9 +45,11 @@ public class DailyStat {
     }
 
     // getting ID
+/*
     public int getID(){
         return this.id;
     }
+*/
 
     // setting id
     public void setID(int id){

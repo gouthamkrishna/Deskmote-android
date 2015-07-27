@@ -13,7 +13,6 @@ import com.beaconapp.user.navigation.R;
 
 public class StatisticsFragment extends Fragment {
 
-    private FragmentTabHost mTabHost;
     View rootView;
 
 
@@ -21,11 +20,11 @@ public class StatisticsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Statistics");
+        ((MainActivity) getActivity()).setActionBarTitle("Statistics");
 
         rootView = inflater.inflate(R.layout.fragment_statistics, container, false);
 
-        mTabHost = (FragmentTabHost) rootView.findViewById(android.R.id.tabhost);
+        FragmentTabHost mTabHost = (FragmentTabHost) rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), android.R.id.tabcontent);
 
         mTabHost.addTab(

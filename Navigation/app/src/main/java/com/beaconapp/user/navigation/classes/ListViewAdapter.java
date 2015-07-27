@@ -1,7 +1,6 @@
 package com.beaconapp.user.navigation.classes;
 
 import android.content.Context;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -15,17 +14,15 @@ import java.util.List;
 public class ListViewAdapter extends BaseAdapter {
 
     Context mContext;
-    LayoutInflater inflater;
-    private List<Reminder> reminderlist = null;
-    private ArrayList<Reminder> arraylist;
+    private List<Reminder> reminderList = null;
+    private ArrayList<Reminder> arrayList;
 
     public ListViewAdapter(Context context,
-                           List<Reminder> reminderlist) {
+                           List<Reminder> reminderList) {
         mContext = context;
-        this.reminderlist = reminderlist;
-        inflater = LayoutInflater.from(mContext);
-        this.arraylist = new ArrayList<>();
-        this.arraylist.addAll(reminderlist);
+        this.reminderList = reminderList;
+        this.arrayList = new ArrayList<>();
+        this.arrayList.addAll(reminderList);
     }
 
     public class ViewHolder {
@@ -34,12 +31,12 @@ public class ListViewAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return reminderlist.size();
+        return arrayList.size();
     }
 
     @Override
     public Reminder getItem(int position) {
-        return reminderlist.get(position);
+        return reminderList.get(position);
     }
 
     @Override
@@ -51,17 +48,18 @@ public class ListViewAdapter extends BaseAdapter {
         final ViewHolder holder;
         if (view == null) {
             holder = new ViewHolder();
-            view = inflater.inflate(R.layout.activity_list, null);
+            view = View.inflate(mContext, R.layout.activity_list, null);
             holder.title = (TextView) view.findViewById(R.id.title);
             holder.time = (TextView) view.findViewById(R.id.time);
             holder.date = (TextView) view.findViewById(R.id.date);
             view.setTag(holder);
-        } else {
+        }
+        else {
             holder = (ViewHolder) view.getTag();
         }
-        holder.title.setText(reminderlist.get(position).getTag());
-        holder.time.setText(reminderlist.get(position).getTime());
-        holder.date.setText(reminderlist.get(position).getDate());
+        holder.title.setText(reminderList.get(position).getTag());
+        holder.time.setText(reminderList.get(position).getTime());
+        holder.date.setText(reminderList.get(position).getDate());
         return view;
     }
 }

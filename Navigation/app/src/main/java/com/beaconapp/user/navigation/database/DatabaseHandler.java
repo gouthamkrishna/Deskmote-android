@@ -77,6 +77,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+/*
     public List<DailyStat> getAllDailyStat() {
         List<DailyStat> dailyStatList = new ArrayList<>();
         String selectQuery = "SELECT  * FROM " + TABLE_STATISTICS;
@@ -99,6 +100,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return dailyStatList;
     }
+*/
 
     public List<DailyStat> getWeeklyStat(long tstamp) {
 

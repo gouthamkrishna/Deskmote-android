@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.DailyStat;
+import com.beaconapp.user.navigation.classes.YvalueFormatter;
 import com.beaconapp.user.navigation.database.DatabaseHandler;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarData;
@@ -23,8 +24,8 @@ import com.github.mikephil.charting.data.BarEntry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class MonthlyChartFragment extends Fragment implements DatePickerFragment.MonthlyChartFragment {
@@ -38,8 +39,8 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
     DatePickerFragment newDateFragment;
     long picked_timestamp;
     Calendar calendar;
-    Date currentDate, cDate;
     String month;
+    YvalueFormatter yvalueFormatter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,6 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
         View view = inflater.inflate(R.layout.fragment_monthly_chart_layout, container, false);
 
         calendar = Calendar.getInstance();
-
         picked_timestamp = calendar.getTimeInMillis();
         monthPick = (TextView) view.findViewById(R.id.monthView);
         newDateFragment = new DatePickerFragment(this);
@@ -64,7 +64,7 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
         noDataDisplay.setTextSize(25f);
         chart = (HorizontalBarChart)view.findViewById(R.id.monthlybchart);
         monthly = new ArrayList<>();
-
+        yvalueFormatter = new YvalueFormatter();
         setView();
         datePickerFunction();
         previousMonthFunction();
@@ -77,10 +77,10 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
         monthly = db.getMonthlyStat(picked_timestamp);
 
         ArrayList<BarEntry> Yvalue1 = new ArrayList<>();
-        ArrayList<String> labels = new ArrayList<String>();
+        ArrayList<String> labels = new ArrayList<>();
 
-        currentDate = new Date(picked_timestamp);
-        month = new SimpleDateFormat("MMM, yyyy").format(currentDate);
+        calendar.setTimeInMillis(picked_timestamp);
+        month = new SimpleDateFormat("MMM, yyyy", Locale.getDefault()).format(calendar.getTime());
         monthPick.setText(month);
 
         if(monthly.size()!=0) {
@@ -118,7 +118,8 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
             chart.setDescription("");
             chart.getAxisLeft().setDrawLabels(false);
             chart.getAxisRight().setDrawLabels(false);
-            data.setDrawValues(false);
+            data.setValueFormatter(yvalueFormatter);
+            data.setDrawValues(true);
         }
         else{
             chart.setVisibility(View.INVISIBLE);
@@ -167,8 +168,11 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
     @Override
     public void onDateSelected(int selected_year, int selected_month, int selected_day) {
 
-        cDate = new Date(selected_year-1900,selected_month,selected_day);
-        picked_timestamp = cDate.getTime();
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, selected_year);
+        calendar.set(Calendar.MONTH, selected_month);
+        calendar.set(Calendar.DAY_OF_MONTH, selected_day);
+        picked_timestamp = calendar.getTimeInMillis();
         setView();
     }
 }

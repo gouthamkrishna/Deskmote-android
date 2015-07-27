@@ -28,7 +28,7 @@ public class SettingsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle("Settings");
+        ((MainActivity) getActivity()).setActionBarTitle("Settings");
 
         addPreferencesFromResource(R.xml.preferences);
 

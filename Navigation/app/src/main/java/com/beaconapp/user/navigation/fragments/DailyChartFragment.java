@@ -26,7 +26,6 @@ import com.github.mikephil.charting.data.PieDataSet;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -41,8 +40,8 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
     TextView datePick, noDataDisplay, deskValue, officeValue, outsideValue;
     ImageView preDay, nextDay;
     DatePickerFragment newDateFragment;
-    Date cDate;
     String date, deskTime, officeTime, outsideTime;
+    Calendar calendar;
 
     SharedPreferences sharedPref;
 
@@ -73,7 +72,7 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
         noDataDisplay.setTypeface(Typeface.createFromAsset(getActivity().getAssets(), "digital-7.ttf"));
         noDataDisplay.setTextSize(25f);
 
-        Calendar calendar = Calendar.getInstance();
+        calendar = Calendar.getInstance();
         current_timestamp = calendar.getTimeInMillis();
         picked_timestamp = current_timestamp;
         mainLayout = (RelativeLayout)view.findViewById(R.id.mainLayout);
@@ -150,16 +149,19 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
 
     public void onDateSelected (int selected_year, int selected_month, int selected_day) {
 
-        cDate = new Date(selected_year-1900,selected_month,selected_day);
-        picked_timestamp = cDate.getTime();
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, selected_year);
+        calendar.set(Calendar.MONTH, selected_month);
+        calendar.set(Calendar.DAY_OF_MONTH, selected_day);
+        picked_timestamp = calendar.getTimeInMillis();
         setView();
     }
 
     private void setView() {
 
         mainLayout.removeAllViews();
-        cDate = new Date(picked_timestamp);
-        date = new SimpleDateFormat("MMM dd, yyyy", Locale.UK).format(cDate);
+        calendar.setTimeInMillis(picked_timestamp);
+        date = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(calendar.getTime());
         datePick.setText(date);
 
         if(current_timestamp-picked_timestamp >= 86400000) {
@@ -212,8 +214,8 @@ public class DailyChartFragment extends Fragment implements DatePickerFragment.D
             mChart.setCenterText("  TOTAL \n\n " + htotal + ":" + mtotal);
             mChart.setHoleRadius(60);
             addData();
-
         }
+
         else{
             mainLayout.setVisibility(View.INVISIBLE);
             noDataDisplay.setVisibility(View.VISIBLE);

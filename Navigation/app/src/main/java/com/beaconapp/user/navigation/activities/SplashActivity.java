@@ -46,7 +46,7 @@ public class SplashActivity extends Activity {
         if (!(sharedPref.getBoolean(getString(R.string.shared_start), false))) {
 
             sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
-            sharedPrefEditor.commit();
+            sharedPrefEditor.apply();
 
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
             Calendar calendar = Calendar.getInstance();

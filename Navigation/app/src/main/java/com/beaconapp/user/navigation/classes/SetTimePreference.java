@@ -9,7 +9,6 @@ import android.content.SharedPreferences;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -43,8 +42,7 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
     protected View onCreateView(ViewGroup parent) {
         super.onCreateView(parent);
 
-        LayoutInflater inflater = (LayoutInflater) mContext.getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        return inflater.inflate(R.layout.preference_set_time, null);
+        return View.inflate(mContext, R.layout.preference_set_time, null);
     }
 
     @Override

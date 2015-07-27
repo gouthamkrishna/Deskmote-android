@@ -26,42 +26,44 @@ public class StatisticsLogger extends BroadcastReceiver {
 
         String service = intent.getStringExtra("service_name");
 
-        if (service.equals("notification")) {
-            sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
-            sharedPrefEditor.putLong("Shared Timer Desk", 0L);
-            sharedPrefEditor.putLong("Shared Timer Office", 0L);
-            sharedPrefEditor.putLong("Shared Timer Outdoor", 0L);
-            sharedPrefEditor.apply();
-            Intent start_notification_service = new Intent(context, NotificationService.class);
-            context.startService(start_notification_service);
-        }
-        else if (service.equals("logging")) {
-            Intent start_logger_service = new Intent(context, LoggerService.class);
-            context.startService(start_logger_service);
-        }
-        else if (service.equals("notificationstop")) {
-            Intent stopNotificationService = new Intent(context, NotificationService.class);
-            context.stopService(stopNotificationService);
-        }
-        else if (service.equals("lunchnotification")) {
-            sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
-            boolean notifications = sharedPref.getBoolean("pref_key_notifications", false);
-            if (notifications) {
-                boolean breakAlert = sharedPref.getBoolean("pref_key_break", false);
-                if (breakAlert) {
-                    NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                    Notification notification = new Notification.Builder(context)
-                            .setSmallIcon(R.drawable.beacon_gray)
-                            .setContentTitle("Break Alert")
-                            .setContentText("Lunch Break")
-                            .setAutoCancel(true)
-                            .build();
-                    notification.defaults |= Notification.DEFAULT_SOUND;
-                    notification.defaults |= Notification.DEFAULT_LIGHTS;
-                    notificationManager.notify(153, notification);
+        switch (service) {
+            case "notification":
+                sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                SharedPreferences.Editor sharedPrefEditor = sharedPref.edit();
+                sharedPrefEditor.putLong("Shared Timer Desk", 0L);
+                sharedPrefEditor.putLong("Shared Timer Office", 0L);
+                sharedPrefEditor.putLong("Shared Timer Outdoor", 0L);
+                sharedPrefEditor.apply();
+                Intent start_notification_service = new Intent(context, NotificationService.class);
+                context.startService(start_notification_service);
+                break;
+            case "logging":
+                Intent start_logger_service = new Intent(context, LoggerService.class);
+                context.startService(start_logger_service);
+                break;
+            case "notificationstop":
+                Intent stopNotificationService = new Intent(context, NotificationService.class);
+                context.stopService(stopNotificationService);
+                break;
+            case "lunchnotification":
+                sharedPref = PreferenceManager.getDefaultSharedPreferences(context);
+                boolean notifications = sharedPref.getBoolean("pref_key_notifications", false);
+                if (notifications) {
+                    boolean breakAlert = sharedPref.getBoolean("pref_key_break", false);
+                    if (breakAlert) {
+                        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+                        Notification notification = new Notification.Builder(context)
+                                .setSmallIcon(R.drawable.beacon_gray)
+                                .setContentTitle("Break Alert")
+                                .setContentText("Lunch Break")
+                                .setAutoCancel(true)
+                                .build();
+                        notification.defaults |= Notification.DEFAULT_SOUND;
+                        notification.defaults |= Notification.DEFAULT_LIGHTS;
+                        notificationManager.notify(153, notification);
+                    }
                 }
-            }
+                break;
         }
     }
 }

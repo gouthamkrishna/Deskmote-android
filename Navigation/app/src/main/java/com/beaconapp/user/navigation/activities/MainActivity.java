@@ -4,12 +4,13 @@ package com.beaconapp.user.navigation.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.GestureDetector;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.support.v7.widget.Toolbar;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.classes.MyAdapter;
@@ -29,7 +31,7 @@ import com.beaconapp.user.navigation.fragments.SettingsFragment;
 import com.beaconapp.user.navigation.fragments.StatisticsFragment;
 
 
-public class MainActivity extends ActionBarActivity{
+public class MainActivity extends AppCompatActivity {
 
     public static int position = 0;
     public static MenuItem reminder_action;
@@ -45,6 +47,7 @@ public class MainActivity extends ActionBarActivity{
     RecyclerView.LayoutManager mLayoutManager;
     DrawerLayout mDrawer;
     ActionBarDrawerToggle mDrawerToggle;
+    Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +55,13 @@ public class MainActivity extends ActionBarActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_ic_menu);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar()!= null) {
+            getSupportActionBar().setHomeButtonEnabled(true);
+            getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_action_ic_menu);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
+        mToolbar = new Toolbar(this);
 
         savednotes = PreferenceManager.getDefaultSharedPreferences(this);
         PROFILE = savednotes.getString("PATH_KEY", PROFILE);
@@ -75,7 +82,7 @@ public class MainActivity extends ActionBarActivity{
         fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
 
         mDrawer = (DrawerLayout) findViewById(R.id.DrawerLayout);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, R.drawable.ic_action_ic_menu,R.string.openDrawer,R.string.closeDrawer){
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawer, mToolbar,R.string.openDrawer,R.string.closeDrawer){
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -130,32 +137,34 @@ public class MainActivity extends ActionBarActivity{
         switch (position){
             case 0:break;
             case 1:resetAdapter();
-                reminder_action.setIcon(R.drawable.add_reminder);
+                reminder_action.setVisible(false);
                 fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                 ICONS[0] = R.drawable.home_active;
                 break;
             case 2:resetAdapter();
-                reminder_action.setIcon(R.drawable.add_reminder);
+                reminder_action.setVisible(false);
                 fragmentManager.beginTransaction().replace(R.id.container, new StatisticsFragment()).commit();
                 ICONS[1] = R.drawable.graph_active;
                 break;
             case 3:resetAdapter();
+                reminder_action.setVisible(true);
                 reminder_action.setIcon(R.drawable.add_reminder);
                 fragmentManager.beginTransaction().replace(R.id.container, new NotificationFragment()).commit();
                 ICONS[2] = R.drawable.reminder_active;
                 break;
             case 4:resetAdapter();
+                reminder_action.setVisible(true);
                 reminder_action.setIcon(R.drawable.pencil);
                 fragmentManager.beginTransaction().replace(R.id.container, new ProfileFragment()).commit();
                 ICONS[3] = R.drawable.profile_active;
                 break;
             case 5:resetAdapter();
-                reminder_action.setIcon(R.drawable.add_reminder);
+                reminder_action.setVisible(false);
                 fragmentManager.beginTransaction().replace(R.id.container, new SettingsFragment()).commit();
                 ICONS[4] = R.drawable.settings_active;
                 break;
             default:resetAdapter();
-                reminder_action.setIcon(R.drawable.add_reminder);
+                reminder_action.setVisible(false);
                 fragmentManager.beginTransaction().replace(R.id.container, new HomeFragment()).commit();
                 break;
         }
@@ -167,13 +176,29 @@ public class MainActivity extends ActionBarActivity{
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void setActionBarTitle(String title) {
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(title);
+        }
+    }
+
+    public void setActionBarColor(Drawable color) {
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setBackgroundDrawable(color);
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        reminder_action = (MenuItem) menu.findItem(R.id.reminder);
+        reminder_action = menu.findItem(R.id.reminder);
         reminder_action.setIcon(R.drawable.add_reminder);
+        reminder_action.setVisible(false);
 
         return true;
     }
@@ -183,7 +208,7 @@ public class MainActivity extends ActionBarActivity{
 
         int id = item.getItemId();
 
-        if (id == R.id.reminder && position != 4) {
+        if (id == R.id.reminder && position == 3) {
 
             ReminderFragment dialogFragment = new ReminderFragment();
             dialogFragment.show(getSupportFragmentManager().beginTransaction(), "");
@@ -218,7 +243,7 @@ public class MainActivity extends ActionBarActivity{
 
                 if (child != null && mGestureDetector.onTouchEvent(motionEvent)) {
                     mDrawer.closeDrawers();
-                    position = recyclerView.getChildPosition(child);
+                    position = recyclerView.getChildAdapterPosition(child);
                     loadCorrespondingFragment();
                     return true;
                 }

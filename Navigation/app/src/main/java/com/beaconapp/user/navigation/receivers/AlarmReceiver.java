@@ -27,9 +27,9 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        boolean notifications = sharedPreferences.getBoolean("pref_key_notifications", true);
+        boolean notifications = sharedPreferences.getBoolean("pref_key_notifications", false);
         if(notifications) {
-            boolean reminders = sharedPreferences.getBoolean("pref_key_reminders", true);
+            boolean reminders = sharedPreferences.getBoolean("pref_key_reminders", false);
             if(reminders) {
                 String reminderMessage = intent.getStringExtra(TAG);
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

@@ -1,8 +1,6 @@
 package com.beaconapp.user.navigation.classes;
 
-/**
- * Created by user on 1/7/15.
- */
+
 public class Reminder {
 
     int id;
@@ -30,9 +28,11 @@ public class Reminder {
         this.tstamp = tstamp;
     }
 
+/*
     public Reminder(int id){
         this.id = id;
     }
+*/
 
     // getting tstamp
     public long getTstamp(){

@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment {
     Handler chHandler = new Handler();
     ImageSwitcher sw_main,sw_left,sw_right;
     SharedPreferences sharedPref;
-    Drawable d;
+    Drawable actionBarColor;
     Window window;
     CircularProgressDrawable drawable;
     ImageView ivDrawable;
@@ -50,7 +50,8 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Home");
+
+        ((MainActivity) getActivity()).setActionBarTitle("Home");
 
         window = getActivity().getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -58,7 +59,7 @@ public class HomeFragment extends Fragment {
 
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getActivity());
 
-        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, null);
+        ViewGroup root = (ViewGroup) inflater.inflate(R.layout.fragment_home, container, false);
 
         tv_main = (TextView) root.findViewById(R.id.timer_main);
         tv_left = (TextView) root.findViewById(R.id.timer_left);
@@ -153,7 +154,7 @@ public class HomeFragment extends Fragment {
                 time_office = sharedPref.getLong(getString(R.string.shared_timer_office), 0);
                 time_outdoor = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
             }
-            catch (Exception e ) {
+            catch (Exception ignored) {
             }
 
             boolean a = sharedPref.getBoolean("progressbarRunning", true);
@@ -188,11 +189,11 @@ public class HomeFragment extends Fragment {
 
                 if (pos == 1) {
                     duration = (ONE_MINUTE) - (long) (ONE_MINUTE * progress_desk);
-                    runProgressBar(progress_desk,duration,0,188,212);
+                    runProgressBar(progress_desk, duration, 0, 188, 212);
 
                     window.setStatusBarColor(Color.rgb(0, 151, 167));
-                    d = new ColorDrawable(Color.rgb(0,188,212));
-                    ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
+                    actionBarColor = new ColorDrawable(Color.rgb(0,188,212));
+                    ((MainActivity)getActivity()).setActionBarColor(actionBarColor);
                     sw_main.setImageResource(R.drawable.work_large);
                     sw_left.setImageResource(R.drawable.outdoor);
                     sw_right.setImageResource(R.drawable.office);
@@ -207,8 +208,8 @@ public class HomeFragment extends Fragment {
                     runProgressBar(progress_office,duration,76,175,80);
 
                     window.setStatusBarColor(Color.rgb(56,142,60));
-                    d = new ColorDrawable(Color.rgb(76,175,80));
-                    ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
+                    actionBarColor = new ColorDrawable(Color.rgb(76,175,80));
+                    ((MainActivity)getActivity()).setActionBarColor(actionBarColor);
                     sw_main.setImageResource(R.drawable.office_large);
                     sw_left.setImageResource(R.drawable.work);
                     sw_right.setImageResource(R.drawable.outdoor);
@@ -223,8 +224,8 @@ public class HomeFragment extends Fragment {
                     runProgressBar(progress_outdoor,duration,251,192,45);
 
                     window.setStatusBarColor(Color.rgb(251,192,45));
-                    d = new ColorDrawable(Color.rgb(255,213,79));
-                    ((MainActivity)getActivity()).getSupportActionBar().setBackgroundDrawable(d);
+                    actionBarColor = new ColorDrawable(Color.rgb(255,213,79));
+                    ((MainActivity)getActivity()).setActionBarColor(actionBarColor);
                     sw_main.setImageResource(R.drawable.outdoor_large);
                     sw_left.setImageResource(R.drawable.office);
                     sw_right.setImageResource(R.drawable.work);

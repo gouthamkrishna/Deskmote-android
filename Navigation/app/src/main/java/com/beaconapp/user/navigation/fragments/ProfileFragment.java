@@ -24,6 +24,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -31,6 +32,7 @@ import android.widget.Toast;
 
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.activities.MainActivity;
+import com.beaconapp.user.navigation.services.TestCaseGenerator;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -50,17 +52,20 @@ public class ProfileFragment extends Fragment {
     ImageView photo;
     InputMethodManager imm;
     String path = null;
-    boolean flag = false, test;
+    boolean flag = false, isImageSet;
     String nameTag,companyNameTag;
     final MenuItem menuButton = MainActivity.reminder_action;
+    Button testButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
 
-        ((MainActivity)getActivity()).getSupportActionBar().setTitle("Profile");
+        ((MainActivity) getActivity()).setActionBarTitle("Profile");
 
-        rootView =  inflater.inflate(R.layout.fragment_profile, null);
+        rootView =  inflater.inflate(R.layout.fragment_profile, container, false);
         savednotes = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+        testButton = (Button)rootView.findViewById(R.id.testButton);
 
         cancel = (TextView)rootView.findViewById(R.id.cancel);
         textName = (TextView)rootView.findViewById(R.id.name_text);
@@ -73,6 +78,8 @@ public class ProfileFragment extends Fragment {
         textCompanyName.setText(savednotes.getString("COMPANY_NAME_KEY", "Company Name"));
         nameField.setText(savednotes.getString("NAME_KEY", ""));
         cnameField.setText(savednotes.getString("COMPANY_NAME_KEY", ""));
+        nameField.setSelection(nameField.length());
+        cnameField.setSelection(cnameField.length());
         cnameField.setImeOptions(EditorInfo.IME_ACTION_DONE);
 
         imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -83,8 +90,8 @@ public class ProfileFragment extends Fragment {
         photo.setImageBitmap(BitmapFactory.decodeResource(res, id));
         final ImageView buttonLoadImage = (ImageView)rootView.findViewById(R.id.load_image_Button);
 
-        test = savednotes.getBoolean("IMAGE_KEY", false);
-        if(test){
+        isImageSet = savednotes.getBoolean("IMAGE_KEY", false);
+        if(isImageSet){
             path = savednotes.getString("PATH_KEY",path);
             Bitmap bitmap = loadImageFromStorage(path);
             photo.setImageBitmap(bitmap);
@@ -111,8 +118,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable sequence) {
 
-                if (sequence.length() >= 16) {
-                    sequence.delete(15, 16);
+                if (sequence.length() >= 26) {
+                    sequence.delete(25, 26);
                 }
             }
 
@@ -131,8 +138,8 @@ public class ProfileFragment extends Fragment {
             @Override
             public void afterTextChanged(Editable sequence) {
 
-                if (sequence.length() >= 16) {
-                    sequence.delete(15, 16);
+                if (sequence.length() >= 26) {
+                    sequence.delete(25, 26);
                 }
             }
 
@@ -181,8 +188,9 @@ public class ProfileFragment extends Fragment {
                     }
                     else {
                         menuButton.setIcon(R.drawable.pencil);
-                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
-
+                        if (getView() != null) {
+                            imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                        }
                         preferencesEditor = savednotes.edit();
                         preferencesEditor.putString("NAME_KEY", nameTag);
                         preferencesEditor.putString("COMPANY_NAME_KEY", companyNameTag);
@@ -209,7 +217,9 @@ public class ProfileFragment extends Fragment {
                 public void onClick(View v) {
                     menuButton.setIcon(R.drawable.pencil);
                     flag = !flag;
-                    imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    if (getView() != null) {
+                        imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
+                    }
                     buttonLoadImage.setVisibility(View.VISIBLE);
                     nameFieldLayout.setVisibility(View.INVISIBLE);
                     cnameFieldLayout.setVisibility(View.INVISIBLE);
@@ -221,7 +231,14 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        return  rootView;
+        testButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), TestCaseGenerator.class);
+                getActivity().startService(intent);
+            }
+        });
+        return rootView;
     }
 
     @Override
@@ -248,7 +265,7 @@ public class ProfileFragment extends Fragment {
             preferencesEditor = savednotes.edit();
             preferencesEditor.putString("PATH_KEY", path);
 
-            if(!test){
+            if(!isImageSet){
                 preferencesEditor.putBoolean("IMAGE_KEY", true);
             }
 
@@ -319,4 +336,6 @@ public class ProfileFragment extends Fragment {
         super.onDestroy();
         menuButton.setOnMenuItemClickListener(null);
     }
+
+
 }

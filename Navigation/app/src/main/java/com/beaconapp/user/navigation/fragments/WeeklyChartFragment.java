@@ -24,12 +24,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-/**
- * Created by user on 2/7/15.
- */
 public class WeeklyChartFragment extends Fragment implements DatePickerFragment.WeeklyChartFragment {
 
     DatabaseHandler db;
@@ -39,7 +36,6 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     TextView noDataDisplay, datePicker;
     long picked_timestamp;
     DatePickerFragment newDateFragment;
-    Date sDate,eDate, cDate;
     String startDate, endDate;
     ImageView preWeek, nextWeek;
     String daysOfWeek[] = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
@@ -89,7 +85,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         Yvalue1 = new ArrayList<>();
         Yvalue2 = new ArrayList<>();
         Yvalue3 = new ArrayList<>();
-        labels = new ArrayList<String>();
+        labels = new ArrayList<>();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(picked_timestamp);
@@ -97,11 +93,10 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             calendar.add(Calendar.DATE, -1);
         }
 
-        sDate = new Date(calendar.getTimeInMillis());
+        startDate = new SimpleDateFormat("MMM dd", Locale.getDefault()).format(calendar.getTime());
         calendar.add(Calendar.DATE,6);
-        eDate = new Date(calendar.getTimeInMillis());
-        startDate = new SimpleDateFormat("MMM dd").format(sDate);
-        endDate = new SimpleDateFormat("MMM dd, yyyy").format(eDate);
+        endDate = new SimpleDateFormat("MMM dd, yyyy", Locale.getDefault()).format(calendar.getTime());
+
         datePicker.setText(startDate + " - " + endDate);
 
         if(weekly.size()!=0) {
@@ -125,7 +120,7 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
             dataset3 = new BarDataSet(Yvalue3, "Outside Office");
             dataset3.setColor(Color.rgb(255, 191, 6));
 
-            dataSets = new ArrayList<BarDataSet>();
+            dataSets = new ArrayList<>();
             dataSets.add(dataset1);
             dataSets.add(dataset2);
             dataSets.add(dataset3);
@@ -188,8 +183,11 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
     @Override
     public void onDateSelected(int selected_year, int selected_month, int selected_day) {
 
-        cDate = new Date(selected_year-1900,selected_month,selected_day);
-        picked_timestamp = cDate.getTime();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, selected_year);
+        calendar.set(Calendar.MONTH, selected_month);
+        calendar.set(Calendar.DAY_OF_MONTH, selected_day);
+        picked_timestamp = calendar.getTimeInMillis();
         setView();
     }
 }

@@ -8,14 +8,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,7 +26,7 @@ import com.beaconapp.user.navigation.receivers.AlarmReceiver;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Locale;
 
 
 public class ReminderFragment extends DialogFragment implements DatePickerFragment.ReminderFragment, TimePickerFragment.ReminderFragment {
@@ -49,16 +47,14 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
     DatePickerFragment newDateFragment;
     EditText reminderTagLine;
     FragmentManager fragmentManager;
-    FragmentTransaction fragmentTransaction;
     String reminderDescription = "";
-    Date currentDate, temporaryDate;
-    Calendar calendar;
+    Calendar calendar, pickedDateTime;
 
     public ReminderFragment (){
-        currentDate = new Date();
-        this.timestamp = currentDate.getTime();
-        displayDate = new SimpleDateFormat("yyyy-MM-dd").format(currentDate);
-        displayTime = new SimpleDateFormat("HH:mm").format(currentDate);
+        pickedDateTime = Calendar.getInstance();
+        this.timestamp = pickedDateTime.getTimeInMillis();
+        displayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(pickedDateTime.getTime());
+        displayTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(pickedDateTime.getTime());
     }
 
     public ReminderFragment (String reminderDescription, long timestamp, String displayTime, String displayDate, int reminderID) {
@@ -105,6 +101,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
         timePickerIcon.setText(displayTime);
         if (!reminderDescription.equals("")) {
             reminderTagLine.setText(reminderDescription);
+            reminderTagLine.setSelection(reminderTagLine.length());
         }
     }
 
@@ -114,8 +111,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
             @Override
             public void onClick(View v) {
                 fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                newTimeFragment.show(fragmentTransaction, "Time picker");
+                newTimeFragment.show(fragmentManager.beginTransaction(), "Time picker");
             }
         });
     }
@@ -126,8 +122,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
             @Override
             public void onClick(View v) {
                 fragmentManager = getFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
-                newDateFragment.show(fragmentTransaction, "Date picker");
+                newDateFragment.show(fragmentManager.beginTransaction(), "Date picker");
             }
         });
     }
@@ -139,9 +134,9 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
         month = selected_month;
         day = selected_day;
 
-        currentDate = new Date(year-1900,month,day,hour,minute);
-        displayDate = new SimpleDateFormat("yyyy-MM-dd").format(currentDate);
-        timestamp = currentDate.getTime();
+        pickedDateTime.set(year, month, day, hour, minute);
+        displayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(pickedDateTime.getTime());
+        timestamp = pickedDateTime.getTimeInMillis();
         datePickerIcon.setText(displayDate);
     }
 
@@ -150,9 +145,9 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
 
         hour = selected_hour;
         minute = selected_minute;
-        currentDate = new Date(year-1900,month,day,hour,minute);
-        displayTime = new SimpleDateFormat("HH:mm").format(currentDate);
-        timestamp = currentDate.getTime();
+        pickedDateTime.set(year, month, day, hour, minute);
+        displayTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(pickedDateTime.getTime());
+        timestamp = pickedDateTime.getTimeInMillis();
         timePickerIcon.setText(displayTime);
     }
 
@@ -163,8 +158,8 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
             @Override
             public void onClick(View v) {
 
-                temporaryDate = new Date();
-                temporaryTimestamp = temporaryDate.getTime();
+                Calendar calendar = Calendar.getInstance();
+                temporaryTimestamp = calendar.getTimeInMillis();
 
                 reminderDescription = reminderTagLine.getText().toString();
 
