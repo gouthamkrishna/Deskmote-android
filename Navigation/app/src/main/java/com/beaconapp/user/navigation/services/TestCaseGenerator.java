@@ -31,10 +31,10 @@ public class TestCaseGenerator extends IntentService {
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         if (sharedPreferences.getBoolean("TestCaseGenerator", true)) {
             random = new Random();
-            testCase = intent.getIntExtra("case", 1);
+            testCase = intent.getIntExtra("case", 2);
             switch (testCase) {
                 case 1:
-                    looper = 15;
+                    looper = 30;
                     break;
                 case 2:
                     looper = 365;

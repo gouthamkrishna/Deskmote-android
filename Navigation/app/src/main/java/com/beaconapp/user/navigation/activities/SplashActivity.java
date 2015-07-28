@@ -52,9 +52,10 @@ public class SplashActivity extends Activity {
             }
             calendar.add(Calendar.DATE, 6);
 
-            sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
             sharedPrefEditor.putLong("installed_weekend", calendar.getTimeInMillis());
+            sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
             sharedPrefEditor.apply();
+
 
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
             int startHour = sharedPref.getInt("pref_key_office_time_from_hour", 8);

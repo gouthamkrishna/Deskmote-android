@@ -145,6 +145,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
 
         hour = selected_hour;
         minute = selected_minute;
+        pickedDateTime = Calendar.getInstance();
         pickedDateTime.set(year, month, day, hour, minute);
         displayTime = new SimpleDateFormat("HH:mm", Locale.getDefault()).format(pickedDateTime.getTime());
         timestamp = pickedDateTime.getTimeInMillis();

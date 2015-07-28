@@ -104,20 +104,22 @@ public class WeeklyChartFragment extends Fragment implements DatePickerFragment.
         datePicker.setText(startDate + " - " + endDate);
 
         if(weekly.size()!=0) {
-
             chart.setVisibility(View.VISIBLE);
             noDataDisplay.setVisibility(View.INVISIBLE);
+
+            if (calendar.get(Calendar.WEEK_OF_MONTH) == 1 || picked_timestamp < sharedPreferences.getLong("installed_weekend", 0L)) {
+                for (int i = (7 - weekly.size()); i < 7; i++)
+                    labels.add(daysOfWeek[i]);
+            }
+            else {
+                for (int i = 0; i < weekly.size(); i++)
+                    labels.add(daysOfWeek[i]);
+            }
+
             for (int i = 0; i < weekly.size(); i++) {
                 Yvalue1.add(new BarEntry((float) weekly.get(i).getDesk_time(), i));
                 Yvalue2.add(new BarEntry((float) weekly.get(i).getOffice_time(), i));
                 Yvalue3.add(new BarEntry((float) weekly.get(i).getOutdoor_time(), i));
-                if (picked_timestamp < sharedPreferences.getLong("installed_weekend", 0L)){
-                    calendar.setTimeInMillis(picked_timestamp);
-                    labels.add(daysOfWeek[(calendar.get(Calendar.DAY_OF_WEEK)-1)+i]);
-                }
-                else {
-                    labels.add(daysOfWeek[i]);
-                }
             }
 
 

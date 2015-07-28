@@ -111,7 +111,7 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
         sharedPrefEditor.putString(category + "_" + fromTo + "_time", picked_time);
         sharedPrefEditor.putInt("pref_key_" + category + "_time_" + fromTo + "_hour", hourOfDay);
         sharedPrefEditor.putInt("pref_key_" + category + "_time_" + fromTo + "_minute", minute);
-        sharedPrefEditor.apply();
+        sharedPrefEditor.commit();
 
         Calendar calendar = Calendar.getInstance();
         long currentTime = calendar.getTimeInMillis();
@@ -145,6 +145,13 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
                 stopNotificationService.putExtra("service_name", "notificationstop");
                 PendingIntent pendingStopNotificationService = PendingIntent.getBroadcast(getContext(), 1726, stopNotificationService, 0);
                 alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingStopNotificationService);
+
+                calendar.add(Calendar.MINUTE, 5);
+                Intent loggerService = new Intent(getContext(), StatisticsLogger.class);
+                loggerService.putExtra("service_name", "logging");
+                PendingIntent pendingLoggerService = PendingIntent.getBroadcast(getContext(), 1729, loggerService, 0);
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingLoggerService);
+
             }
         }
 

@@ -34,7 +34,6 @@
             android:exported="false" >
         </service>
         <service android:name="com.beaconapp.user.navigation.services.ResetReminderService" />
-        <service android:name="com.beaconapp.user.navigation.services.TestCaseGenerator" />
 
         <receiver android:name="com.beaconapp.user.navigation.receivers.StatisticsLogger" />
         <receiver android:name="com.beaconapp.user.navigation.receivers.RebootHandler" >
