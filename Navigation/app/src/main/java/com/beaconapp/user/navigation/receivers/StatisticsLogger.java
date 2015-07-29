@@ -32,7 +32,7 @@ public class StatisticsLogger extends BroadcastReceiver {
                 sharedPrefEditor.putLong("Shared Timer Desk", 0L);
                 sharedPrefEditor.putLong("Shared Timer Office", 0L);
                 sharedPrefEditor.putLong("Shared Timer Outdoor", 0L);
-                sharedPrefEditor.apply();
+                sharedPrefEditor.commit();
                 Intent start_notification_service = new Intent(context, NotificationService.class);
                 context.startService(start_notification_service);
                 break;

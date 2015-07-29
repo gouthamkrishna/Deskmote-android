@@ -107,7 +107,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         List<DailyStat> dailyStatList = new ArrayList<>();
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(tstamp);
-        while (calendar.get(Calendar.DAY_OF_WEEK) >= calendar.getFirstDayOfWeek()) {
+        while (calendar.get(Calendar.DAY_OF_WEEK) > 1) {
             calendar.add(Calendar.DATE, -1);
         }
         calendar.set(Calendar.HOUR_OF_DAY, 0);

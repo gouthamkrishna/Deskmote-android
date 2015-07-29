@@ -88,32 +88,52 @@ public class MonthlyChartFragment extends Fragment implements DatePickerFragment
             chart.setVisibility(View.VISIBLE);
             int day = 0;
             noDataDisplay.setVisibility(View.INVISIBLE);
+
             for (int i = 0; i < calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
+                labels.add(i,""+(i+1));
+            }
 
+            for (int i =0; i < monthly.size(); i++) {
                 float val1, val2, val3;
-                if (i < monthly.size()) {
-                    val1 = (float) monthly.get(i).getDesk_time();
-                    val2 = (float) monthly.get(i).getOffice_time();
-                    val3 = (float) monthly.get(i).getOutdoor_time();
-
-                    Calendar tempCalendar = Calendar.getInstance();
-                    tempCalendar.setTimeInMillis(monthly.get(i).getTstamp());
-                    day = tempCalendar.get(Calendar.DAY_OF_MONTH);
-                }
-                else {
-                    val1 = 0f;
-                    val2 = 0f;
-                    val3 = 0f;
-                    day = day+1;
-                }
-
-
+                calendar.setTimeInMillis(monthly.get(i).getTstamp());
+                val1 = (float) monthly.get(i).getDesk_time();
+                val2 = (float) monthly.get(i).getOffice_time();
+                val3 = (float) monthly.get(i).getOutdoor_time();
+                day = calendar.get(Calendar.DAY_OF_MONTH);
 
                 Yvalue1.add(new BarEntry(new float[]{
                         val1, val2, val3
-                }, i));
-                labels.add("" + day);
+                }, calendar.get(Calendar.DAY_OF_MONTH)-1));
+                labels.remove((calendar.get(Calendar.DAY_OF_MONTH)-1));
+                labels.add((calendar.get(Calendar.DAY_OF_MONTH)-1), ""+day);
             }
+//
+//            for (int i = 0; i < calendar.getActualMaximum(Calendar.DAY_OF_MONTH); i++) {
+//
+//                float val1, val2, val3;
+//                if (i < monthly.size()) {
+//                    val1 = (float) monthly.get(i).getDesk_time();
+//                    val2 = (float) monthly.get(i).getOffice_time();
+//                    val3 = (float) monthly.get(i).getOutdoor_time();
+//
+//                    Calendar tempCalendar = Calendar.getInstance();
+//                    tempCalendar.setTimeInMillis(monthly.get(i).getTstamp());
+//                    day = tempCalendar.get(Calendar.DAY_OF_MONTH);
+//                }
+//                else {
+//                    val1 = 0f;
+//                    val2 = 0f;
+//                    val3 = 0f;
+//                    day = day+1;
+//                }
+//
+//
+//
+//                Yvalue1.add(new BarEntry(new float[]{
+//                        val1, val2, val3
+//                }, i));
+//                labels.add("" + day);
+//            }
 
             BarDataSet set1 = new BarDataSet(Yvalue1, "");
 

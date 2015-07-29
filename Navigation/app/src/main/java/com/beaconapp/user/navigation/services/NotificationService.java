@@ -228,7 +228,7 @@ public class NotificationService extends Service {
         else if(ob == obj3) {
             shared_variable = getString(R.string.shared_timer_outdoor);
             if (((ob.timeInMilliseconds - ob.lastPauseTime)/1000) == 7200 ) {
-                String msg2 = "Get inside Office";
+                String msg2 = "Time to Work !!";
                 postNotification(msg2, "Office Hours");
             }
         }

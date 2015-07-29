@@ -19,6 +19,7 @@ import android.widget.RelativeLayout;
 import com.beaconapp.user.navigation.R;
 import com.beaconapp.user.navigation.receivers.StatisticsLogger;
 import com.beaconapp.user.navigation.services.NotificationService;
+import com.beaconapp.user.navigation.services.TestCaseGenerator;
 
 import java.util.Calendar;
 
@@ -45,17 +46,20 @@ public class SplashActivity extends Activity {
 
         if (!(sharedPref.getBoolean(getString(R.string.shared_start), false))) {
 
+            Intent intent = new Intent(this, TestCaseGenerator.class);
+            startService(intent);
+
             Calendar calendar = Calendar.getInstance();
             long currentTime = calendar.getTimeInMillis();
-            while (calendar.get(Calendar.DAY_OF_WEEK) >= calendar.getFirstDayOfWeek()) {
+            while (calendar.get(Calendar.DAY_OF_WEEK) > 1) {
                 calendar.add(Calendar.DATE, -1);
             }
             calendar.add(Calendar.DATE, 6);
 
             sharedPrefEditor.putLong("installed_weekend", calendar.getTimeInMillis());
             sharedPrefEditor.putBoolean(getString(R.string.shared_start), true);
-            sharedPrefEditor.apply();
-
+            sharedPrefEditor.commit();
+            calendar.setTimeInMillis(currentTime);
 
             AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
             int startHour = sharedPref.getInt("pref_key_office_time_from_hour", 8);
@@ -79,7 +83,7 @@ public class SplashActivity extends Activity {
             int stopMinute = (sharedPref.getInt("pref_key_office_time_to_minute", 30)) + 10;
 
             calendar.set(Calendar.HOUR_OF_DAY, stopHour);
-            calendar.set(Calendar.MINUTE, stopMinute + 10);
+            calendar.set(Calendar.MINUTE, stopMinute + 5);
             if(currentTime > calendar.getTimeInMillis()) {
                 calendar.add(Calendar.DATE, 1);
             }
@@ -89,6 +93,7 @@ public class SplashActivity extends Activity {
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingLoggerService);
             calendar.setTimeInMillis(currentTime);
 
+            calendar.set(Calendar.HOUR_OF_DAY, stopHour);
             calendar.set(Calendar.MINUTE, stopMinute);
             if(currentTime > calendar.getTimeInMillis()) {
                 calendar.add(Calendar.DATE, 1);
@@ -99,8 +104,8 @@ public class SplashActivity extends Activity {
             alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 86400000L, pendingStopService);
             calendar.setTimeInMillis(currentTime);
 
-            int lunchStart = sharedPref.getInt("pref_key_lunch_time_from_hour", 8);
-            int lunchStop = sharedPref.getInt("pref_key_lunch_time_from_minute", 30);
+            int lunchStart = sharedPref.getInt("pref_key_lunch_time_from_hour", 13);
+            int lunchStop = sharedPref.getInt("pref_key_lunch_time_from_minute", 00);
 
             calendar.set(Calendar.HOUR_OF_DAY, lunchStart);
             calendar.set(Calendar.MINUTE, lunchStop);

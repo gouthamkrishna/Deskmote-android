@@ -34,7 +34,7 @@ public class TestCaseGenerator extends IntentService {
             testCase = intent.getIntExtra("case", 2);
             switch (testCase) {
                 case 1:
-                    looper = 30;
+                    looper = 15;
                     break;
                 case 2:
                     looper = 365;

@@ -133,7 +133,7 @@ public class ReminderFragment extends DialogFragment implements DatePickerFragme
         year = selected_year;
         month = selected_month;
         day = selected_day;
-
+        pickedDateTime = Calendar.getInstance();
         pickedDateTime.set(year, month, day, hour, minute);
         displayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(pickedDateTime.getTime());
         timestamp = pickedDateTime.getTimeInMillis();
