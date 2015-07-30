@@ -49,7 +49,7 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
     protected void onBindView (@NonNull View view) {
         super.onBindView(view);
         setTime = (RelativeLayout)view.findViewById(R.id.fromToSet);
-        setTime.setMinimumHeight(400);
+        setTime.setMinimumHeight(100);
         mFromTimeView = (TextView)view.findViewById(R.id.fromTextView);
         mFromTimeView.setText(mFromTime);
         mFromTimeView.setTextSize(18f);

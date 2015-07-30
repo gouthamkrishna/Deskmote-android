@@ -127,6 +127,32 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         chHandler.removeCallbacks(timer);
         chHandler.postDelayed(timer, 0);
+        int secs;float progress;
+        int position = sharedPref.getInt(getString(R.string.shared_position), 3);
+        time_desk = sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
+        time_office = sharedPref.getLong(getString(R.string.shared_timer_office), 0);
+        time_outdoor = sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
+        if (position == 1) {
+            secs = (int) (time_desk / 1000);
+            secs = secs % 60;
+            progress = (float) ((float) secs * 0.01666666666);
+            duration = (ONE_MINUTE) - (long) (ONE_MINUTE * progress);
+            runProgressBar(progress, duration, 0, 188, 212);
+        }
+        else if (position == 2) {
+            secs = (int) (time_office / 1000);
+            secs = secs % 60;
+            progress = (float) ((float) secs * 0.01666666666);
+            duration = (ONE_MINUTE) - (long) (ONE_MINUTE * progress);
+            runProgressBar(progress, duration, 76, 175, 80);
+        }
+        else if (position == 3) {
+            secs = (int) (time_outdoor / 1000);
+            secs = secs % 60;
+            progress = (float) ((float) secs * 0.01666666666);
+            duration = (ONE_MINUTE) - (long) (ONE_MINUTE * progress);
+            runProgressBar(progress, duration, 251, 192, 45);
+        }
         super.onResume();
     }
 
@@ -190,7 +216,6 @@ public class HomeFragment extends Fragment {
                 if (pos == 1) {
                     duration = (ONE_MINUTE) - (long) (ONE_MINUTE * progress_desk);
                     runProgressBar(progress_desk, duration, 0, 188, 212);
-
                     window.setStatusBarColor(Color.rgb(0, 151, 167));
                     actionBarColor = new ColorDrawable(Color.rgb(0,188,212));
                     ((MainActivity)getActivity()).setActionBarColor(actionBarColor);
@@ -206,7 +231,6 @@ public class HomeFragment extends Fragment {
                 else if (pos == 2) {
                     duration = (ONE_MINUTE) - (long) (ONE_MINUTE * progress_office);
                     runProgressBar(progress_office,duration,76,175,80);
-
                     window.setStatusBarColor(Color.rgb(56,142,60));
                     actionBarColor = new ColorDrawable(Color.rgb(76,175,80));
                     ((MainActivity)getActivity()).setActionBarColor(actionBarColor);
@@ -222,7 +246,6 @@ public class HomeFragment extends Fragment {
                 else if (pos == 3) {
                     duration = (ONE_MINUTE)-(long)(ONE_MINUTE*progress_outdoor);
                     runProgressBar(progress_outdoor,duration,251,192,45);
-
                     window.setStatusBarColor(Color.rgb(251,192,45));
                     actionBarColor = new ColorDrawable(Color.rgb(255,213,79));
                     ((MainActivity)getActivity()).setActionBarColor(actionBarColor);

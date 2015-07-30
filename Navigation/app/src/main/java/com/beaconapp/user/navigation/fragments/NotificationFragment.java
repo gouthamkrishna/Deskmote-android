@@ -65,13 +65,13 @@ public class NotificationFragment extends Fragment {
             public void create(SwipeMenu menu) {
                 SwipeMenuItem deleteItem = new SwipeMenuItem(
                         getActivity());
-                deleteItem.setWidth(300);
+                deleteItem.setWidth(200);
                 deleteItem.setIcon(R.drawable.ic_action_delete);
                 menu.addMenuItem(deleteItem);
 
                 SwipeMenuItem updateItem = new SwipeMenuItem(
                         getActivity());
-                updateItem.setWidth(300);
+                updateItem.setWidth(200);
                 updateItem.setIcon(R.drawable.edit_reminder);
                 menu.addMenuItem(updateItem);
             }
