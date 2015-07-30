@@ -532,7 +532,7 @@ int drawable ic_outdoor 0x7f02004f
 int drawable ic_outdoor_low 0x7f020050
 int drawable ic_work 0x7f020051
 int drawable next 0x7f020052
-int drawable notification_template_icon_bg 0x7f020067
+int drawable notification_template_icon_bg 0x7f020069
 int drawable office 0x7f020053
 int drawable office_large 0x7f020054
 int drawable outdoor 0x7f020055
@@ -549,10 +549,12 @@ int drawable settings 0x7f02005f
 int drawable settings_active 0x7f020060
 int drawable shadow 0x7f020061
 int drawable snackbar_background 0x7f020062
-int drawable time 0x7f020063
-int drawable wearbg 0x7f020064
-int drawable work 0x7f020065
-int drawable work_large 0x7f020066
+int drawable splash_screen 0x7f020063
+int drawable test2 0x7f020064
+int drawable time 0x7f020065
+int drawable wearbg 0x7f020066
+int drawable work 0x7f020067
+int drawable work_large 0x7f020068
 int id DrawerLayout 0x7f0d0069
 int id RecyclerView 0x7f0d006b
 int id action0 0x7f0d00a4

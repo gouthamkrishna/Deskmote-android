@@ -2047,7 +2047,7 @@ containing a value of this type.
         public static final int ic_outdoor_low=0x7f020050;
         public static final int ic_work=0x7f020051;
         public static final int next=0x7f020052;
-        public static final int notification_template_icon_bg=0x7f020067;
+        public static final int notification_template_icon_bg=0x7f020069;
         public static final int office=0x7f020053;
         public static final int office_large=0x7f020054;
         public static final int outdoor=0x7f020055;
@@ -2064,10 +2064,12 @@ containing a value of this type.
         public static final int settings_active=0x7f020060;
         public static final int shadow=0x7f020061;
         public static final int snackbar_background=0x7f020062;
-        public static final int time=0x7f020063;
-        public static final int wearbg=0x7f020064;
-        public static final int work=0x7f020065;
-        public static final int work_large=0x7f020066;
+        public static final int splash_screen=0x7f020063;
+        public static final int test2=0x7f020064;
+        public static final int time=0x7f020065;
+        public static final int wearbg=0x7f020066;
+        public static final int work=0x7f020067;
+        public static final int work_large=0x7f020068;
     }
     public static final class id {
         public static final int DrawerLayout=0x7f0d0069;

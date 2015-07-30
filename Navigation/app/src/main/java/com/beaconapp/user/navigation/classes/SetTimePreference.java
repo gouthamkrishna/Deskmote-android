@@ -155,7 +155,7 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
             }
         }
 
-        if (category.equals("lunch")) {
+        else if (category.equals("lunch")) {
             int lunch_from_hour  = sharedPref.getInt("pref_key_lunch_time_from_hour", 13);
             int lunch_from_minute = sharedPref.getInt("pref_key_lunch_time_from_minute", 0);
 
@@ -189,7 +189,7 @@ public class SetTimePreference extends Preference implements TimePickerDialog.On
             Intent stopNotificationService = new Intent(getContext(), NotificationService.class);
             getContext().stopService(stopNotificationService);
         }
-        else {
+        else  {
             Intent startNotificationService = new Intent(getContext(), NotificationService.class);
             getContext().startService(startNotificationService);
         }

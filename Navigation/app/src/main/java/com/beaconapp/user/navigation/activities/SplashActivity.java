@@ -80,7 +80,7 @@ public class SplashActivity extends Activity {
             startService(notificationServiceIntent);
 
             int stopHour = sharedPref.getInt("pref_key_office_time_to_hour", 17);
-            int stopMinute = (sharedPref.getInt("pref_key_office_time_to_minute", 30)) + 10;
+            int stopMinute = (sharedPref.getInt("pref_key_office_time_to_minute", 30));
 
             calendar.set(Calendar.HOUR_OF_DAY, stopHour);
             calendar.set(Calendar.MINUTE, stopMinute + 5);

@@ -35,6 +35,7 @@ public class NotificationService extends Service {
     SharedPreferences sharedPref;
     SharedPreferences.Editor sharedPrefEditor;
     String shared_variable = "";
+    static int flag = 0;
 
     public IBinder onBind(Intent arg0) {
         return null;
@@ -42,150 +43,152 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        if (flag == 0) {
+            flag = 1;
+            bt = BluetoothAdapter.getDefaultAdapter();
 
-        bt= BluetoothAdapter.getDefaultAdapter();
+            if (!bt.isEnabled())
+                bt.enable();
 
-        if(!bt.isEnabled())
-            bt.enable();
+            sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+            sharedPrefEditor = sharedPref.edit();
+            sharedPrefEditor.putBoolean("progressbarRunning", true);
+            sharedPrefEditor.commit();
 
-        sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
-        sharedPrefEditor = sharedPref.edit();
-        sharedPrefEditor.putBoolean("progressbarRunning", true);
-        sharedPrefEditor.commit();
+            region_door_entry = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 29666, 63757);
+            region_desk = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 36798, 29499);
+            region_door_exit = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 64157, 33188);
+            beaconManager1 = new BeaconManager(this);
+            beaconManager2 = new BeaconManager(this);
+            beaconManager3 = new BeaconManager(this);
 
-        region_door_entry = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 29666, 63757);
-        region_desk = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 36798, 29499);
-        region_door_exit = new Region("regionId", "b9407f30-f5f8-466e-aff9-25556b57fe6d", 64157, 33188);
-        beaconManager1 = new BeaconManager(this);
-        beaconManager2 = new BeaconManager(this);
-        beaconManager3 = new BeaconManager(this);
+            beaconManager1.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
+            beaconManager2.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
+            beaconManager3.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
 
-        beaconManager1.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
-        beaconManager2.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
-        beaconManager3.setBackgroundScanPeriod(TimeUnit.SECONDS.toMillis(1), 1);
+            beaconManager1.setMonitoringListener(new BeaconManager.MonitoringListener() {
+                @Override
+                public void onEnteredRegion(Region region, List<Beacon> beacons) {
 
-        beaconManager1.setMonitoringListener(new BeaconManager.MonitoringListener() {
-            @Override
-            public void onEnteredRegion(Region region, List<Beacon> beacons) {
+                    if ((sharedPref.getInt(getString(R.string.shared_door_exit), 0)) == 1) {
+                        sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 1);
+                        sharedPrefEditor.commit();
 
-                if ((sharedPref.getInt(getString(R.string.shared_door_exit), 0)) == 1) {
-                    sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 1);
+                        sharedPrefEditor.putInt(getString(R.string.shared_position), 2);
+                        sharedPrefEditor.commit();
+
+                        pause(obj3);
+                        obj = 2;
+                        obj2.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_office), 0);
+                        obj2.customHandler.postDelayed(updateTimerThread, 0);
+                    } else {
+                        sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 1);
+                        sharedPrefEditor.commit();
+                    }
+                }
+
+                @Override
+                public void onExitedRegion(Region region) {
+//                sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 0);
+//                sharedPrefEditor.commit();
+                }
+            });
+
+            beaconManager2.setMonitoringListener(new BeaconManager.MonitoringListener() {
+                @Override
+                public void onEnteredRegion(Region region, List<Beacon> beacons) {
+                    if (sharedPref.getInt(getString(R.string.shared_door_entry), 0) == 1) {
+
+                        sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 1);
+                        sharedPrefEditor.commit();
+
+                        sharedPrefEditor.putInt(getString(R.string.shared_position), 3);
+                        sharedPrefEditor.commit();
+                        pause(obj2);
+                        obj = 3;
+                        obj3.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
+                        obj3.customHandler.postDelayed(updateTimerThread, 0);
+                    } else {
+                        sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 1);
+                        sharedPrefEditor.commit();
+                    }
+                }
+
+                @Override
+                public void onExitedRegion(Region region) {
+//                sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 0);
+//                sharedPrefEditor.commit();
+                }
+            });
+
+            beaconManager3.setMonitoringListener(new BeaconManager.MonitoringListener() {
+                @Override
+                public void onEnteredRegion(Region region, List<Beacon> beacons) {
+
+                    sharedPrefEditor.putInt(getString(R.string.shared_position), 1);
                     sharedPrefEditor.commit();
+
+                    pause(obj2);
+                    obj = 1;
+                    obj1.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
+                    obj1.customHandler.postDelayed(updateTimerThread, 0);
+                }
+
+                @Override
+                public void onExitedRegion(Region region) {
 
                     sharedPrefEditor.putInt(getString(R.string.shared_position), 2);
                     sharedPrefEditor.commit();
 
-                    pause(obj3);
+                    pause(obj1);
                     obj = 2;
                     obj2.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_office), 0);
                     obj2.customHandler.postDelayed(updateTimerThread, 0);
-                } else {
-                    sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 1);
-                    sharedPrefEditor.commit();
                 }
-            }
+            });
 
-            @Override
-            public void onExitedRegion(Region region) {
-//                sharedPrefEditor.putInt(getString(R.string.shared_door_entry), 0);
-//                sharedPrefEditor.commit();
-            }
-        });
-
-        beaconManager2.setMonitoringListener(new BeaconManager.MonitoringListener() {
-            @Override
-            public void onEnteredRegion(Region region, List<Beacon> beacons) {
-                if (sharedPref.getInt(getString(R.string.shared_door_entry), 0) == 1) {
-
-                    sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 1);
-                    sharedPrefEditor.commit();
-
-                    sharedPrefEditor.putInt(getString(R.string.shared_position), 3);
-                    sharedPrefEditor.commit();
-                    pause(obj2);
-                    obj = 3;
-                    obj3.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
-                    obj3.customHandler.postDelayed(updateTimerThread, 0);
-                } else {
-                    sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 1);
-                    sharedPrefEditor.commit();
+            beaconManager1.connect(new BeaconManager.ServiceReadyCallback() {
+                @Override
+                public void onServiceReady() {
+                    try {
+                        beaconManager1.startMonitoring(region_door_entry);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-
-            @Override
-            public void onExitedRegion(Region region) {
-//                sharedPrefEditor.putInt(getString(R.string.shared_door_exit), 0);
-//                sharedPrefEditor.commit();
-            }
-        });
-
-        beaconManager3.setMonitoringListener(new BeaconManager.MonitoringListener() {
-            @Override
-            public void onEnteredRegion(Region region, List<Beacon> beacons) {
-
-                sharedPrefEditor.putInt(getString(R.string.shared_position), 1);
-                sharedPrefEditor.commit();
-
-                pause(obj2);
-                obj = 1;
-                obj1.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_desk), 0);
-                obj1.customHandler.postDelayed(updateTimerThread, 0);
-            }
-
-            @Override
-            public void onExitedRegion(Region region) {
-
-                sharedPrefEditor.putInt(getString(R.string.shared_position), 2);
-                sharedPrefEditor.commit();
-
-                pause(obj1);
-                obj = 2;
-                obj2.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_office), 0);
-                obj2.customHandler.postDelayed(updateTimerThread, 0);
-            }
-        });
-
-        beaconManager1.connect(new BeaconManager.ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                try {
-                    beaconManager1.startMonitoring(region_door_entry);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+            });
+            beaconManager2.connect(new BeaconManager.ServiceReadyCallback() {
+                @Override
+                public void onServiceReady() {
+                    try {
+                        beaconManager2.startMonitoring(region_door_exit);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
-        beaconManager2.connect(new BeaconManager.ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                try {
-                    beaconManager2.startMonitoring(region_door_exit);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
+            });
+            beaconManager3.connect(new BeaconManager.ServiceReadyCallback() {
+                @Override
+                public void onServiceReady() {
+                    try {
+                        beaconManager3.startMonitoring(region_desk);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
-        beaconManager3.connect(new BeaconManager.ServiceReadyCallback() {
-            @Override
-            public void onServiceReady() {
-                try {
-                    beaconManager3.startMonitoring(region_desk);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+            });
 
-        obj = 3;
-        obj3.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
-        obj3.customHandler.postDelayed(updateTimerThread, 0);
-
-        return START_STICKY;
+            obj = 3;
+            obj3.startTime = SystemClock.uptimeMillis() - sharedPref.getLong(getString(R.string.shared_timer_outdoor), 0);
+            obj3.customHandler.postDelayed(updateTimerThread, 0);
+        }
+            return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        flag = 0;
         obj1.customHandler.removeCallbacks(updateTimerThread);
         obj2.customHandler.removeCallbacks(updateTimerThread);
         obj3.customHandler.removeCallbacks(updateTimerThread);
