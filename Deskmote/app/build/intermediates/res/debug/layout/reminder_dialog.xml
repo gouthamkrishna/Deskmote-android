@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="195dp"
+    android:minWidth="800dp"
+    android:padding="10dp"
+    android:weightSum="1"
+    android:layout_margin="10dp"
+    android:background="#f7f7f7">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="Add Reminders"
+        android:textStyle="bold"
+        android:textSize="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginTop="15dp"
+        android:maxHeight="180dp"
+        android:paddingStart="8dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tagLine"
+        android:hint="Remind me about..."/>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:orientation="horizontal"
+        android:layout_marginTop="15dp">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/timePicker"
+            android:src="@drawable/time"
+            android:layout_marginStart="10dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/reminderTimeView"
+            android:textSize="15sp"
+            android:layout_toEndOf="@id/timePicker"
+            android:layout_marginStart="10dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/datePicker"
+            android:src="@drawable/calendar"
+            android:layout_marginEnd="10dp"
+            android:layout_toStartOf="@+id/reminderDateView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:id="@+id/reminderDateView"
+            android:textSize="15sp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="10dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="20dp"     >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#a8a8a8"
+            android:text="DECLINE"
+            android:textStyle="bold"
+            android:id="@+id/cancelReminder"
+            android:layout_toStartOf="@+id/saveReminder"
+            android:layout_marginEnd="20dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#009688"
+            android:text="SAVE"
+            android:textStyle="bold"
+            android:id="@+id/saveReminder"
+            android:layout_marginEnd="0dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+
+
+
+</LinearLayout><!-- From: file:/home/user/AndroidStudioProjects/Deskmote/app/src/main/res/layout/reminder_dialog.xml -->

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:background="@drawable/shadow"
+    android:padding="10dp">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/title"
+        android:textSize="17sp"
+        android:textAlignment="center"
+        android:textColor="#528B8B"
+        android:layout_alignParentTop="true" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:paddingStart="10dp"
+        android:id="@+id/time"
+        android:textColor="#a8a8a8"
+        android:layout_toEndOf="@+id/alarm"
+        android:layout_below="@+id/title" />
+
+    <TextView
+        android:layout_width="100dp"
+        android:layout_height="20dp"
+        android:paddingStart="10dp"
+        android:id="@+id/date"
+        android:textColor="#a8a8a8"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/title" />
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/alarm"
+        android:layout_alignBottom="@+id/time"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_action_alarm"/>
+
+</RelativeLayout>
+
+
